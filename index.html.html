@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>inDrive — Stellium Global</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800;900&family=Barlow+Condensed:wght@600;700;800;900&display=swap" as="style">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800;900&family=Barlow+Condensed:wght@600;700;800;900&display=swap">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-font-smoothing:antialiased;}
+:root{
+  --lime:#C5F000;--lime-d:#9EB800;--lime-pale:#F2FFB0;--lime-mid:#DAF060;
+  --ink:#0D0D0D;--ink2:#1F1F1F;--white:#FFFFFF;--off:#F4F4F0;--offb:#EDEDE8;
+  --muted:#7A7A72;--subtle:#C4C4BC;--border:rgba(0,0,0,.09);
+  --purple:#9176D4;--purple-bg:#EDE8FA;
+  --blue:#3A86E8;--blue-bg:#E3EDFB;
+  --teal:#18B89A;--coral:#E85A44;--amber:#E8A020;--pink:#E879A0;
+  --tr:all .28s cubic-bezier(.4,0,.2,1);
+}
+body{font-family:'Barlow',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--off);color:var(--ink);display:flex;height:100vh;overflow:hidden;font-size:13px;}
+::-webkit-scrollbar{width:5px;height:5px;}
+::-webkit-scrollbar-thumb{background:rgba(0,0,0,.16);border-radius:4px;}
+::-webkit-scrollbar-thumb:hover{background:rgba(0,0,0,.3);}
+
+/* ─── SIDEBAR ─── */
+.sidebar{width:228px;background:linear-gradient(180deg,#1A1A1A 0%,#0F0F0F 100%);flex-shrink:0;display:flex;flex-direction:column;height:100vh;}
+.sid-top{padding:20px 18px 16px;border-bottom:1px solid rgba(255,255,255,.07);}
+.sid-mark{display:flex;align-items:center;gap:11px;}
+.sid-id{width:40px;height:40px;background:var(--lime);border-radius:10px;display:grid;place-items:center;flex-shrink:0;box-shadow:0 2px 10px rgba(197,240,0,.25);}
+.sid-id svg{display:block;}
+.sid-name{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:20px;color:#fff;letter-spacing:.3px;line-height:1.1;}
+.sid-name small{display:block;font-size:9px;font-weight:600;color:rgba(255,255,255,.42);letter-spacing:1.6px;text-transform:uppercase;margin-top:3px;}
+.sid-partner{padding:12px 18px;border-bottom:1px solid rgba(255,255,255,.07);display:flex;align-items:center;gap:10px;}
+.sid-partner-slot{width:30px;height:30px;background:rgba(255,255,255,.06);border:1px dashed rgba(255,255,255,.18);border-radius:6px;display:grid;place-items:center;flex-shrink:0;font-size:9px;font-weight:800;color:var(--lime);letter-spacing:.3px;}
+.sid-partner-txt{font-size:10px;color:rgba(255,255,255,.38);font-weight:600;line-height:1.3;}
+.sid-partner-txt b{color:rgba(255,255,255,.7);display:block;font-size:11px;letter-spacing:.3px;}
+.sid-country{padding:14px 18px;border-bottom:1px solid rgba(255,255,255,.07);}
+.sid-clabel{font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.34);margin-bottom:9px;}
+.cpills{display:flex;gap:6px;}
+.cpill{flex:1;padding:8px 0;text-align:center;border-radius:9px;font-size:11px;font-weight:800;cursor:pointer;border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.48);transition:var(--tr);letter-spacing:.4px;display:flex;align-items:center;justify-content:center;gap:6px;position:relative;}
+.cpill:hover{color:rgba(255,255,255,.8);border-color:rgba(255,255,255,.28);background:rgba(255,255,255,.03);}
+.cpill.active{background:var(--lime);color:var(--ink);border-color:var(--lime);box-shadow:0 2px 12px rgba(197,240,0,.3);}
+.cpill.disabled{opacity:.4;cursor:not-allowed;}
+.cpill.disabled:hover{color:rgba(255,255,255,.48);background:transparent;border-color:rgba(255,255,255,.12);}
+.cpill-flag{width:18px;height:13px;border-radius:2px;flex-shrink:0;overflow:hidden;display:inline-block;}
+.sid-nav{padding:14px 0 10px;flex:1;overflow-y:auto;}
+.sid-section{padding:8px 18px 4px;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.3);margin-top:4px;display:flex;align-items:center;gap:6px;}
+.sid-section-badge{font-size:7.5px;background:var(--lime);color:var(--ink);padding:2px 5px;border-radius:3px;letter-spacing:.6px;}
+.nav-item{padding:11px 16px 11px 14px;margin:2px 8px;display:flex;align-items:center;gap:11px;cursor:pointer;transition:var(--tr);border-left:3px solid transparent;border-radius:0 8px 8px 0;font-size:12.5px;font-weight:600;color:rgba(255,255,255,.5);letter-spacing:.15px;position:relative;}
+.nav-item:hover{background:rgba(255,255,255,.05);color:rgba(255,255,255,.85);}
+.nav-item.active{background:linear-gradient(90deg,rgba(197,240,0,.18) 0%,rgba(197,240,0,.04) 100%);border-left-color:var(--lime);color:#fff;font-weight:700;}
+.nav-item.active::after{content:'';position:absolute;right:12px;top:50%;transform:translateY(-50%);width:5px;height:5px;border-radius:50%;background:var(--lime);box-shadow:0 0 8px var(--lime);}
+.nav-ic{width:17px;height:17px;display:flex;align-items:center;justify-content:center;flex-shrink:0;opacity:.7;}
+.nav-item.active .nav-ic{opacity:1;color:var(--lime);}
+.nav-item.master{background:linear-gradient(90deg,rgba(197,240,0,.08) 0%,transparent 100%);border-left:3px solid rgba(197,240,0,.3);}
+.nav-item.master.active{background:linear-gradient(90deg,rgba(197,240,0,.22) 0%,rgba(197,240,0,.05) 100%);border-left-color:var(--lime);}
+.nav-item-badge{font-size:7.5px;background:rgba(197,240,0,.2);color:var(--lime);padding:2px 6px;border-radius:4px;margin-left:auto;letter-spacing:.5px;font-weight:800;}
+.sid-filters{padding:12px 18px;border-top:1px solid rgba(255,255,255,.07);}
+.sid-fl{font-size:8.5px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.28);margin-bottom:8px;display:flex;align-items:center;gap:5px;}
+.sid-select{width:100%;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:#fff;border-radius:6px;padding:6px 8px;font-size:11px;font-weight:600;font-family:'Barlow',sans-serif;cursor:pointer;margin-bottom:5px;outline:none;appearance:none;-webkit-appearance:none;}
+.sid-select option{background:#2a2a2a;color:#fff;font-weight:500;}
+.sid-select:focus{border-color:var(--lime);}
+.sid-footer{padding:12px 18px;border-top:1px solid rgba(255,255,255,.07);}
+.sid-ft{font-size:9px;color:rgba(255,255,255,.22);letter-spacing:.5px;line-height:1.6;}
+
+/* ─── MAIN ─── */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0;}
+.topbar{background:#fff;border-bottom:1px solid var(--border);padding:0 26px;height:74px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;position:sticky;top:0;z-index:50;box-shadow:0 1px 0 rgba(0,0,0,.04);}
+.tb-left{display:flex;align-items:center;gap:16px;flex:1;min-width:0;}
+.tb-logoslot{width:42px;height:42px;background:var(--lime);border-radius:10px;display:grid;place-items:center;flex-shrink:0;}
+.tb-logoslot svg{display:block;}
+.tb-title-wrap{display:flex;flex-direction:column;gap:3px;min-width:0;}
+.tb-title-row{display:flex;align-items:baseline;gap:11px;flex-wrap:wrap;}
+.tb-title-main{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:26px;color:var(--ink);letter-spacing:.3px;line-height:1;}
+.tb-title-country{display:inline-flex;align-items:center;gap:5px;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:14px;color:var(--ink);background:var(--lime-pale);padding:4px 9px;border-radius:6px;letter-spacing:.6px;border:1px solid rgba(158,184,0,.25);}
+.tb-title-country-flag{width:15px;height:11px;border-radius:2px;overflow:hidden;}
+.tb-meta{display:flex;align-items:center;gap:10px;}
+.tb-date{display:inline-flex;align-items:center;gap:6px;font-size:10.5px;font-weight:700;color:var(--muted);letter-spacing:.6px;text-transform:uppercase;}
+.tb-date svg{opacity:.55;}
+.tb-date b{color:var(--ink);font-weight:800;}
+.tb-right{display:flex;align-items:center;gap:12px;flex-shrink:0;}
+.tb-partner-slot{display:flex;align-items:center;gap:8px;padding:6px 10px;border:1px dashed var(--border);border-radius:8px;background:#fafaf7;}
+.tb-partner-box{width:22px;height:22px;background:var(--ink);border-radius:5px;display:grid;place-items:center;flex-shrink:0;}
+.tb-partner-txt{display:flex;flex-direction:column;line-height:1.15;}
+.tb-partner-txt small{font-size:7.5px;color:var(--muted);letter-spacing:.6px;text-transform:uppercase;font-weight:700;}
+.tb-partner-txt b{font-family:'Barlow Condensed',sans-serif;font-size:13px;color:var(--ink);letter-spacing:.5px;font-weight:900;}
+.scroll-area{flex:1;overflow-y:auto;padding:18px 26px 60px;}
+
+/* ─── FILTER BAR ─── */
+.filter-bar{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:10px 16px;margin-bottom:12px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;position:sticky;top:0;z-index:15;box-shadow:0 2px 8px rgba(0,0,0,.04);}
+.fb-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:var(--muted);display:flex;align-items:center;gap:5px;white-space:nowrap;}
+.fb-sep{width:1px;height:16px;background:var(--border);}
+.fsel-wrap{display:flex;align-items:center;gap:0;background:var(--off);border:1px solid var(--offb);border-radius:7px;padding:3px 8px;cursor:pointer;}
+.fsel-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);margin-right:4px;white-space:nowrap;}
+.fsel{background:transparent;border:none;font-size:12px;font-weight:700;color:var(--ink);cursor:pointer;outline:none;appearance:none;-webkit-appearance:none;font-family:'Barlow',sans-serif;padding-right:14px;}
+.fsel option{background:#fff;color:var(--ink);font-weight:600;}
+.fsel-wrap:focus-within{border-color:var(--lime-d);background:var(--lime-pale);}
+
+/* ─── PICKER ─── */
+.picker-bar{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;margin-bottom:14px;}
+.picker-bar::-webkit-scrollbar{height:4px;}
+.pick-all{min-width:74px;background:var(--white);border:1.5px solid var(--border);border-radius:10px;padding:10px 8px;cursor:pointer;transition:var(--tr);text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;flex-shrink:0;}
+.pick-all:hover{border-color:var(--subtle);}
+.pick-all.sel{border-color:var(--lime);background:var(--lime-pale);}
+.pa-icon{width:36px;height:36px;border-radius:50%;background:var(--ink);display:grid;place-items:center;}
+.pa-label{font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);}
+.pick-all.sel .pa-label{color:var(--lime-d);}
+.icard{min-width:92px;background:var(--white);border:1.5px solid var(--border);border-radius:10px;padding:10px 7px;cursor:pointer;transition:var(--tr);text-align:center;flex-shrink:0;}
+.icard:hover{border-color:rgba(0,0,0,.2);transform:translateY(-2px);}
+.icard.sel{border-color:var(--lime);background:var(--lime-pale);transform:translateY(-3px);box-shadow:0 5px 18px rgba(197,240,0,.22);}
+.icard-av{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:15px;margin:0 auto 6px;position:relative;}
+.icard-plat{position:absolute;bottom:-1px;right:-1px;width:16px;height:16px;border-radius:4px;display:grid;place-items:center;border:2px solid #fff;font-size:7px;font-weight:800;color:#fff;}
+.icard-name{font-size:9.5px;font-weight:700;color:var(--ink);line-height:1.2;margin-bottom:3px;}
+.icard-er{font-size:9px;font-weight:700;color:var(--muted);}
+
+/* ─── SECTION HEADERS ─── */
+.sec-hdr{border-radius:10px;padding:11px 20px;font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:900;letter-spacing:1.1px;text-transform:uppercase;margin-bottom:14px;margin-top:22px;display:flex;align-items:center;gap:10px;position:relative;}
+.sec-hdr:first-child{margin-top:0;}
+.sec-hdr::before{content:'';position:absolute;left:9px;top:50%;transform:translateY(-50%);width:4px;height:18px;border-radius:2px;opacity:.35;}
+.sec-hdr-ic{width:18px;height:18px;display:grid;place-items:center;flex-shrink:0;opacity:.9;}
+.sec-hdr-sub{margin-left:auto;font-size:10px;font-weight:700;letter-spacing:.6px;opacity:.7;text-transform:none;font-family:'Barlow',sans-serif;}
+.sec-overview{background:var(--lime);color:var(--ink);}
+.sec-overview::before{background:var(--ink);}
+.sec-sentiment{background:linear-gradient(135deg,#18B89A,#14A085);color:#fff;}
+.sec-sentiment::before{background:#fff;}
+.sec-platform{background:linear-gradient(135deg,#7B5EA7,#6A4F95);color:#fff;}
+.sec-platform::before{background:#fff;}
+.sec-format{background:linear-gradient(135deg,#E85A44,#D44A35);color:#fff;}
+.sec-format::before{background:#fff;}
+.sec-cumpl{background:linear-gradient(135deg,#E8A020,#D48E10);color:var(--ink);}
+.sec-cumpl::before{background:var(--ink);}
+.sec-detail{background:linear-gradient(135deg,#2D6AC4,#1F5AB2);color:#fff;}
+.sec-detail::before{background:#fff;}
+.sec-links{background:linear-gradient(135deg,#E879A0,#D66890);color:#fff;}
+.sec-links::before{background:#fff;}
+.sec-community{background:linear-gradient(135deg,#8EAA00,#7A9200);color:#fff;}
+.sec-community::before{background:#fff;}
+
+/* ─── KPI GENERAL ─── */
+.general-wrap{display:grid;grid-template-columns:280px 1fr;gap:12px;margin-bottom:6px;}
+.g-main{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:18px 20px;}
+.g-main-label{font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;}
+.g-main-val{font-family:'Barlow Condensed',sans-serif;font-size:38px;font-weight:900;color:var(--ink);line-height:1;margin-bottom:4px;}
+.g-main-sub{font-size:10px;color:var(--muted);font-weight:600;margin-bottom:10px;}
+.g-pbar-bg{background:var(--offb);border-radius:4px;height:8px;overflow:hidden;margin-bottom:5px;}
+.g-pbar-fill{height:100%;background:var(--lime);border-radius:4px;transition:width .8s ease;}
+.g-pbar-labels{display:flex;justify-content:space-between;font-size:9px;color:var(--muted);}
+.g-pbar-labels b{color:var(--lime-d);}
+.g-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
+.g-kpi{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:12px 14px;}
+.g-kpi-lbl{font-size:8.5px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted);margin-bottom:5px;}
+.g-kpi-val{font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:900;color:var(--ink);line-height:1;}
+.g-kpi-val.hl-lime{color:var(--lime-d);}
+.g-kpi-val.null{color:var(--subtle);font-size:18px;font-style:italic;}
+
+/* ─── CHARTS ─── */
+.cols2{display:grid;grid-template-columns:1.6fr 1fr;gap:12px;margin-bottom:6px;}
+.cols3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:6px;}
+.ccard{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:16px 18px;}
+.cc-title{font-size:9px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted);margin-bottom:12px;}
+.ccanv{position:relative;}
+.legrow{display:flex;flex-wrap:wrap;gap:10px;margin-top:8px;}
+.leg{display:flex;align-items:center;gap:4px;font-size:10px;color:var(--muted);font-weight:600;}
+.legsq{width:8px;height:8px;border-radius:2px;flex-shrink:0;}
+
+/* ─── PLATFORM BADGES ─── */
+.plat-badge{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:5px;font-size:9.5px;font-weight:800;color:#fff;letter-spacing:.4px;}
+.pb-tk{background:#1A1A1A;}
+.pb-ig{background:linear-gradient(135deg,#F58529 0%,#DD2A7B 60%,#8134AF 100%);}
+.pb-fb{background:#1877F2;}
+.pb-yt{background:#FF0000;}
+
+/* ─── SENT LIST ─── */
+.sent-list{display:flex;flex-direction:column;gap:0;flex:1;}
+.sent-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--off);}
+.sent-row:last-child{border-bottom:none;}
+.sent-lbl{font-size:11px;font-weight:600;color:var(--muted);}
+.sent-val{font-size:13px;font-weight:800;color:var(--ink);}
+
+/* ─── TABLE ─── */
+.tbl-wrap{background:var(--white);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:6px;}
+.tbl-top{padding:10px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.tbl-title{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:var(--muted);}
+table.dt{width:100%;border-collapse:collapse;font-size:12px;}
+table.dt thead th{background:var(--lime);padding:8px 12px;font-weight:800;font-size:10px;text-align:right;color:var(--ink);letter-spacing:.3px;text-transform:uppercase;white-space:nowrap;}
+table.dt thead th:first-child{text-align:left;}
+table.dt tbody tr{border-bottom:1px solid var(--off);transition:background .15s;}
+table.dt tbody tr:hover{background:rgba(197,240,0,.05);}
+table.dt tbody td{padding:8px 12px;text-align:right;font-weight:600;color:var(--ink);}
+table.dt tbody td:first-child{text-align:left;color:var(--ink);font-weight:700;}
+table.dt tbody tr:last-child td{font-weight:900;background:rgba(197,240,0,.08);}
+.td-imp{color:#7B5EA7;font-weight:800;}
+.td-int{color:var(--teal);font-weight:800;}
+.td-er{color:var(--lime-d);font-weight:800;}
+.td-null{color:var(--subtle);font-style:italic;font-weight:500;}
+
+/* ─── COMP CHART (Cumplimiento) ─── */
+.comp-chart{display:flex;flex-direction:column;gap:12px;}
+.comp-row{display:grid;align-items:center;gap:14px;}
+.comp-name{display:flex;align-items:center;gap:8px;font-weight:700;font-size:12px;}
+.comp-name-av{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:11px;flex-shrink:0;}
+.comp-bars{display:grid;gap:2px;}
+.comp-bar-wrap{display:grid;grid-template-columns:34px 1fr 56px;align-items:center;gap:6px;}
+.comp-bar-lbl{font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;}
+.comp-bar-bg{height:9px;background:var(--off);border-radius:3px;overflow:hidden;}
+.comp-bar-fill{height:100%;border-radius:3px;transition:width .8s ease;}
+.comp-bar-proy{background:#D4D4CE;}
+.comp-bar-val{font-size:10px;font-weight:700;color:var(--ink);text-align:right;}
+.comp-pct{font-family:'Barlow Condensed',sans-serif;font-weight:900;border-radius:5px;}
+.comp-pct.ok{background:rgba(142,170,0,.16);color:var(--lime-d);}
+.comp-pct.mid{background:rgba(232,160,32,.16);color:#B57A00;}
+.comp-pct.low{background:rgba(232,90,68,.16);color:var(--coral);}
+
+/* ─── PROFILE CARD ─── */
+.prof-card{display:grid;grid-template-columns:auto 1fr;gap:18px;background:var(--white);border:1px solid var(--border);border-radius:12px;padding:18px 20px;margin-bottom:6px;align-items:center;}
+.prof-av{width:74px;height:74px;border-radius:18px;display:grid;place-items:center;font-family:'Barlow Condensed',sans-serif;font-size:30px;font-weight:900;flex-shrink:0;}
+.prof-name{font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:900;color:var(--ink);line-height:1;margin-bottom:3px;}
+.prof-handle{font-size:12px;color:var(--muted);font-weight:600;margin-bottom:4px;display:flex;align-items:center;flex-wrap:wrap;gap:8px;}
+.prof-bio{font-size:11px;color:var(--muted);font-weight:500;margin-bottom:10px;font-style:italic;}
+.prof-kpis{display:flex;gap:18px;flex-wrap:wrap;}
+.prof-kpi-lbl{font-size:8.5px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);}
+.prof-kpi-val{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;line-height:1.1;}
+
+/* ─── COMENTARIOS (TOP) ─── */
+.comt-list{display:flex;flex-direction:column;gap:9px;}
+.comt-item{display:grid;grid-template-columns:42px 1fr auto;gap:14px;background:var(--white);border:1px solid var(--border);border-radius:11px;padding:14px 16px;animation:fadeUp .5s ease both;}
+.comt-rank{font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:900;color:var(--subtle);display:grid;place-items:center;border-right:1px solid var(--off);padding-right:8px;}
+.comt-rank.top3{color:var(--lime-d);font-size:30px;}
+.comt-meta{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--muted);font-weight:600;margin-bottom:6px;flex-wrap:wrap;}
+.comt-creator b{color:var(--ink);}
+.comt-cat-chip{background:var(--off);color:var(--muted);padding:2px 7px;border-radius:4px;font-size:9px;font-weight:700;}
+.comt-text{font-size:13px;color:var(--ink);font-weight:600;line-height:1.4;margin-bottom:8px;}
+.comt-stats{display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+.comt-stat{display:flex;align-items:center;gap:4px;font-size:11px;font-weight:600;color:var(--muted);}
+.comt-stat b{color:var(--ink);}
+.sent-pill{padding:3px 9px;border-radius:5px;font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;}
+.sent-pill.Positivo{background:rgba(24,184,154,.16);color:var(--teal);}
+.sent-pill.Neutral{background:rgba(196,196,188,.4);color:var(--muted);}
+.sent-pill.Negativo{background:rgba(232,90,68,.16);color:var(--coral);}
+.comt-right{display:flex;flex-direction:column;align-items:center;gap:5px;justify-content:center;}
+.comt-score-ring{width:42px;height:42px;}
+.comt-date{font-size:9px;color:var(--muted);font-weight:700;}
+
+/* ─── SOCIAL PROFILE PLAT CARDS ─── */
+.plat-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:6px;}
+.plat-pcard{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:16px;position:relative;overflow:hidden;transition:var(--tr);}
+.plat-pcard:hover{transform:translateY(-2px);box-shadow:0 6px 22px rgba(0,0,0,.07);}
+.plat-pcard::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;}
+.plat-pcard.tk::after{background:linear-gradient(90deg,#00f2ea,#FE2C55);}
+.plat-pcard.ig::after{background:linear-gradient(90deg,#F58529,#DD2A7B,#8134AF);}
+.plat-pcard.fb::after{background:#1877F2;}
+.plat-pcard.yt::after{background:#FF0000;}
+.ppc-head{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.ppc-ic{width:34px;height:34px;border-radius:9px;display:grid;place-items:center;flex-shrink:0;}
+.ppc-ic.tk{background:#000;}
+.ppc-ic.ig{background:linear-gradient(135deg,#F58529,#DD2A7B);}
+.ppc-ic.fb{background:#1877F2;}
+.ppc-ic.yt{background:#FF0000;}
+.ppc-ic svg{width:18px;height:18px;fill:#fff;}
+.ppc-name{font-weight:800;font-size:14px;}
+.ppc-fol{font-size:11px;color:var(--muted);font-weight:600;}
+.ppc-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.ppc-st-lbl{font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);}
+.ppc-st-val{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;line-height:1.1;}
+.ppc-st-val.null{color:var(--subtle);font-size:14px;font-style:italic;font-weight:600;}
+
+/* ─── RANKING ─── */
+.rk-tbl tbody td{padding:10px 12px;}
+.rk-score{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:16px;padding:3px 9px;border-radius:6px;display:inline-block;}
+.rk-ribbon{display:inline-block;padding:2px 7px;border-radius:4px;font-size:9px;font-weight:800;text-transform:uppercase;background:rgba(197,240,0,.18);color:var(--lime-d);}
+
+/* ─── EMPTY STATE ─── */
+.empty-card{background:var(--white);border:1px dashed var(--border);border-radius:10px;padding:18px;text-align:center;color:var(--muted);font-size:11px;font-weight:600;}
+.empty-card b{color:var(--ink);display:block;font-size:13px;font-family:'Barlow Condensed',sans-serif;margin-bottom:4px;letter-spacing:.6px;text-transform:uppercase;}
+
+/* ─── ANIMATIONS ─── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+.fu{animation:fadeUp .45s ease both;}
+.fu1{animation-delay:.05s;}
+.fu2{animation-delay:.1s;}
+.fu3{animation-delay:.15s;}
+.fu4{animation-delay:.2s;}
+
+/* ─── MOBILE ─── */
+.mobile-nav{display:none;}
+@media (max-width:900px){
+  body{overflow:auto;height:auto;}
+  .sidebar{display:none;}
+  .main{height:auto;}
+  .topbar{padding:0 14px;height:64px;}
+  .tb-title-main{font-size:20px;}
+  .scroll-area{padding:14px 14px 90px;overflow:visible;}
+  .general-wrap{grid-template-columns:1fr;}
+  .g-grid{grid-template-columns:1fr 1fr;}
+  .cols2,.cols3{grid-template-columns:1fr;}
+  .plat-cards{grid-template-columns:1fr;}
+  .tbl-wrap{overflow-x:auto;}
+  table.dt{min-width:600px;}
+  .prof-card{grid-template-columns:1fr;text-align:center;}
+  .prof-av{margin:0 auto;}
+  .prof-kpis{justify-content:center;}
+  .comp-row{grid-template-columns:90px 1fr 70px !important;}
+  .mobile-nav{display:flex;position:fixed;bottom:0;left:0;right:0;background:#1A1A1A;height:62px;z-index:200;border-top:1px solid rgba(255,255,255,.08);}
+  .mobile-nav-inner{display:flex;height:100%;width:100%;}
+  .mn-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;cursor:pointer;border-top:2px solid transparent;}
+  .mn-item.active{border-top-color:var(--lime);background:rgba(197,240,0,.06);}
+  .mn-ic{width:20px;height:20px;display:grid;place-items:center;opacity:.5;}
+  .mn-item.active .mn-ic{opacity:1;}
+  .mn-label{font-size:9px;font-weight:700;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.5px;}
+  .mn-item.active .mn-label{color:var(--lime);}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════ SIDEBAR ═══════ -->
+<aside class="sidebar">
+  <div class="sid-top">
+    <div class="sid-mark">
+      <div class="sid-id"><svg width="22" height="18" viewBox="0 0 22 18" fill="#1A1A1A"><path d="M2 2h6v14H2zM11 2h9l-4.5 7L20 16h-9l4.5-7z"/></svg></div>
+      <div><div class="sid-name">inDrive<small>Dashboard 2026</small></div></div>
+    </div>
+  </div>
+  <div class="sid-partner">
+    <div class="sid-partner-slot">S+</div>
+    <div class="sid-partner-txt"><b>Stellium Global</b>Agencia Partner</div>
+  </div>
+  <div class="sid-country">
+    <div class="sid-clabel">País</div>
+    <div class="cpills">
+      <div class="cpill active"><span class="cpill-flag"><svg width="18" height="13" viewBox="0 0 18 13"><rect width="6" height="13" fill="#D91023"/><rect x="6" width="6" height="13" fill="#fff"/><rect x="12" width="6" height="13" fill="#D91023"/></svg></span>PE</div>
+      <div class="cpill disabled" title="Sin data"><span class="cpill-flag"><svg width="18" height="13" viewBox="0 0 18 13"><rect width="18" height="6.5" fill="#fff"/><rect y="6.5" width="18" height="6.5" fill="#D52B1E"/><rect width="6.5" height="6.5" fill="#0039A6"/></svg></span>CL</div>
+    </div>
+  </div>
+  <div class="sid-nav">
+    <div class="sid-section">Overview <span class="sid-section-badge">MASTER</span></div>
+    <div class="nav-item master active" onclick="setView('marca',this)">
+      <span class="nav-ic"><svg width="15" height="15" fill="currentColor"><rect x="1" y="7" width="13" height="7" rx="1"/><rect x="4" y="2" width="7" height="5" rx="1"/></svg></span>
+      Marca inDrive
+      <span class="nav-item-badge">HOME</span>
+    </div>
+    <div class="sid-section">Análisis</div>
+    <div class="nav-item" onclick="setView('influencer',this)">
+      <span class="nav-ic"><svg width="15" height="15" fill="currentColor"><rect x="0" y="9" width="3" height="6" rx="1"/><rect x="4.5" y="6" width="3" height="9" rx="1"/><rect x="9" y="2.5" width="3" height="12.5" rx="1"/></svg></span>
+      Influencer InDrive
+    </div>
+    <div class="nav-item" onclick="setView('ranking',this)">
+      <span class="nav-ic"><svg width="15" height="15" fill="currentColor"><path d="M7.5 1l1.5 3 3.5.5-2.5 2.5.6 3.5L7.5 9l-3.1 1.5.6-3.5L2.5 4.5 6 4z"/></svg></span>
+      Ranking
+      <span class="nav-item-badge" style="background:rgba(232,90,68,.2);color:#E85A44;">OFF</span>
+    </div>
+    <div class="nav-item" onclick="setView('comentarios',this)">
+      <span class="nav-ic"><svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 2h11v8H8.5L6 13V10H2z"/></svg></span>
+      Top Comentarios
+      <span class="nav-item-badge">BUZZ</span>
+    </div>
+  </div>
+  <div class="sid-filters">
+    <div class="sid-fl"><svg width="10" height="10" viewBox="0 0 10 10" fill="rgba(255,255,255,.4)"><path d="M1 1.5h8l-3 4v3H4v-3L1 1.5z"/></svg> Filtros Rápidos</div>
+    <select class="sid-select" id="sf-plat" onchange="applyFilters()">
+      <option value="all">Todas las plataformas</option>
+      <option value="TikTok">TikTok</option>
+      <option value="Instagram">Instagram</option>
+      <option value="Facebook">Facebook</option>
+    </select>
+    <select class="sid-select" id="sf-fmt" onchange="applyFilters()">
+      <option value="all">Todos los formatos</option>
+      <option value="TikTok Video">TikTok Video</option>
+      <option value="Reel">Reel</option>
+      <option value="Carrusel">Carrusel</option>
+    </select>
+    <select class="sid-select" id="sf-vt" onchange="applyFilters()">
+      <option value="all">Todas las verticales</option>
+      <option value="Marca">Marca</option>
+      <option value="Rides">Rides</option>
+      <option value="Viajeros">Viajeros</option>
+      <option value="Conductores">Conductores</option>
+      <option value="Seguridad">Seguridad</option>
+      <option value="Otro">Otro</option>
+    </select>
+  </div>
+  <div class="sid-footer"><div class="sid-ft">© 2026 Stellium Global<br>Dashboard v7 · Abril 2026</div></div>
+</aside>
+
+<!-- ═══════ MAIN ═══════ -->
+<main class="main">
+  <div class="topbar">
+    <div class="tb-left">
+      <div class="tb-logoslot"><svg width="22" height="16" viewBox="0 0 22 16" fill="#1A1A1A"><path d="M2 2h6v12H2zM11 2h9l-4.5 6L20 14h-9l4.5-6z"/></svg></div>
+      <div class="tb-title-wrap">
+        <div class="tb-title-row">
+          <span class="tb-title-main" id="tbTitle">MARCA inDrive</span>
+          <span class="tb-title-country">
+            <span class="tb-title-country-flag"><svg width="15" height="11" viewBox="0 0 18 13"><rect width="6" height="13" fill="#D91023"/><rect x="6" width="6" height="13" fill="#fff"/><rect x="12" width="6" height="13" fill="#D91023"/></svg></span>
+            Perú
+          </span>
+        </div>
+        <div class="tb-meta">
+          <span class="tb-date">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="1.5" y="2.5" width="9" height="8" rx="1"/><path d="M1.5 5h9M4 1.5v2M8 1.5v2"/></svg>
+            Período <b>ABRIL 2026 · Q2</b>
+          </span>
+          <span class="tb-date" style="padding-left:10px;border-left:1px solid var(--border);">
+            <svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor"><circle cx="5" cy="5" r="4" stroke="currentColor" stroke-width="1" fill="none"/><circle cx="5" cy="5" r="2"/></svg>
+            <b>LIVE</b>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="tb-right">
+      <div class="tb-partner-slot">
+        <div class="tb-partner-box"><svg width="12" height="12" viewBox="0 0 12 12" fill="#C5F000"><path d="M2 2h3v8H2zM7 2h3v8H7zM2 5h8v2H2z"/></svg></div>
+        <div class="tb-partner-txt"><small>Agencia</small><b>STELLIUM</b></div>
+      </div>
+    </div>
+  </div>
+  <div class="scroll-area" id="sa"></div>
+</main>
+
+<!-- ═══════ MOBILE NAV ═══════ -->
+<nav class="mobile-nav"><div class="mobile-nav-inner">
+  <div class="mn-item active" id="mn-marca" onclick="mobNav('marca')"><div class="mn-ic"><svg width="18" height="18" fill="rgba(197,240,0,1)"><rect x="1" y="8" width="16" height="10" rx="2"/><rect x="5" y="2" width="8" height="7" rx="1.5"/></svg></div><div class="mn-label">Marca</div></div>
+  <div class="mn-item" id="mn-influencer" onclick="mobNav('influencer')"><div class="mn-ic"><svg width="18" height="18" fill="rgba(255,255,255,.9)"><rect x="0" y="10" width="4" height="8" rx="1.5"/><rect x="5" y="7" width="4" height="11" rx="1.5"/><rect x="10" y="4" width="4" height="14" rx="1.5"/></svg></div><div class="mn-label">Influencer</div></div>
+  <div class="mn-item" id="mn-ranking" onclick="mobNav('ranking')"><div class="mn-ic"><svg width="18" height="18" fill="rgba(255,255,255,.4)"><path d="M9 1.5l1.8 3.6 4 .6-2.9 2.8.7 4L9 10.4l-3.6 2.1.7-4L3.2 5.7l4-.6z"/></svg></div><div class="mn-label">Ranking</div></div>
+  <div class="mn-item" id="mn-comentarios" onclick="mobNav('comentarios')"><div class="mn-ic"><svg width="18" height="18" fill="none" stroke="rgba(255,255,255,.9)" stroke-width="1.8"><path d="M2 2h14v10H10L7.5 16V12H2z"/></svg></div><div class="mn-label">Coment.</div></div>
+</div></nav>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+<script>
+/* ═══ HELPERS ═══ */
+const fmt=n=>n==null||isNaN(n)?'—':new Intl.NumberFormat('es-PE').format(Math.round(n));
+const fmtM=n=>n==null||isNaN(n)?'—':(n>=1e6?(n/1e6).toFixed(2)+'M':n>=1e3?(n/1e3).toFixed(1)+'K':Math.round(n)+'');
+const NULL_TAG='<span class="td-null">Sin data</span>';
+const CR={};
+const killAll=()=>{Object.keys(CR).forEach(k=>{try{CR[k].destroy()}catch(e){}delete CR[k];});};
+function animCount(el,target,dur){
+  if(!el||target==null)return;dur=dur||900;const s=Date.now();
+  (function t(){const p=Math.min((Date.now()-s)/dur,1);el.textContent=fmt(Math.round(target*(1-Math.pow(1-p,3))));if(p<1)requestAnimationFrame(t);})();
+}
+const platBadge=p=>{const m={'TikTok':['pb-tk','TK'],'Instagram':['pb-ig','IG'],'YouTube':['pb-yt','YT'],'Facebook':['pb-fb','FB']};const[c,t]=m[p]||['pb-tk','—'];return`<span class="plat-badge ${c}">${t} ${p}</span>`;};
+const platSvgIcon=p=>{
+  if(p==='TikTok')return`<svg viewBox="0 0 24 24"><path d="M19.6 6.7a4.8 4.8 0 01-3.8-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 00-.79-.05 6.34 6.34 0 100 12.68 6.34 6.34 0 006.34-6.34V8.63a8.23 8.23 0 004.8 1.53V6.73a4.82 4.82 0 01-1.04-.04z"/></svg>`;
+  if(p==='Instagram')return`<svg viewBox="0 0 24 24"><path d="M12 2.16c3.2 0 3.58.01 4.85.07 3.25.15 4.77 1.7 4.92 4.92.06 1.27.07 1.65.07 4.85 0 3.21-.01 3.58-.07 4.85-.15 3.23-1.67 4.77-4.92 4.92-1.27.06-1.64.07-4.85.07-3.2 0-3.58-.01-4.85-.07-3.26-.15-4.77-1.7-4.92-4.92-.06-1.27-.07-1.64-.07-4.85 0-3.2.01-3.58.07-4.85.15-3.23 1.66-4.77 4.92-4.92 1.27-.06 1.65-.07 4.85-.07zM12 0C8.74 0 8.33.01 7.05.07 2.7.27.27 2.69.07 7.05.01 8.33 0 8.74 0 12c0 3.26.01 3.67.07 4.95.2 4.36 2.62 6.78 6.98 6.98C8.33 23.99 8.74 24 12 24c3.26 0 3.67-.01 4.95-.07 4.35-.2 6.78-2.62 6.98-6.98.06-1.28.07-1.69.07-4.95 0-3.26-.01-3.67-.07-4.95-.2-4.35-2.62-6.78-6.98-6.98C15.67.01 15.26 0 12 0zm0 5.84A6.16 6.16 0 1018.16 12 6.16 6.16 0 0012 5.84zm0 10.16A4 4 0 1116 12 4 4 0 0112 16zm6.4-11.85a1.44 1.44 0 100 2.88 1.44 1.44 0 000-2.88z"/></svg>`;
+  return`<svg viewBox="0 0 24 24"><path d="M22.68 0H1.32C.59 0 0 .59 0 1.32v21.36C0 23.41.59 24 1.32 24h11.5v-9.29H9.69V11h3.12V8.41c0-3.1 1.9-4.79 4.66-4.79 1.32 0 2.46.1 2.79.14v3.24h-1.91c-1.5 0-1.79.71-1.79 1.76V11h3.58l-.47 3.71h-3.11V24h6.1c.73 0 1.32-.59 1.32-1.32V1.32C24 .59 23.41 0 22.68 0z"/></svg>`;
+};
+
+/* ═══ DATABASE — 100% from Excel BDFinal v4 + PPTX Reporte RRSS Abril 2026 ═══ */
+/* 41 content pieces from FACT_RENDIMIENTO_CONTENIDO (all @indrive.pe) */
+const CONTENIDOS=[
+{pl:'Instagram',fm:'Reel',v:330000,lk:19300,cm:1042,sh:1617,gd:0,it:21959,er:6.65,url:'https://www.instagram.com/p/DXwiXRCtuJb/'},
+{pl:'Instagram',fm:'Reel',v:19600,lk:823,cm:50,sh:105,gd:0,it:978,er:4.99,url:'https://www.instagram.com/p/DXdJni6jGmG/'},
+{pl:'TikTok',fm:'TikTok Video',v:9548,lk:79,cm:12,sh:0,gd:0,it:91,er:0.95,url:'https://www.tiktok.com/@indrive.pe/video/7624233432813407506'},
+{pl:'Instagram',fm:'Reel',v:7659,lk:168,cm:57,sh:11,gd:0,it:236,er:3.08,url:'https://www.instagram.com/p/DXuypKfDxku/'},
+{pl:'Instagram',fm:'Reel',v:7080,lk:30,cm:17,sh:3,gd:0,it:50,er:0.71,url:'https://www.instagram.com/p/DWpFWXLhBhV/'},
+{pl:'Instagram',fm:'Reel',v:6971,lk:27,cm:14,sh:1,gd:0,it:42,er:0.60,url:'https://www.instagram.com/p/DWo6_l7kQYt/'},
+{pl:'TikTok',fm:'TikTok Video',v:6467,lk:93,cm:12,sh:0,gd:0,it:105,er:1.62,url:'https://www.tiktok.com/@indrive.pe/video/7624230486591720722'},
+{pl:'TikTok',fm:'TikTok Video',v:5698,lk:170,cm:111,sh:0,gd:0,it:281,er:4.93,url:'https://www.tiktok.com/@indrive.pe/video/7630999040418778386'},
+{pl:'Facebook',fm:'Reel',v:5200,lk:14,cm:16,sh:3,gd:0,it:33,er:0.63,url:'https://www.facebook.com/reel/2241740056566403/'},
+{pl:'Instagram',fm:'Reel',v:5200,lk:38,cm:45,sh:1,gd:0,it:84,er:1.62,url:'https://www.instagram.com/p/DW7gn3EkYt5/'},
+{pl:'Facebook',fm:'Reel',v:4700,lk:17,cm:13,sh:2,gd:0,it:32,er:0.68,url:'https://www.facebook.com/reel/1171131531672792/'},
+{pl:'Instagram',fm:'Reel',v:4235,lk:39,cm:15,sh:0,gd:0,it:54,er:1.28,url:'https://www.instagram.com/p/DXhhw0-EWrl/'},
+{pl:'Instagram',fm:'Reel',v:3898,lk:34,cm:9,sh:0,gd:0,it:43,er:1.10,url:'https://www.instagram.com/p/DXQEdy8EYWq/'},
+{pl:'Facebook',fm:'Reel',v:3800,lk:32,cm:72,sh:2,gd:0,it:106,er:2.79,url:'https://www.facebook.com/reel/1883488796373062/'},
+{pl:'Facebook',fm:'Reel',v:3200,lk:20,cm:44,sh:1,gd:0,it:65,er:2.03,url:'https://www.facebook.com/reel/1652745609094826/'},
+{pl:'Facebook',fm:'Reel',v:3100,lk:24,cm:15,sh:4,gd:0,it:43,er:1.39,url:'https://www.facebook.com/reel/1589643892109721/'},
+{pl:'Facebook',fm:'Reel',v:3000,lk:34,cm:47,sh:1,gd:0,it:82,er:2.73,url:'https://www.facebook.com/reel/966127759336013/'},
+{pl:'TikTok',fm:'TikTok Video',v:2905,lk:68,cm:17,sh:0,gd:0,it:85,er:2.93,url:'https://www.tiktok.com/@indrive.pe/video/7626173375320313106'},
+{pl:'Facebook',fm:'Reel',v:2700,lk:21,cm:8,sh:1,gd:0,it:30,er:1.11,url:'https://www.facebook.com/reel/1525981392872858/'},
+{pl:'TikTok',fm:'TikTok Video',v:2623,lk:60,cm:21,sh:0,gd:0,it:81,er:3.09,url:'https://www.tiktok.com/@indrive.pe/video/7629918264495262984'},
+{pl:'TikTok',fm:'TikTok Video',v:2298,lk:42,cm:32,sh:0,gd:0,it:74,er:3.22,url:'https://www.tiktok.com/@indrive.pe/video/7629052377835867399'},
+{pl:'TikTok',fm:'TikTok Video',v:2213,lk:38,cm:15,sh:0,gd:0,it:53,er:2.39,url:'https://www.tiktok.com/@indrive.pe/video/7625823296109530376'},
+{pl:'TikTok',fm:'TikTok Video',v:2174,lk:37,cm:15,sh:0,gd:0,it:52,er:2.39,url:'https://www.tiktok.com/@indrive.pe/video/7632389853564488967'},
+{pl:'TikTok',fm:'TikTok Video',v:2089,lk:19,cm:13,sh:0,gd:0,it:32,er:1.53,url:'https://www.tiktok.com/@indrive.pe/video/7628282563676605714'},
+{pl:'TikTok',fm:'TikTok Video',v:1928,lk:57,cm:16,sh:0,gd:0,it:73,er:3.79,url:'https://www.tiktok.com/@indrive.pe/video/7631731282346626311'},
+{pl:'TikTok',fm:'TikTok Video',v:1741,lk:36,cm:4,sh:0,gd:0,it:40,er:2.30,url:'https://www.tiktok.com/@indrive.pe/video/7629873869968493832'},
+{pl:'TikTok',fm:'TikTok Video',v:1663,lk:24,cm:1,sh:0,gd:0,it:25,er:1.50,url:'https://www.tiktok.com/@indrive.pe/video/7634376962772847890'},
+{pl:'TikTok',fm:'TikTok Video',v:1454,lk:37,cm:8,sh:0,gd:0,it:45,er:3.09,url:'https://www.tiktok.com/@indrive.pe/video/7634353780808633618'},
+{pl:'TikTok',fm:'TikTok Video',v:1179,lk:52,cm:7,sh:0,gd:0,it:59,er:5.00,url:'https://www.tiktok.com/@indrive.pe/video/7633948975590149384'},
+{pl:'TikTok',fm:'TikTok Video',v:1104,lk:30,cm:6,sh:0,gd:0,it:36,er:3.26,url:'http://tiktok.com/@indrive.pe/video/7634714734104825095'},
+{pl:'TikTok',fm:'TikTok Video',v:940,lk:32,cm:10,sh:0,gd:0,it:42,er:4.47,url:'https://www.tiktok.com/@indrive.pe/video/7634307633222126855'},
+{pl:'Facebook',fm:'Carrusel',v:0,lk:25,cm:45,sh:0,gd:0,it:70,er:null,url:'https://www.facebook.com/photo?fbid=1457625026374973'},
+{pl:'Facebook',fm:'Carrusel',v:0,lk:8,cm:10,sh:1,gd:0,it:19,er:null,url:'https://www.facebook.com/photo?fbid=1469850348485774'},
+{pl:'Facebook',fm:'Carrusel',v:0,lk:5,cm:0,sh:1,gd:0,it:6,er:null,url:'https://www.facebook.com/photo?fbid=1474436158027193'},
+{pl:'Facebook',fm:'Reel',v:0,lk:11,cm:32,sh:1,gd:0,it:44,er:null,url:'https://www.facebook.com/100063824682833/videos/'},
+{pl:'Instagram',fm:'Carrusel',v:0,lk:25,cm:1,sh:0,gd:0,it:26,er:null,url:'https://www.instagram.com/p/DWrgOiekWHm/'},
+{pl:'Instagram',fm:'Carrusel',v:0,lk:39,cm:39,sh:2,gd:0,it:80,er:null,url:'https://www.instagram.com/p/DW1MCXpkeSm/'},
+{pl:'Instagram',fm:'Carrusel',v:0,lk:69,cm:53,sh:1,gd:0,it:123,er:null,url:'https://www.instagram.com/p/DW48ciYkS8T/'},
+{pl:'Instagram',fm:'Carrusel',v:0,lk:24,cm:14,sh:0,gd:0,it:38,er:null,url:'https://www.instagram.com/p/DXe74yckeRr/'},
+{pl:'Instagram',fm:'Carrusel',v:0,lk:17,cm:7,sh:1,gd:0,it:25,er:null,url:'https://www.instagram.com/p/DXsJ9Pfj9ec/'},
+{pl:'Instagram',fm:'Carrusel',v:0,lk:43,cm:2,sh:1,gd:0,it:46,er:null,url:'https://www.instagram.com/p/DXvTKG2jQiB/'},
+];
+
+/* Platform cards — from PPTX Reporte RRSS Abril 2026 (Slides 2,5,16,25) */
+const PLATS = [
+  {name:'Instagram',col:'#DD2A7B',bg:'#FDF0F5',cls:'ig',fol:38800,posts:14,views:384643,inter:23784,likes:20676,com:1315,shr:1738,grd:null,erv:6.10,netSent:66.0,
+   sent:{pos:1046,neg:145,neu:174,total:1365,posPct:76.6,negPct:10.6,neuPct:12.8},
+   lectura:'Canal más eficiente del mes. Partners como lasgaviotas y lugarestop.pe explican el salto de alcance, interacción y sentiment positivo.'},
+  {name:'TikTok',col:'#1A1A1A',bg:'#F4F4F0',cls:'tk',fol:83660,posts:16,views:46952,inter:1351,likes:890,com:296,shr:110,grd:55,erv:2.88,netSent:-19.8,
+   sent:{pos:86,neg:145,neu:65,total:296,posPct:29.1,negPct:48.9,neuPct:22.0},
+   demo:{lima:69,male:48,female:52,ages:[{l:'18-24',v:14.1},{l:'25-34',v:29.3},{l:'35-44',v:30.4},{l:'45+',v:17.2}],avgWatch:'4.32s',durAvg:'9s',crecMoM:14.09,incMes:10334},
+   lectura:'Mayor crecimiento MoM (+14.09%). Debe reforzar gestión de comentarios y escalar contenidos ligados a tendencias/coyunturas.'},
+  {name:'Facebook',col:'#1877F2',bg:'#EBF4FE',cls:'fb',fol:1581000,posts:11,views:25700,inter:530,likes:211,com:302,shr:17,grd:0,erv:1.52,netSent:-64.2,
+   sent:{pos:20,neg:214,neu:68,total:302,posPct:6.6,negPct:70.9,neuPct:22.5},
+   lectura:'Conserva la comunidad más grande, pero concentra el mayor reto de reputación por tarifas, soporte, bloqueos y seguridad.'},
+];
+
+/* Consolidated dashboard — from PPTX Slide 3 */
+const CONSOLIDADO = {
+  comunidad:1700000,crecimiento:1.86,alcance:40200,views:457300,inter:25700,erv:3.50,
+  netSent:33.0,pub:41,comAnalizados:1963,
+  sentPos:58.7,sentNeg:25.7,sentNeu:15.6,
+  viewsPct:{ig:84.1,tt:10.3,fb:5.6}
+};
+
+/* Audiencia @indrive.pe TikTok — FACT_AUDIENCIA_RESUMEN (snapshot 2026-04-30, base 83660) */
+const AUDIENCIA = {
+  plat:'TikTok',base:83660,fecha:'2026-04-30',qa:90.58,
+  gen:[{l:'Mujeres',v:52},{l:'Hombres',v:48}],
+  edad:[{l:'18-24',v:14.1},{l:'25-34',v:29.3},{l:'35-44',v:30.4},{l:'45-54',v:12.8},{l:'55+',v:3.4}],
+  pais:{l:'Perú',v:69.3},ciudad:{l:'Lima',v:74.7},horaPico:'21:00-22:00'
+};
+
+/* Histórico @indrive.pe — FACT_HISTORICO_CREADOR */
+const HISTORICO = [
+  {plat:'TikTok',fol:84400,following:42,posts:16,avgV:3439,avgInt:18708,er:7.98,qa:90.58,paisPct:82.09},
+  {plat:'Instagram',fol:38800,posts:14,avgV:3671,avgInt:48,er:null,qa:null,paisPct:null},
+  {plat:'Facebook',fol:1581000,posts:11,avgV:48080,avgInt:2041,er:null,qa:null,paisPct:null},
+];
+
+/* Top 10 Buzz Commenting — PPTX Slides 33-37 */
+const BUZZ = {
+  stats:{totalPosted:274,momPct:119.2,likes:76311,momLikes:-45.2,avgViews:6406772,momViews:148.3,nss:38.72,momNss:61.6},
+  top10:[
+    {user:'@karencitajayolagos',alc:1825200,likes:24200},
+    {user:'@jmartineze_',alc:475200,likes:6139},
+    {user:'@hardytineo',alc:410400,likes:11200},
+    {user:'@zullyy_cs',alc:183600,likes:5517},
+    {user:'@victorlyperu',alc:766800,likes:1996},
+    {user:'@mocatiktokk',alc:140400,likes:3708},
+    {user:'@zaca.tv',alc:33539,likes:1353},
+    {user:'@mayormentepiero',alc:108000,likes:1063},
+    {user:'@farandula.lorcha',alc:91800,likes:1105},
+    {user:'@zaca.tv (2)',alc:75600,likes:1030},
+  ]
+};
+
+/* Sentiment example comments — PPTX (Slides 12-14, 21-23, 30-32) */
+const SENT_EXAMPLES = {
+  TikTok:{
+    pos:[{u:'Marysita piscis',t:'que chevere 🥰🥰🥰 ojalá algún día sí gane el sorteo, soy de Cusco'},{u:'MayraV',t:'Con fe, ojalá pueda formar parte de las egresadas del curso 🥺✨'},{u:'paper Studio Peru',t:'ya llené el formulario 🙂🙂🙂 espero que me llamen'}],
+    neg:[{u:'Reynaldo',t:'REALMENTE QUE DENIGRANTE ES VER ESTOS PRECIO RIDÍCULOS...'},{u:'Apolonia',t:'Sus motorizados nos han robado mercadería y no brindan ninguna solución.'},{u:'Molotov',t:'Llevo más de una semana esperando... soporte está lleno de bots'}],
+    neu:[{u:'CASSIE🍒',t:'cómo me inscribo?'},{u:'Miguel Angel Aguirre',t:'cuándo regresa los préstamos de indrive Perú'},{u:'TE BUSCO TU PROPIEDAD',t:'cómo puedo formar parte de su equipo.'}]
+  },
+  Instagram:{
+    pos:[{u:'raulromerovalle',t:'Ufffff los amo❤️😍 voy a pedir mi inDrive Right now'},{u:'cynthialandivar',t:'Que buena publicidad 😍💚👏'},{u:'kagn17',t:'Quiero ver este live action de Shrek! Con publicidad y todo me encantó!'}],
+    neg:[{u:'mconedetalles',t:'Me acaban de cerrar un ticket de soporte sin solución... perfil falso... me robó un pedido...'},{u:'eduardochuquin',t:'Por culpa de indrive por sus precios bajos voy a quebrar...'},{u:'fredsp_25',t:'Me bloquean la cuenta de indriver... pido a soporte que me den los motivos y no me dan razón.'}],
+    neu:[{u:'tacojhon',t:'Pro q número de WhatsApp me puedo comunicar'},{u:'joseline.mileydi',t:'Afiliaciones de indrive al interno'},{u:'abelardo.aq',t:'Cuál es el Instagram de doña justa?'}]
+  },
+  Facebook:{
+    pos:[{u:'Joseph Seminario',t:'Excelente!! Y seguro lo recomiendo'},{u:'Guille Guty Sarin',t:'Excelente yo soy full trabajo con ustedes'}],
+    neg:[{u:'OR Abi',t:'estoy que mando correo desde temprano y demoran en contestar, mi celular se quedó en uno de sus taxis...'},{u:'Rosy Soledad Mar',t:'inDrive porque son injustos con sus conductores, realizan bloqueos injustos...'},{u:'Marlon Mendoza',t:'Las tarifas de indrive son un asco'}],
+    neu:[{u:'Milagros Castillo',t:'TIENE CARRO PARA 8 PERSONAS?'},{u:'Jhojan Andree',t:'Puedo trabajar solo entregando pedidos?'},{u:'Zulemita Zuly',t:'Información porfavor'}]
+  }
+};
+
+/* ═══ STATE + FILTERS ═══ */
+let S={view:'marca',fPlat:'all',fFmt:'all',fVt:'all'};
+
+function getFiltered(){
+  return CONTENIDOS.filter(c=>{
+    if(S.fPlat!=='all'&&c.pl!==S.fPlat)return false;
+    if(S.fFmt!=='all'&&c.fm!==S.fFmt)return false;
+    return true;
+  });
+}
+function aggFiltered(arr){
+  const r={cnt:arr.length,views:0,likes:0,com:0,shr:0,grd:0,inter:0};
+  arr.forEach(c=>{r.views+=c.v;r.likes+=c.lk;r.com+=c.cm;r.shr+=c.sh;r.grd+=c.gd;r.inter+=c.it;});
+  return r;
+}
+function applyFilters(){
+  S.fPlat=document.getElementById('sf-plat').value;
+  S.fFmt=document.getElementById('sf-fmt').value;
+  S.fVt=document.getElementById('sf-vt').value;
+  render();
+}
+
+/* ═══ FILTER BAR (inline) ═══ */
+function filterBar(){
+  return`<div class="filter-bar fu">
+    <span class="fb-label"><svg width="11" height="11" viewBox="0 0 11 11" fill="currentColor"><path d="M1 1.5h9l-3.4 4.5v3.5H4.4V6L1 1.5z"/></svg> Filtros activos</span>
+    <div class="fb-sep"></div>
+    <div class="fsel-wrap"><span class="fsel-lbl">Plataforma</span><select class="fsel" id="fb-plat" onchange="S.fPlat=this.value;document.getElementById('sf-plat').value=this.value;render();">
+      <option value="all"${S.fPlat==='all'?' selected':''}>Todas</option>
+      <option value="TikTok"${S.fPlat==='TikTok'?' selected':''}>TikTok</option>
+      <option value="Instagram"${S.fPlat==='Instagram'?' selected':''}>Instagram</option>
+      <option value="Facebook"${S.fPlat==='Facebook'?' selected':''}>Facebook</option>
+    </select></div>
+    <div class="fsel-wrap"><span class="fsel-lbl">Formato</span><select class="fsel" id="fb-fmt" onchange="S.fFmt=this.value;document.getElementById('sf-fmt').value=this.value;render();">
+      <option value="all"${S.fFmt==='all'?' selected':''}>Todos</option>
+      <option value="TikTok Video"${S.fFmt==='TikTok Video'?' selected':''}>TikTok Video</option>
+      <option value="Reel"${S.fFmt==='Reel'?' selected':''}>Reel</option>
+      <option value="Carrusel"${S.fFmt==='Carrusel'?' selected':''}>Carrusel</option>
+    </select></div>
+    <span class="fb-label" style="margin-left:auto;font-size:10px;color:var(--lime-d);font-weight:800;">${getFiltered().length} / ${CONTENIDOS.length} contenidos</span>
+  </div>`;
+}
+
+/* ═══ VIEW: MARCA ═══ */
+function renderMarca(){
+  const filtered=getFiltered();const A=aggFiltered(filtered);
+  const hasPlat = S.fPlat!=='all';
+  const hasFmt = S.fFmt!=='all';
+  const selP = hasPlat ? PLATS.find(p=>p.name===S.fPlat) : null;
+
+  /* ── Regla estricta: datos de plataforma (ERV, Sentiment, Comunidad) solo existen a nivel plataforma.
+     Si filtras solo por formato sin plataforma → esos campos = Sin data.
+     Si filtras por plataforma → usa esa plataforma.
+     Si no hay filtro → usa consolidado. ── */
+  const platLevel = hasPlat ? 'single' : (!hasFmt ? 'consolidated' : 'none');
+  const dCom = platLevel==='single' ? fmtM(selP.fol) : platLevel==='consolidated' ? fmtM(CONSOLIDADO.comunidad) : '<span class="td-null">Sin data a nivel formato</span>';
+  const dErv = platLevel==='single' ? selP.erv.toFixed(2)+'%' : platLevel==='consolidated' ? CONSOLIDADO.erv.toFixed(2)+'%' : '<span class="td-null">Sin data a nivel formato</span>';
+  const dNetVal = platLevel==='single' ? selP.netSent : platLevel==='consolidated' ? CONSOLIDADO.netSent : null;
+  const dNet = dNetVal!==null ? `<span style="color:${dNetVal>=0?'#18B89A':'#E85A44'};">${dNetVal>=0?'+':''}${dNetVal.toFixed(1)}%</span>` : '<span class="td-null">Sin data a nivel formato</span>';
+  const dCrecLabel = platLevel==='consolidated' ? `<div style="font-size:9px;color:var(--teal);margin-top:3px;">+${CONSOLIDADO.crecimiento}% MoM</div>` : '';
+
+  /* Sentiment: solo disponible por plataforma */
+  const sentAvail = platLevel!=='none';
+  const sPl = hasPlat ? [selP] : PLATS;
+  let sTotalCom=0,sPosPct='—',sNegPct='—',sNeuPct='—';
+  if(sentAvail){
+    sTotalCom = sPl.reduce((a,b)=>a+b.sent.total,0);
+    const sPos = sPl.reduce((a,b)=>a+b.sent.pos,0);
+    const sNeg = sPl.reduce((a,b)=>a+b.sent.neg,0);
+    const sNeu = sPl.reduce((a,b)=>a+b.sent.neu,0);
+    sPosPct = sTotalCom ? (sPos/sTotalCom*100).toFixed(1) : '—';
+    sNegPct = sTotalCom ? (sNeg/sTotalCom*100).toFixed(1) : '—';
+    sNeuPct = sTotalCom ? (sNeu/sTotalCom*100).toFixed(1) : '—';
+  }
+
+  /* Filter context label */
+  const ctx = hasPlat && hasFmt ? selP.name+' · '+S.fFmt : hasPlat ? selP.name : hasFmt ? S.fFmt : '';
+
+  let h=filterBar();
+
+  /* ── Overview KPIs ── */
+  h+=`<div class="sec-hdr sec-overview fu fu1"><span class="sec-hdr-ic"><svg width="16" height="16" fill="currentColor"><rect x="1" y="9" width="3" height="6" rx=".5"/><rect x="5.5" y="5" width="3" height="10" rx=".5"/><rect x="10" y="1.5" width="3" height="13.5" rx=".5"/></svg></span>Dashboard Consolidado RRSS · Abril 2026${ctx?' · '+ctx:''}</div>
+  <div class="g-grid fu fu1" style="grid-template-columns:repeat(6,1fr);">
+    <div class="g-kpi"><div class="g-kpi-lbl">COMUNIDAD</div><div class="g-kpi-val">${dCom}</div>${dCrecLabel}</div>
+    <div class="g-kpi"><div class="g-kpi-lbl">VIEWS</div><div class="g-kpi-val" id="gv-views">0</div></div>
+    <div class="g-kpi"><div class="g-kpi-lbl">INTERACCIONES</div><div class="g-kpi-val hl-lime" id="gv-int">0</div></div>
+    <div class="g-kpi"><div class="g-kpi-lbl">PUBLICACIONES</div><div class="g-kpi-val">${A.cnt}</div></div>
+    <div class="g-kpi"><div class="g-kpi-lbl">ERV MENSUAL</div><div class="g-kpi-val hl-lime">${dErv}</div></div>
+    <div class="g-kpi"><div class="g-kpi-lbl">NET SENTIMENT</div><div class="g-kpi-val">${dNet}</div></div>
+  </div>`;
+
+  /* ── Platform cards: solo si no hay filtro de plataforma ── */
+  if(!hasPlat && !hasFmt){
+    h+=`<div class="sec-hdr sec-platform fu fu2"><span class="sec-hdr-ic"><svg width="16" height="16" fill="currentColor"><rect x="1" y="1" width="6" height="6" rx="1"/><rect x="9" y="1" width="6" height="6" rx="1"/><rect x="1" y="9" width="6" height="6" rx="1"/></svg></span>Overview por Red · Abril 2026</div>
+    <div class="plat-cards fu fu2">
+    ${PLATS.map(p=>`<div class="plat-pcard ${p.cls}">
+      <div class="ppc-head"><div class="ppc-ic ${p.cls}">${platSvgIcon(p.name)}</div><div><div class="ppc-name">${p.name}</div><div class="ppc-fol">${fmtM(p.fol)} seguidores</div></div></div>
+      <div class="ppc-grid">
+        <div><div class="ppc-st-lbl">Posts</div><div class="ppc-st-val">${p.posts}</div></div>
+        <div><div class="ppc-st-lbl">Views</div><div class="ppc-st-val">${fmtM(p.views)}</div></div>
+        <div><div class="ppc-st-lbl">Interacciones</div><div class="ppc-st-val">${fmtM(p.inter)}</div></div>
+        <div><div class="ppc-st-lbl">ERV Mensual</div><div class="ppc-st-val" style="color:${p.erv>=5?'var(--teal)':p.erv>=2?'var(--amber)':'var(--coral)'};">${p.erv.toFixed(2)}%</div></div>
+        <div><div class="ppc-st-lbl">Net Sentiment</div><div class="ppc-st-val" style="color:${p.netSent>=0?'#18B89A':'#E85A44'};">${p.netSent>=0?'+':''}${p.netSent.toFixed(1)}%</div></div>
+        <div><div class="ppc-st-lbl">Comentarios</div><div class="ppc-st-val">${fmt(p.sent.total)}</div></div>
+      </div>
+      <div style="font-size:10px;color:var(--muted);margin-top:10px;font-style:italic;line-height:1.5;">${p.lectura}</div>
+    </div>`).join('')}
+    </div>`;
+  } else if(hasPlat){
+    /* Single platform detail */
+    const p=selP;
+    h+=`<div class="sec-hdr sec-platform fu fu2"><span class="sec-hdr-ic"><svg width="16" height="16" fill="currentColor"><rect x="1" y="1" width="6" height="6" rx="1"/><rect x="9" y="1" width="6" height="6" rx="1"/><rect x="1" y="9" width="6" height="6" rx="1"/></svg></span>${p.name} · Detalle Abril 2026</div>
+    <div class="plat-cards fu fu2" style="grid-template-columns:1fr;">
+      <div class="plat-pcard ${p.cls}">
+        <div class="ppc-head"><div class="ppc-ic ${p.cls}">${platSvgIcon(p.name)}</div><div><div class="ppc-name">${p.name}</div><div class="ppc-fol">${fmtM(p.fol)} seguidores</div></div></div>
+        <div class="ppc-grid" style="grid-template-columns:repeat(6,1fr);">
+          <div><div class="ppc-st-lbl">Posts</div><div class="ppc-st-val">${p.posts}</div></div>
+          <div><div class="ppc-st-lbl">Views</div><div class="ppc-st-val">${fmtM(p.views)}</div></div>
+          <div><div class="ppc-st-lbl">Likes</div><div class="ppc-st-val">${fmtM(p.likes)}</div></div>
+          <div><div class="ppc-st-lbl">Comments</div><div class="ppc-st-val">${fmt(p.com)}</div></div>
+          <div><div class="ppc-st-lbl">Shares</div><div class="ppc-st-val">${fmt(p.shr)}</div></div>
+          <div><div class="ppc-st-lbl">ERV Mensual</div><div class="ppc-st-val" style="color:${p.erv>=5?'var(--teal)':p.erv>=2?'var(--amber)':'var(--coral)'};">${p.erv.toFixed(2)}%</div></div>
+        </div>
+        <div style="font-size:10px;color:var(--muted);margin-top:10px;font-style:italic;line-height:1.5;">${p.lectura}</div>
+      </div>
+    </div>`;
+  }
+  /* Si solo hay filtro de formato (no plataforma), no mostramos tarjetas de plataforma — no hay match */
+
+  /* ── Sentiment — SOLO si hay data disponible a ese nivel ── */
+  if(sentAvail){
+    h+=`<div class="sec-hdr sec-sentiment fu fu3"><span class="sec-hdr-ic"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6.5"/></svg></span>Sentiment${hasPlat?' · '+selP.name:' Consolidado'} — ${fmt(sTotalCom)} comentarios</div>
+    <div class="cols2 fu fu3">
+      <div class="ccard"><div class="cc-title">Distribución de Sentimiento${hasPlat?' — '+selP.name:' × Plataforma'}</div><div class="ccanv" style="height:200px;"><canvas id="chSent"></canvas></div></div>
+      <div class="ccard"><div class="cc-title">Sentimiento${hasPlat?' '+selP.name:' Global'} — ${fmt(sTotalCom)} comentarios</div>
+        <div style="display:flex;align-items:center;gap:14px;">
+          <div style="width:140px;height:140px;flex-shrink:0;"><canvas id="chSentPie"></canvas></div>
+          <div class="sent-list">
+            <div class="sent-row"><span class="sent-lbl">Positivos</span><span class="sent-val" style="color:#18B89A;">${sPosPct}%</span></div>
+            <div class="sent-row"><span class="sent-lbl">Negativos</span><span class="sent-val" style="color:#E85A44;">${sNegPct}%</span></div>
+            <div class="sent-row"><span class="sent-lbl">Neutrales</span><span class="sent-val" style="color:var(--muted);">${sNeuPct}%</span></div>
+            <div class="sent-row" style="margin-top:8px;padding-top:8px;border-top:1px solid var(--off);"><span class="sent-lbl">Net Sentiment</span><span class="sent-val" style="color:${dNetVal>=0?'#18B89A':'#E85A44'};font-size:18px;">${dNetVal>=0?'+':''}${dNetVal.toFixed(1)}%</span></div>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  } else {
+    h+=`<div class="sec-hdr sec-sentiment fu fu3"><span class="sec-hdr-ic"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6.5"/></svg></span>Sentiment</div>
+    <div class="empty-card fu fu3" style="padding:24px;"><b>Sin data de sentimiento a nivel formato</b>El sentimiento solo está disponible por plataforma (TikTok, Instagram, Facebook). Selecciona una plataforma en el filtro para ver su sentiment.</div>`;
+  }
+
+  /* ── Tabla TODOS los contenidos filtrados ── */
+  h+=`<div class="sec-hdr sec-links fu fu4"><span class="sec-hdr-ic"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6.5 3.5h-3a2.5 2.5 0 000 5h3m3 0h3a2.5 2.5 0 000-5h-3M5 6h6"/></svg></span>Todos los Contenidos · ${A.cnt} piezas${ctx?' · '+ctx:''}</div>`;
+  if(A.cnt===0){
+    h+=`<div class="empty-card fu fu4" style="padding:24px;"><b>Sin contenidos</b>No hay contenidos que coincidan con los filtros seleccionados.</div>`;
+  } else {
+    h+=`<div class="g-grid fu fu4" style="grid-template-columns:repeat(5,1fr);margin-bottom:8px;">
+      <div class="g-kpi"><div class="g-kpi-lbl">VIEWS</div><div class="g-kpi-val">${fmtM(A.views)}</div></div>
+      <div class="g-kpi"><div class="g-kpi-lbl">LIKES</div><div class="g-kpi-val">${fmtM(A.likes)}</div></div>
+      <div class="g-kpi"><div class="g-kpi-lbl">COMENTARIOS</div><div class="g-kpi-val">${fmtM(A.com)}</div></div>
+      <div class="g-kpi"><div class="g-kpi-lbl">COMPARTIDOS</div><div class="g-kpi-val">${fmtM(A.shr)}</div></div>
+      <div class="g-kpi"><div class="g-kpi-lbl">INTERACCIONES</div><div class="g-kpi-val hl-lime">${fmtM(A.inter)}</div></div>
+    </div>
+    <div class="tbl-wrap fu fu4">
+      <table class="dt"><thead><tr>
+        <th style="text-align:left;background:#E879A0;color:#fff;">#</th>
+        <th style="text-align:left;background:#E879A0;color:#fff;">Plat.</th>
+        <th style="text-align:left;background:#E879A0;color:#fff;">Formato</th>
+        <th style="text-align:left;background:#E879A0;color:#fff;">Enlace</th>
+        <th style="background:#E879A0;color:#fff;">Views</th>
+        <th style="background:#E879A0;color:#fff;">Likes</th>
+        <th style="background:#E879A0;color:#fff;">Coments</th>
+        <th style="background:#E879A0;color:#fff;">Interacc.</th>
+        <th style="background:#E879A0;color:#fff;">ER</th>
+      </tr></thead>
+      <tbody>${filtered.map((c,i)=>`<tr>
+        <td><b style="color:${i<3?'var(--lime-d)':'var(--muted)'};">${i+1}</b></td>
+        <td>${platBadge(c.pl)}</td><td>${c.fm}</td>
+        <td style="text-align:left;"><a href="${c.url}" target="_blank" style="color:#3A86E8;text-decoration:none;font-weight:600;font-size:10px;">${c.url.length>48?c.url.slice(0,48)+'…':c.url}</a></td>
+        <td>${fmt(c.v)}</td><td>${fmt(c.lk)}</td><td>${fmt(c.cm)}</td>
+        <td class="td-int">${fmt(c.it)}</td><td class="td-er">${c.er!=null?c.er+'%':NULL_TAG}</td>
+      </tr>`).join('')}</tbody></table>
+    </div>`;
+  }
+
+  document.getElementById('sa').innerHTML=h;
+  if(A.cnt>0){
+    setTimeout(()=>animCount(document.getElementById('gv-views'),A.views),60);
+    setTimeout(()=>animCount(document.getElementById('gv-int'),A.inter,750),60);
+  }
+  killAll();
+  if(sentAvail){
+    setTimeout(()=>{if(typeof Chart==='undefined'){setTimeout(arguments.callee,200);return;}
+      const sn=document.getElementById('chSent');
+      if(sn)CR.sn=new Chart(sn,{type:'bar',data:{labels:sPl.map(p=>p.name),datasets:[
+        {label:'Positivo',data:sPl.map(p=>p.sent.posPct),backgroundColor:'#18B89A',borderRadius:4,maxBarThickness:hasPlat?60:26},
+        {label:'Negativo',data:sPl.map(p=>p.sent.negPct),backgroundColor:'#E85A44',borderRadius:4,maxBarThickness:hasPlat?60:26},
+        {label:'Neutro',data:sPl.map(p=>p.sent.neuPct),backgroundColor:'#C4C4BC',borderRadius:4,maxBarThickness:hasPlat?60:26}
+      ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:'top',labels:{font:{family:"'Barlow',sans-serif",size:10}}},tooltip:{callbacks:{label:c=>c.dataset.label+': '+c.raw+'%'}}},scales:{x:{grid:{display:false},stacked:true},y:{stacked:true,ticks:{callback:v=>v+'%'}}}}});
+      const sp=document.getElementById('chSentPie');
+      if(sp)CR.sp=new Chart(sp,{type:'doughnut',data:{labels:['Pos','Neg','Neu'],datasets:[{data:[parseFloat(sPosPct)||0,parseFloat(sNegPct)||0,parseFloat(sNeuPct)||0],backgroundColor:['#18B89A','#E85A44','#C4C4BC'],borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},cutout:'62%'}});
+    },140);
+  }
+}
+
+/* ═══ VIEW: INFLUENCER ═══ */
+function renderInfluencer(){
+  const filtered=getFiltered();const A=aggFiltered(filtered);
+  const hasPlat=S.fPlat!=='all';
+  const hasFmt=S.fFmt!=='all';
+  const selP=hasPlat?PLATS.find(p=>p.name===S.fPlat):null;
+  const platLevel=hasPlat?'single':(!hasFmt?'consolidated':'none');
+
+  /* Dynamic KPIs for profile card */
+  const dCom=platLevel==='single'?fmtM(selP.fol):platLevel==='consolidated'?fmtM(CONSOLIDADO.comunidad):'<span class="td-null">Sin data</span>';
+  const dErv=platLevel==='single'?selP.erv.toFixed(2)+'%':platLevel==='consolidated'?CONSOLIDADO.erv.toFixed(2)+'%':'<span class="td-null">Sin data</span>';
+  const ctx=hasPlat&&hasFmt?selP.name+' · '+S.fFmt:hasPlat?selP.name:hasFmt?S.fFmt:'';
+
+  /* Audiencia only available for TikTok */
+  const showAud=!hasPlat||S.fPlat==='TikTok';
+
+  /* Plats to show in table */
+  const tblPlats=hasPlat?PLATS.filter(p=>p.name===S.fPlat):PLATS;
+
+  let h=filterBar();
+
+  /* ── Profile card ── */
+  h+=`<div class="prof-card fu fu1">
+    <div class="prof-av" style="background:var(--lime);color:var(--ink);">iD</div>
+    <div>
+      <div class="prof-name">InDrive</div>
+      <div class="prof-handle">@indrive.pe ${platBadge('TikTok')} ${platBadge('Instagram')} ${platBadge('Facebook')}</div>
+      <div class="prof-kpis" style="margin-top:10px;">
+        <div><div class="prof-kpi-lbl">Comunidad</div><div class="prof-kpi-val">${dCom}</div></div>
+        <div><div class="prof-kpi-lbl">Views${ctx?' · '+ctx:' Abril'}</div><div class="prof-kpi-val" style="color:var(--purple);" id="pv-views">0</div></div>
+        <div><div class="prof-kpi-lbl">Interacciones${ctx?' · '+ctx:''}</div><div class="prof-kpi-val" style="color:var(--blue);" id="pv-int">0</div></div>
+        <div><div class="prof-kpi-lbl">ERV Mensual</div><div class="prof-kpi-val hl-lime">${dErv}</div></div>
+      </div>
+    </div>
+  </div>`;
+
+  /* ── Audiencia: solo si TikTok o All ── */
+  if(showAud){
+    h+=`<div class="sec-hdr sec-sentiment fu fu2"><span class="sec-hdr-ic"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="5" r="2.8"/><path d="M2 14c0-3 2.7-5 6-5s6 2 6 5"/></svg></span>Audiencia TikTok · ${fmt(AUDIENCIA.base)} followers</div>
+    <div class="cols3 fu fu2">
+      <div class="ccard"><div class="cc-title">Género</div><div class="ccanv" style="height:160px;"><canvas id="chGen"></canvas></div>
+        <div class="legrow" style="justify-content:center;"><div class="leg"><div class="legsq" style="background:#E879A0;"></div>Mujeres ${AUDIENCIA.gen[0].v}%</div><div class="leg"><div class="legsq" style="background:#3A86E8;"></div>Hombres ${AUDIENCIA.gen[1].v}%</div></div>
+      </div>
+      <div class="ccard"><div class="cc-title">Grupos de Edad</div><div class="ccanv" style="height:180px;"><canvas id="chAge"></canvas></div></div>
+      <div class="ccard"><div class="cc-title">Ubicación</div>
+        <div style="padding:6px 0;">
+          <div style="margin-bottom:12px;"><div style="display:flex;justify-content:space-between;font-size:11px;font-weight:700;margin-bottom:4px;"><span>${AUDIENCIA.pais.l}</span><b>${AUDIENCIA.pais.v}%</b></div><div style="height:7px;background:var(--off);border-radius:3px;overflow:hidden;"><div style="height:100%;width:${AUDIENCIA.pais.v}%;background:var(--lime);border-radius:3px;"></div></div></div>
+          <div style="margin-bottom:12px;"><div style="display:flex;justify-content:space-between;font-size:11px;font-weight:700;margin-bottom:4px;"><span>${AUDIENCIA.ciudad.l}</span><b>${AUDIENCIA.ciudad.v}%</b></div><div style="height:7px;background:var(--off);border-radius:3px;overflow:hidden;"><div style="height:100%;width:${AUDIENCIA.ciudad.v}%;background:#3A86E8;border-radius:3px;"></div></div></div>
+          <div style="font-size:10px;color:var(--muted);font-weight:600;line-height:1.7;border-top:1px solid var(--off);padding-top:10px;">
+            <div>🕘 Hora pico: <b>${AUDIENCIA.horaPico}</b></div>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  } else {
+    h+=`<div class="sec-hdr sec-sentiment fu fu2"><span class="sec-hdr-ic"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="5" r="2.8"/></svg></span>Audiencia</div>
+    <div class="empty-card fu fu2" style="padding:24px;"><b>Sin data de audiencia para ${S.fPlat}</b>La audiencia demográfica solo está disponible para TikTok (FACT_AUDIENCIA_RESUMEN). Selecciona TikTok o "Todas" para verla.</div>`;
+  }
+
+  /* ── Performance × Plataforma — filtrada ── */
+  h+=`<div class="sec-hdr sec-detail fu fu3"><span class="sec-hdr-ic"><svg width="16" height="16" fill="currentColor"><rect x="1" y="2" width="14" height="12" rx="1" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M1 6h14" stroke="currentColor" stroke-width="1.3"/></svg></span>Performance × Plataforma${ctx?' · '+ctx:''}</div>
+  <div class="tbl-wrap fu fu3">
+    <table class="dt"><thead><tr>
+      <th style="text-align:left;background:#2D6AC4;color:#fff;">Plataforma</th><th style="background:#2D6AC4;color:#fff;">Seguidores</th><th style="background:#2D6AC4;color:#fff;">Posts</th><th style="background:#2D6AC4;color:#fff;">Views</th><th style="background:#2D6AC4;color:#fff;">Likes</th><th style="background:#2D6AC4;color:#fff;">Comments</th><th style="background:#2D6AC4;color:#fff;">Shares</th><th style="background:#2D6AC4;color:#fff;">Interacc.</th><th style="background:#2D6AC4;color:#fff;">ERV</th><th style="background:#2D6AC4;color:#fff;">Net Sent.</th>
+    </tr></thead>
+    <tbody>${tblPlats.map(p=>`<tr><td>${platBadge(p.name)}</td><td>${fmtM(p.fol)}</td><td>${p.posts}</td><td>${fmt(p.views)}</td><td>${fmt(p.likes)}</td><td>${fmt(p.com)}</td><td>${fmt(p.shr)}</td><td class="td-int">${fmt(p.inter)}</td><td class="td-er">${p.erv.toFixed(2)}%</td><td style="color:${p.netSent>=0?'#18B89A':'#E85A44'};font-weight:800;">${p.netSent>=0?'+':''}${p.netSent.toFixed(1)}%</td></tr>`).join('')}
+    ${tblPlats.length>1?`<tr><td>TOTAL</td><td>${fmtM(tblPlats.reduce((a,b)=>a+b.fol,0))}</td><td>${tblPlats.reduce((a,b)=>a+b.posts,0)}</td><td>${fmt(tblPlats.reduce((a,b)=>a+b.views,0))}</td><td>${fmt(tblPlats.reduce((a,b)=>a+b.likes,0))}</td><td>${fmt(tblPlats.reduce((a,b)=>a+b.com,0))}</td><td>${fmt(tblPlats.reduce((a,b)=>a+b.shr,0))}</td><td class="td-int">${fmt(tblPlats.reduce((a,b)=>a+b.inter,0))}</td><td class="td-er">${CONSOLIDADO.erv.toFixed(2)}%</td><td style="color:#18B89A;font-weight:800;">+${CONSOLIDADO.netSent.toFixed(1)}%</td></tr>`:''}
+    </tbody></table>
+  </div>`;
+
+  /* ── Contenidos filtrados ── */
+  if(A.cnt>0){
+    h+=`<div class="sec-hdr sec-links fu fu4"><span class="sec-hdr-ic"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6.5 3.5h-3a2.5 2.5 0 000 5h3m3 0h3a2.5 2.5 0 000-5h-3M5 6h6"/></svg></span>Contenidos · ${A.cnt} piezas${ctx?' · '+ctx:''}</div>
+    <div class="tbl-wrap fu fu4">
+      <table class="dt"><thead><tr>
+        <th style="text-align:left;background:#E879A0;color:#fff;">#</th>
+        <th style="text-align:left;background:#E879A0;color:#fff;">Plat.</th>
+        <th style="text-align:left;background:#E879A0;color:#fff;">Formato</th>
+        <th style="text-align:left;background:#E879A0;color:#fff;">Enlace</th>
+        <th style="background:#E879A0;color:#fff;">Views</th>
+        <th style="background:#E879A0;color:#fff;">Likes</th>
+        <th style="background:#E879A0;color:#fff;">Coments</th>
+        <th style="background:#E879A0;color:#fff;">Interacc.</th>
+        <th style="background:#E879A0;color:#fff;">ER</th>
+      </tr></thead>
+      <tbody>${filtered.map((c,i)=>`<tr>
+        <td><b style="color:${i<3?'var(--lime-d)':'var(--muted)'};">${i+1}</b></td>
+        <td>${platBadge(c.pl)}</td><td>${c.fm}</td>
+        <td style="text-align:left;"><a href="${c.url}" target="_blank" style="color:#3A86E8;text-decoration:none;font-weight:600;font-size:10px;">${c.url.length>48?c.url.slice(0,48)+'…':c.url}</a></td>
+        <td>${fmt(c.v)}</td><td>${fmt(c.lk)}</td><td>${fmt(c.cm)}</td>
+        <td class="td-int">${fmt(c.it)}</td><td class="td-er">${c.er!=null?c.er+'%':NULL_TAG}</td>
+      </tr>`).join('')}</tbody></table>
+    </div>`;
+  } else if(hasPlat||hasFmt){
+    h+=`<div class="sec-hdr sec-links fu fu4"><span class="sec-hdr-ic"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6.5 3.5h-3a2.5 2.5 0 000 5h3m3 0h3a2.5 2.5 0 000-5h-3M5 6h6"/></svg></span>Contenidos</div>
+    <div class="empty-card fu fu4" style="padding:24px;"><b>Sin contenidos</b>No hay contenidos que coincidan con los filtros seleccionados.</div>`;
+  }
+
+  document.getElementById('sa').innerHTML=h;
+  /* Animate profile KPIs */
+  setTimeout(()=>animCount(document.getElementById('pv-views'),A.views),60);
+  setTimeout(()=>animCount(document.getElementById('pv-int'),A.inter,750),60);
+
+  killAll();
+  if(showAud){
+    setTimeout(()=>{if(typeof Chart==='undefined'){setTimeout(arguments.callee,200);return;}
+      const g=document.getElementById('chGen');
+      if(g)CR.g=new Chart(g,{type:'doughnut',data:{labels:['Mujeres','Hombres'],datasets:[{data:[52,48],backgroundColor:['#E879A0','#3A86E8'],borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},cutout:'58%'}});
+      const a=document.getElementById('chAge');
+      if(a)CR.a=new Chart(a,{type:'bar',data:{labels:AUDIENCIA.edad.map(e=>e.l),datasets:[{data:AUDIENCIA.edad.map(e=>e.v),backgroundColor:['#C5F000','#9176D4','#3A86E8','#E85A44','#E8A020'],borderRadius:5,maxBarThickness:28}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.raw+'%'}}},scales:{x:{grid:{display:false}},y:{display:false}}}});
+    },140);
+  }
+}
+
+/* ═══ VIEW: RANKING (disabled) ═══ */
+function renderRanking(){
+  document.getElementById('sa').innerHTML=`<div style="display:flex;align-items:center;justify-content:center;min-height:60vh;"><div class="empty-card" style="max-width:500px;padding:40px;">
+    <b style="font-size:20px;">Ranking Deshabilitado</b>
+    <div style="margin-top:12px;line-height:1.6;">Esta sección será activada cuando se carguen datos de múltiples influencers en DIM_CREADOR y sus métricas de performance en FACT_RENDIMIENTO_CONTENIDO.<br><br>
+    Actualmente solo existe <b>@indrive.pe</b> (tipo: Marca) en la base de datos.</div>
+  </div></div>`;
+  killAll();
+}
+
+/* ═══ VIEW: COMENTARIOS (from PPTX) ═══ */
+function renderComentarios(){
+  const B=BUZZ;
+  let h=filterBar();
+  h+=`<div class="sec-hdr sec-overview fu fu1" style="margin-top:0;"><span class="sec-hdr-ic"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 2h12v9H8L5 14V11H2z"/></svg></span>Buzz Commenting · Abril 2026</div>
+  <div class="g-grid fu fu1" style="grid-template-columns:repeat(4,1fr);margin-bottom:14px;">
+    <div class="g-kpi"><div class="g-kpi-lbl">COMENTARIOS POSTEADOS</div><div class="g-kpi-val">${fmt(B.stats.totalPosted)}</div><div style="font-size:9px;color:var(--teal);margin-top:3px;">+${B.stats.momPct}% MoM</div></div>
+    <div class="g-kpi"><div class="g-kpi-lbl">LIKES</div><div class="g-kpi-val">${fmtM(B.stats.likes)}</div><div style="font-size:9px;color:var(--coral);margin-top:3px;">${B.stats.momLikes}% MoM</div></div>
+    <div class="g-kpi"><div class="g-kpi-lbl">PROM. VISTAS</div><div class="g-kpi-val">${fmtM(B.stats.avgViews)}</div><div style="font-size:9px;color:var(--teal);margin-top:3px;">+${B.stats.momViews}% MoM</div></div>
+    <div class="g-kpi"><div class="g-kpi-lbl">NET SENTIMENT</div><div class="g-kpi-val" style="color:#18B89A;">+${B.stats.nss.toFixed(2)}%</div><div style="font-size:9px;color:var(--teal);margin-top:3px;">+${B.stats.momNss}% MoM</div></div>
+  </div>`;
+
+  /* Top 10 */
+  h+=`<div class="sec-hdr sec-cumpl fu fu2"><span class="sec-hdr-ic"><svg width="16" height="16" fill="currentColor"><path d="M8 1l2 4 4 .5-3 3 .8 4L8 10.5 4.2 12.5 5 8.5 2 5.5 6 5z"/></svg></span>Top 10 Mejores Comentarios</div>
+  <div class="tbl-wrap fu fu2">
+    <table class="dt"><thead><tr>
+      <th style="text-align:left;background:#1A1A1A;color:var(--lime);">#</th>
+      <th style="text-align:left;background:#1A1A1A;color:var(--lime);">Usuario</th>
+      <th style="background:#1A1A1A;color:var(--lime);">Alcance</th>
+      <th style="background:#1A1A1A;color:var(--lime);">Likes</th>
+    </tr></thead>
+    <tbody>${B.top10.map((c,i)=>`<tr>
+      <td><b style="font-size:16px;color:${i<3?'var(--lime-d)':'var(--muted)'};">${i+1}</b></td>
+      <td style="font-weight:800;">${c.user}</td>
+      <td>${fmt(c.alc)}</td>
+      <td style="color:var(--coral);font-weight:800;">${fmt(c.likes)}</td>
+    </tr>`).join('')}</tbody></table>
+  </div>`;
+
+  /* Sentiment examples per platform */
+  ['TikTok','Instagram','Facebook'].forEach(pl=>{
+    const ex=SENT_EXAMPLES[pl];if(!ex)return;
+    const P=PLATS.find(p=>p.name===pl);
+    h+=`<div class="sec-hdr sec-sentiment fu fu3" style="margin-top:14px;"><span class="sec-hdr-ic"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6.5"/></svg></span>Sentiment ${pl} · ${P?fmt(P.sent.total)+' comentarios':''}</div>`;
+    if(P){
+      h+=`<div class="g-grid fu fu3" style="grid-template-columns:repeat(3,1fr);margin-bottom:8px;">
+        <div class="g-kpi"><div class="g-kpi-lbl">POSITIVO</div><div class="g-kpi-val" style="color:#18B89A;">${P.sent.posPct}%</div></div>
+        <div class="g-kpi"><div class="g-kpi-lbl">NEGATIVO</div><div class="g-kpi-val" style="color:#E85A44;">${P.sent.negPct}%</div></div>
+        <div class="g-kpi"><div class="g-kpi-lbl">NEUTRO</div><div class="g-kpi-val" style="color:var(--muted);">${P.sent.neuPct}%</div></div>
+      </div>`;
+    }
+    h+=`<div class="cols3 fu fu3">`;
+    [{label:'Positivo',color:'#18B89A',items:ex.pos},{label:'Negativo',color:'#E85A44',items:ex.neg},{label:'Neutro',color:'var(--muted)',items:ex.neu}].forEach(cat=>{
+      h+=`<div class="ccard" style="border-top:3px solid ${cat.color};"><div class="cc-title" style="color:${cat.color};">${cat.label}</div>`;
+      cat.items.forEach(c=>{
+        h+=`<div style="margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--off);"><div style="font-size:10px;font-weight:800;color:var(--ink);margin-bottom:3px;">${c.u}</div><div style="font-size:11px;color:var(--muted);line-height:1.4;font-style:italic;">"${c.t}"</div></div>`;
+      });
+      h+=`</div>`;
+    });
+    h+=`</div>`;
+  });
+
+  document.getElementById('sa').innerHTML=h;killAll();
+}
+
+/* ═══ ROUTING ═══ */
+const TITLES={marca:'MARCA inDrive',influencer:'INFLUENCER inDrive',ranking:'RANKING',comentarios:'TOP COMENTARIOS'};
+function render(){
+  document.getElementById('tbTitle').textContent=TITLES[S.view]||'MARCA inDrive';
+  if(S.view==='influencer')renderInfluencer();
+  else if(S.view==='ranking')renderRanking();
+  else if(S.view==='comentarios')renderComentarios();
+  else renderMarca();
+}
+function setView(v,el){
+  S.view=v;
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  if(el)el.classList.add('active');
+  document.querySelectorAll('.mn-item').forEach(n=>n.classList.remove('active'));
+  const m=document.getElementById('mn-'+v);if(m)m.classList.add('active');
+  const sa=document.getElementById('sa');if(sa)sa.scrollTop=0;
+  render();
+}
+function mobNav(v){
+  const map={marca:0,influencer:1,ranking:2,comentarios:3};
+  const items=document.querySelectorAll('.nav-item');
+  setView(v,items[map[v]]);
+}
+window.addEventListener('load',()=>render());
+</script>
+</body>
+</html>
