@@ -372,14 +372,17 @@ table.dt tbody tr:last-child td{font-weight:900;background:rgba(197,240,0,.08);}
       <option value="Reel">Reel</option>
       <option value="Carrusel">Carrusel</option>
     </select>
-    <select class="sid-select" id="sf-vt" onchange="applyFilters()">
-      <option value="all">Todas las verticales</option>
-      <option value="Marca">Marca</option>
-      <option value="Rides">Rides</option>
-      <option value="Viajeros">Viajeros</option>
-      <option value="Conductores">Conductores</option>
-      <option value="Seguridad">Seguridad</option>
-      <option value="Otro">Otro</option>
+    <select class="sid-select" id="sf-mes" onchange="applyFilters()">
+      <option value="all">Todos los meses</option>
+      <option value="4">Abril 2026</option>
+    </select>
+    <select class="sid-select" id="sf-wk" onchange="applyFilters()">
+      <option value="all">Todas las semanas</option>
+      <option value="1">Semana 1</option>
+      <option value="2">Semana 2</option>
+      <option value="3">Semana 3</option>
+      <option value="4">Semana 4</option>
+      <option value="5">Semana 5</option>
     </select>
   </div>
   <div class="sid-footer"><div class="sid-ft">© 2026 Stellium Global<br>Dashboard v7 · Abril 2026</div></div>
@@ -440,6 +443,11 @@ function animCount(el,target,dur){
   if(!el||target==null)return;dur=dur||900;const s=Date.now();
   (function t(){const p=Math.min((Date.now()-s)/dur,1);el.textContent=fmt(Math.round(target*(1-Math.pow(1-p,3))));if(p<1)requestAnimationFrame(t);})();
 }
+function weekFromDate(fd){
+  if(!fd||fd==='—')return 0;
+  const day=parseInt(fd.split('/')[0]);
+  if(day<=5)return 1;if(day<=12)return 2;if(day<=19)return 3;if(day<=26)return 4;return 5;
+}
 const platBadge=p=>{const m={'TikTok':['pb-tk','TK'],'Instagram':['pb-ig','IG'],'YouTube':['pb-yt','YT'],'Facebook':['pb-fb','FB']};const[c,t]=m[p]||['pb-tk','—'];return`<span class="plat-badge ${c}">${t} ${p}</span>`;};
 const platSvgIcon=p=>{
   if(p==='TikTok')return`<svg viewBox="0 0 24 24"><path d="M19.6 6.7a4.8 4.8 0 01-3.8-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 00-.79-.05 6.34 6.34 0 100 12.68 6.34 6.34 0 006.34-6.34V8.63a8.23 8.23 0 004.8 1.53V6.73a4.82 4.82 0 01-1.04-.04z"/></svg>`;
@@ -450,47 +458,47 @@ const platSvgIcon=p=>{
 /* ═══ DATABASE — 100% from Excel BDFinal v4 + PPTX Reporte RRSS Abril 2026 ═══ */
 /* 41 content pieces from FACT_RENDIMIENTO_CONTENIDO (all @indrive.pe) */
 const CONTENIDOS=[
-{pl:'Instagram',fm:'Reel',v:330000,lk:19300,cm:1042,sh:1617,gd:0,it:21959,er:6.65,url:'https://www.instagram.com/p/DXwiXRCtuJb/'},
-{pl:'Instagram',fm:'Reel',v:19600,lk:823,cm:50,sh:105,gd:0,it:978,er:4.99,url:'https://www.instagram.com/p/DXdJni6jGmG/'},
-{pl:'TikTok',fm:'TikTok Video',v:9548,lk:79,cm:12,sh:0,gd:0,it:91,er:0.95,url:'https://www.tiktok.com/@indrive.pe/video/7624233432813407506'},
-{pl:'Instagram',fm:'Reel',v:7659,lk:168,cm:57,sh:11,gd:0,it:236,er:3.08,url:'https://www.instagram.com/p/DXuypKfDxku/'},
-{pl:'Instagram',fm:'Reel',v:7080,lk:30,cm:17,sh:3,gd:0,it:50,er:0.71,url:'https://www.instagram.com/p/DWpFWXLhBhV/'},
-{pl:'Instagram',fm:'Reel',v:6971,lk:27,cm:14,sh:1,gd:0,it:42,er:0.60,url:'https://www.instagram.com/p/DWo6_l7kQYt/'},
-{pl:'TikTok',fm:'TikTok Video',v:6467,lk:93,cm:12,sh:0,gd:0,it:105,er:1.62,url:'https://www.tiktok.com/@indrive.pe/video/7624230486591720722'},
-{pl:'TikTok',fm:'TikTok Video',v:5698,lk:170,cm:111,sh:0,gd:0,it:281,er:4.93,url:'https://www.tiktok.com/@indrive.pe/video/7630999040418778386'},
-{pl:'Facebook',fm:'Reel',v:5200,lk:14,cm:16,sh:3,gd:0,it:33,er:0.63,url:'https://www.facebook.com/reel/2241740056566403/'},
-{pl:'Instagram',fm:'Reel',v:5200,lk:38,cm:45,sh:1,gd:0,it:84,er:1.62,url:'https://www.instagram.com/p/DW7gn3EkYt5/'},
-{pl:'Facebook',fm:'Reel',v:4700,lk:17,cm:13,sh:2,gd:0,it:32,er:0.68,url:'https://www.facebook.com/reel/1171131531672792/'},
-{pl:'Instagram',fm:'Reel',v:4235,lk:39,cm:15,sh:0,gd:0,it:54,er:1.28,url:'https://www.instagram.com/p/DXhhw0-EWrl/'},
-{pl:'Instagram',fm:'Reel',v:3898,lk:34,cm:9,sh:0,gd:0,it:43,er:1.10,url:'https://www.instagram.com/p/DXQEdy8EYWq/'},
-{pl:'Facebook',fm:'Reel',v:3800,lk:32,cm:72,sh:2,gd:0,it:106,er:2.79,url:'https://www.facebook.com/reel/1883488796373062/'},
-{pl:'Facebook',fm:'Reel',v:3200,lk:20,cm:44,sh:1,gd:0,it:65,er:2.03,url:'https://www.facebook.com/reel/1652745609094826/'},
-{pl:'Facebook',fm:'Reel',v:3100,lk:24,cm:15,sh:4,gd:0,it:43,er:1.39,url:'https://www.facebook.com/reel/1589643892109721/'},
-{pl:'Facebook',fm:'Reel',v:3000,lk:34,cm:47,sh:1,gd:0,it:82,er:2.73,url:'https://www.facebook.com/reel/966127759336013/'},
-{pl:'TikTok',fm:'TikTok Video',v:2905,lk:68,cm:17,sh:0,gd:0,it:85,er:2.93,url:'https://www.tiktok.com/@indrive.pe/video/7626173375320313106'},
-{pl:'Facebook',fm:'Reel',v:2700,lk:21,cm:8,sh:1,gd:0,it:30,er:1.11,url:'https://www.facebook.com/reel/1525981392872858/'},
-{pl:'TikTok',fm:'TikTok Video',v:2623,lk:60,cm:21,sh:0,gd:0,it:81,er:3.09,url:'https://www.tiktok.com/@indrive.pe/video/7629918264495262984'},
-{pl:'TikTok',fm:'TikTok Video',v:2298,lk:42,cm:32,sh:0,gd:0,it:74,er:3.22,url:'https://www.tiktok.com/@indrive.pe/video/7629052377835867399'},
-{pl:'TikTok',fm:'TikTok Video',v:2213,lk:38,cm:15,sh:0,gd:0,it:53,er:2.39,url:'https://www.tiktok.com/@indrive.pe/video/7625823296109530376'},
-{pl:'TikTok',fm:'TikTok Video',v:2174,lk:37,cm:15,sh:0,gd:0,it:52,er:2.39,url:'https://www.tiktok.com/@indrive.pe/video/7632389853564488967'},
-{pl:'TikTok',fm:'TikTok Video',v:2089,lk:19,cm:13,sh:0,gd:0,it:32,er:1.53,url:'https://www.tiktok.com/@indrive.pe/video/7628282563676605714'},
-{pl:'TikTok',fm:'TikTok Video',v:1928,lk:57,cm:16,sh:0,gd:0,it:73,er:3.79,url:'https://www.tiktok.com/@indrive.pe/video/7631731282346626311'},
-{pl:'TikTok',fm:'TikTok Video',v:1741,lk:36,cm:4,sh:0,gd:0,it:40,er:2.30,url:'https://www.tiktok.com/@indrive.pe/video/7629873869968493832'},
-{pl:'TikTok',fm:'TikTok Video',v:1663,lk:24,cm:1,sh:0,gd:0,it:25,er:1.50,url:'https://www.tiktok.com/@indrive.pe/video/7634376962772847890'},
-{pl:'TikTok',fm:'TikTok Video',v:1454,lk:37,cm:8,sh:0,gd:0,it:45,er:3.09,url:'https://www.tiktok.com/@indrive.pe/video/7634353780808633618'},
-{pl:'TikTok',fm:'TikTok Video',v:1179,lk:52,cm:7,sh:0,gd:0,it:59,er:5.00,url:'https://www.tiktok.com/@indrive.pe/video/7633948975590149384'},
-{pl:'TikTok',fm:'TikTok Video',v:1104,lk:30,cm:6,sh:0,gd:0,it:36,er:3.26,url:'http://tiktok.com/@indrive.pe/video/7634714734104825095'},
-{pl:'TikTok',fm:'TikTok Video',v:940,lk:32,cm:10,sh:0,gd:0,it:42,er:4.47,url:'https://www.tiktok.com/@indrive.pe/video/7634307633222126855'},
-{pl:'Facebook',fm:'Carrusel',v:0,lk:25,cm:45,sh:0,gd:0,it:70,er:null,url:'https://www.facebook.com/photo?fbid=1457625026374973'},
-{pl:'Facebook',fm:'Carrusel',v:0,lk:8,cm:10,sh:1,gd:0,it:19,er:null,url:'https://www.facebook.com/photo?fbid=1469850348485774'},
-{pl:'Facebook',fm:'Carrusel',v:0,lk:5,cm:0,sh:1,gd:0,it:6,er:null,url:'https://www.facebook.com/photo?fbid=1474436158027193'},
-{pl:'Facebook',fm:'Reel',v:0,lk:11,cm:32,sh:1,gd:0,it:44,er:null,url:'https://www.facebook.com/100063824682833/videos/'},
-{pl:'Instagram',fm:'Carrusel',v:0,lk:25,cm:1,sh:0,gd:0,it:26,er:null,url:'https://www.instagram.com/p/DWrgOiekWHm/'},
-{pl:'Instagram',fm:'Carrusel',v:0,lk:39,cm:39,sh:2,gd:0,it:80,er:null,url:'https://www.instagram.com/p/DW1MCXpkeSm/'},
-{pl:'Instagram',fm:'Carrusel',v:0,lk:69,cm:53,sh:1,gd:0,it:123,er:null,url:'https://www.instagram.com/p/DW48ciYkS8T/'},
-{pl:'Instagram',fm:'Carrusel',v:0,lk:24,cm:14,sh:0,gd:0,it:38,er:null,url:'https://www.instagram.com/p/DXe74yckeRr/'},
-{pl:'Instagram',fm:'Carrusel',v:0,lk:17,cm:7,sh:1,gd:0,it:25,er:null,url:'https://www.instagram.com/p/DXsJ9Pfj9ec/'},
-{pl:'Instagram',fm:'Carrusel',v:0,lk:43,cm:2,sh:1,gd:0,it:46,er:null,url:'https://www.instagram.com/p/DXvTKG2jQiB/'},
+{fd:'30/04',pl:'Instagram',fm:'Reel',url:'https://www.instagram.com/p/DXwiXRCtuJb/',v:330000,lk:19300,cm:1042,sh:1617,gd:0,it:21959,er:6.65},
+{fd:'23/04',pl:'Instagram',fm:'Reel',url:'https://www.instagram.com/p/DXdJni6jGmG/',v:19600,lk:823,cm:50,sh:105,gd:0,it:978,er:4.99},
+{fd:'02/04',pl:'TikTok',fm:'TikTok Video',url:'https://www.tiktok.com/@indrive.pe/video/7624233432813407506',v:9548,lk:79,cm:12,sh:0,gd:0,it:91,er:0.95},
+{fd:'29/04',pl:'Instagram',fm:'Reel',url:'https://www.instagram.com/p/DXuypKfDxku/',v:7659,lk:168,cm:57,sh:11,gd:0,it:236,er:3.08},
+{fd:'02/04',pl:'Instagram',fm:'Reel',url:'https://www.instagram.com/p/DWpFWXLhBhV/',v:7080,lk:30,cm:17,sh:3,gd:0,it:50,er:0.71},
+{fd:'02/04',pl:'Instagram',fm:'Reel',url:'https://www.instagram.com/p/DWo6_l7kQYt/',v:6971,lk:27,cm:14,sh:1,gd:0,it:42,er:0.6},
+{fd:'02/04',pl:'TikTok',fm:'TikTok Video',url:'https://www.tiktok.com/@indrive.pe/video/7624230486591720722',v:6467,lk:93,cm:12,sh:0,gd:0,it:105,er:1.62},
+{fd:'20/04',pl:'TikTok',fm:'TikTok Video',url:'https://www.tiktok.com/@indrive.pe/video/7630999040418778386',v:5698,lk:170,cm:111,sh:0,gd:0,it:281,er:4.93},
+{fd:'09/04',pl:'Instagram',fm:'Reel',url:'https://www.instagram.com/p/DW7gn3EkYt5/',v:5200,lk:38,cm:45,sh:1,gd:0,it:84,er:1.62},
+{fd:'02/04',pl:'Facebook',fm:'Reel',url:'https://www.facebook.com/reel/2241740056566403/',v:5200,lk:14,cm:16,sh:3,gd:0,it:33,er:0.63},
+{fd:'02/04',pl:'Facebook',fm:'Reel',url:'https://www.facebook.com/reel/1171131531672792/ ',v:4700,lk:17,cm:13,sh:2,gd:0,it:32,er:0.68},
+{fd:'24/04',pl:'Instagram',fm:'Reel',url:'https://www.instagram.com/p/DXhhw0-EWrl/',v:4235,lk:39,cm:15,sh:0,gd:0,it:54,er:1.28},
+{fd:'17/04',pl:'Instagram',fm:'Reel',url:'https://www.instagram.com/p/DXQEdy8EYWq/',v:3898,lk:34,cm:9,sh:0,gd:0,it:43,er:1.1},
+{fd:'17/04',pl:'Facebook',fm:'Reel',url:'https://www.facebook.com/reel/1883488796373062/',v:3800,lk:32,cm:72,sh:2,gd:0,it:106,er:2.79},
+{fd:'09/04',pl:'Facebook',fm:'Reel',url:'https://www.facebook.com/reel/1652745609094826/',v:3200,lk:20,cm:44,sh:1,gd:0,it:65,er:2.03},
+{fd:'24/04',pl:'Facebook',fm:'Reel',url:'https://www.facebook.com/reel/1589643892109721/',v:3100,lk:24,cm:15,sh:4,gd:0,it:43,er:1.39},
+{fd:'29/04',pl:'Facebook',fm:'Reel',url:'https://www.facebook.com/reel/966127759336013/',v:3000,lk:34,cm:47,sh:1,gd:0,it:82,er:2.73},
+{fd:'07/04',pl:'TikTok',fm:'TikTok Video',url:'https://www.tiktok.com/@indrive.pe/video/7626173375320313106',v:2905,lk:68,cm:17,sh:0,gd:0,it:85,er:2.93},
+{fd:'17/04',pl:'Facebook',fm:'Reel',url:'https://www.facebook.com/reel/1525981392872858/',v:2700,lk:21,cm:8,sh:1,gd:0,it:30,er:1.11},
+{fd:'17/04',pl:'TikTok',fm:'TikTok Video',url:'https://www.tiktok.com/@indrive.pe/video/7629918264495262984',v:2623,lk:60,cm:21,sh:0,gd:0,it:81,er:3.09},
+{fd:'15/04',pl:'TikTok',fm:'TikTok Video',url:'https://www.tiktok.com/@indrive.pe/video/7629052377835867399',v:2298,lk:42,cm:32,sh:0,gd:0,it:74,er:3.22},
+{fd:'06/04',pl:'TikTok',fm:'TikTok Video',url:'https://www.tiktok.com/@indrive.pe/video/7625823296109530376',v:2213,lk:38,cm:15,sh:0,gd:0,it:53,er:2.39},
+{fd:'24/04',pl:'TikTok',fm:'TikTok Video',url:'https://www.tiktok.com/@indrive.pe/video/7632389853564488967',v:2174,lk:37,cm:15,sh:0,gd:0,it:52,er:2.39},
+{fd:'13/04',pl:'TikTok',fm:'TikTok Video',url:'https://www.tiktok.com/@indrive.pe/video/7628282563676605714',v:2089,lk:19,cm:13,sh:0,gd:0,it:32,er:1.53},
+{fd:'22/04',pl:'TikTok',fm:'TikTok Video',url:'https://www.tiktok.com/@indrive.pe/video/7631731282346626311',v:1928,lk:57,cm:16,sh:0,gd:0,it:73,er:3.79},
+{fd:'17/04',pl:'TikTok',fm:'TikTok Video',url:'https://www.tiktok.com/@indrive.pe/video/7629873869968493832',v:1741,lk:36,cm:4,sh:0,gd:0,it:40,er:2.3},
+{fd:'29/04',pl:'TikTok',fm:'TikTok Video',url:'https://www.tiktok.com/@indrive.pe/video/7634376962772847890',v:1663,lk:24,cm:1,sh:0,gd:0,it:25,er:1.5},
+{fd:'29/04',pl:'TikTok',fm:'TikTok Video',url:'https://www.tiktok.com/@indrive.pe/video/7634353780808633618',v:1454,lk:37,cm:8,sh:0,gd:0,it:45,er:3.09},
+{fd:'28/04',pl:'TikTok',fm:'TikTok Video',url:'https://www.tiktok.com/@indrive.pe/video/7633948975590149384',v:1179,lk:52,cm:7,sh:0,gd:0,it:59,er:5.0},
+{fd:'30/04',pl:'TikTok',fm:'TikTok Video',url:'http://tiktok.com/@indrive.pe/video/7634714734104825095',v:1104,lk:30,cm:6,sh:0,gd:0,it:36,er:3.26},
+{fd:'29/04',pl:'TikTok',fm:'TikTok Video',url:'https://www.tiktok.com/@indrive.pe/video/7634307633222126855',v:940,lk:32,cm:10,sh:0,gd:0,it:42,er:4.47},
+{fd:'08/04',pl:'Facebook',fm:'Carrusel',url:'https://www.facebook.com/photo?fbid=1457625026374973&set=a.713329420804541',v:0,lk:25,cm:45,sh:0,gd:0,it:70,er:null},
+{fd:'23/04',pl:'Facebook',fm:'Carrusel',url:'https://www.facebook.com/photo?fbid=1469850348485774&set=pcb.1469850395152436',v:0,lk:8,cm:10,sh:1,gd:0,it:19,er:null},
+{fd:'28/04',pl:'Facebook',fm:'Carrusel',url:'https://www.facebook.com/photo?fbid=1474436158027193&set=pcb.1474436204693855',v:0,lk:5,cm:0,sh:1,gd:0,it:6,er:null},
+{fd:'07/04',pl:'Facebook',fm:'Reel',url:'https://www.facebook.com/100063824682833/videos/pcb.1456412316496244/20161523659',v:0,lk:11,cm:32,sh:1,gd:0,it:44,er:null},
+{fd:'03/04',pl:'Instagram',fm:'Carrusel',url:'https://www.instagram.com/p/DWrgOiekWHm/',v:0,lk:25,cm:1,sh:0,gd:0,it:26,er:null},
+{fd:'07/04',pl:'Instagram',fm:'Carrusel',url:'https://www.instagram.com/p/DW1MCXpkeSm/',v:0,lk:39,cm:39,sh:2,gd:0,it:80,er:null},
+{fd:'08/04',pl:'Instagram',fm:'Carrusel',url:'https://www.instagram.com/p/DW48ciYkS8T/',v:0,lk:69,cm:53,sh:1,gd:0,it:123,er:null},
+{fd:'23/04',pl:'Instagram',fm:'Carrusel',url:'https://www.instagram.com/p/DXe74yckeRr/',v:0,lk:24,cm:14,sh:0,gd:0,it:38,er:null},
+{fd:'28/04',pl:'Instagram',fm:'Carrusel',url:'https://www.instagram.com/p/DXsJ9Pfj9ec/',v:0,lk:17,cm:7,sh:1,gd:0,it:25,er:null},
+{fd:'30/04',pl:'Instagram',fm:'Carrusel',url:'https://www.instagram.com/p/DXvTKG2jQiB/',v:0,lk:43,cm:2,sh:1,gd:0,it:46,er:null}
 ];
 
 /* Platform cards — from PPTX Reporte RRSS Abril 2026 (Slides 2,5,16,25) */
@@ -567,12 +575,13 @@ const SENT_EXAMPLES = {
 };
 
 /* ═══ STATE + FILTERS ═══ */
-let S={view:'marca',fPlat:'all',fFmt:'all',fVt:'all'};
+let S={view:'marca',fPlat:'all',fFmt:'all',fVt:'all',fWk:'all'};
 
 function getFiltered(){
   return CONTENIDOS.filter(c=>{
     if(S.fPlat!=='all'&&c.pl!==S.fPlat)return false;
     if(S.fFmt!=='all'&&c.fm!==S.fFmt)return false;
+    if(S.fWk!=='all'&&weekFromDate(c.fd)!==parseInt(S.fWk))return false;
     return true;
   });
 }
@@ -584,7 +593,8 @@ function aggFiltered(arr){
 function applyFilters(){
   S.fPlat=document.getElementById('sf-plat').value;
   S.fFmt=document.getElementById('sf-fmt').value;
-  S.fVt=document.getElementById('sf-vt').value;
+  /* sf-vt replaced by sf-mes */
+  S.fWk=document.getElementById('sf-wk').value;
   render();
 }
 
@@ -604,6 +614,18 @@ function filterBar(){
       <option value="TikTok Video"${S.fFmt==='TikTok Video'?' selected':''}>TikTok Video</option>
       <option value="Reel"${S.fFmt==='Reel'?' selected':''}>Reel</option>
       <option value="Carrusel"${S.fFmt==='Carrusel'?' selected':''}>Carrusel</option>
+    </select></div>
+    <div class="fsel-wrap"><span class="fsel-lbl">Mes</span><select class="fsel" id="fb-mes" onchange="/* future month filter */">
+      <option value="all">Todos</option>
+      <option value="4" selected>Abril</option>
+    </select></div>
+    <div class="fsel-wrap"><span class="fsel-lbl">Semana</span><select class="fsel" id="fb-wk" onchange="S.fWk=this.value;document.getElementById('sf-wk').value=this.value;render();">
+      <option value="all"${S.fWk==='all'?' selected':''}>Todas</option>
+      <option value="1"${S.fWk==='1'?' selected':''}>Semana 1</option>
+      <option value="2"${S.fWk==='2'?' selected':''}>Semana 2</option>
+      <option value="3"${S.fWk==='3'?' selected':''}>Semana 3</option>
+      <option value="4"${S.fWk==='4'?' selected':''}>Semana 4</option>
+      <option value="5"${S.fWk==='5'?' selected':''}>Semana 5</option>
     </select></div>
     <span class="fb-label" style="margin-left:auto;font-size:10px;color:var(--lime-d);font-weight:800;">${getFiltered().length} / ${CONTENIDOS.length} contenidos</span>
   </div>`;
@@ -732,6 +754,7 @@ function renderMarca(){
     <div class="tbl-wrap fu fu4">
       <table class="dt"><thead><tr>
         <th style="text-align:left;background:#E879A0;color:#fff;">#</th>
+        <th style="text-align:left;background:#E879A0;color:#fff;">Fecha</th>
         <th style="text-align:left;background:#E879A0;color:#fff;">Plat.</th>
         <th style="text-align:left;background:#E879A0;color:#fff;">Formato</th>
         <th style="text-align:left;background:#E879A0;color:#fff;">Enlace</th>
@@ -743,6 +766,7 @@ function renderMarca(){
       </tr></thead>
       <tbody>${filtered.map((c,i)=>`<tr>
         <td><b style="color:${i<3?'var(--lime-d)':'var(--muted)'};">${i+1}</b></td>
+        <td style="font-size:10px;font-weight:700;color:var(--muted);white-space:nowrap;">${c.fd}</td>
         <td>${platBadge(c.pl)}</td><td>${c.fm}</td>
         <td style="text-align:left;"><a href="${c.url}" target="_blank" style="color:#3A86E8;text-decoration:none;font-weight:600;font-size:10px;">${c.url.length>48?c.url.slice(0,48)+'…':c.url}</a></td>
         <td>${fmt(c.v)}</td><td>${fmt(c.lk)}</td><td>${fmt(c.cm)}</td>
@@ -830,15 +854,42 @@ function renderInfluencer(){
     <div class="empty-card fu fu2" style="padding:24px;"><b>Sin data de audiencia para ${S.fPlat}</b>La audiencia demográfica solo está disponible para TikTok (FACT_AUDIENCIA_RESUMEN). Selecciona TikTok o "Todas" para verla.</div>`;
   }
 
-  /* ── Performance × Plataforma — filtrada ── */
-  h+=`<div class="sec-hdr sec-detail fu fu3"><span class="sec-hdr-ic"><svg width="16" height="16" fill="currentColor"><rect x="1" y="2" width="14" height="12" rx="1" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M1 6h14" stroke="currentColor" stroke-width="1.3"/></svg></span>Performance × Plataforma${ctx?' · '+ctx:''}</div>
+  /* ── Performance × Plataforma — DYNAMIC by week ── */
+  const hasWeek = S.fWk!=='all';
+  /* If week filter active: recalculate from CONTENIDOS grouped by platform */
+  let perfRows = '';
+  if(!hasWeek){
+    /* No week filter → use PPTX monthly totals */
+    tblPlats.forEach(p=>{
+      perfRows+=`<tr><td>${platBadge(p.name)}</td><td>${fmtM(p.fol)}</td><td>${p.posts}</td><td>${fmt(p.views)}</td><td>${fmt(p.likes)}</td><td>${fmt(p.com)}</td><td>${fmt(p.shr)}</td><td class="td-int">${fmt(p.inter)}</td><td class="td-er">${p.erv.toFixed(2)}%</td><td style="color:${p.netSent>=0?'#18B89A':'#E85A44'};font-weight:800;">${p.netSent>=0?'+':''}${p.netSent.toFixed(1)}%</td></tr>`;
+    });
+    if(tblPlats.length>1){
+      perfRows+=`<tr><td>TOTAL</td><td>${fmtM(tblPlats.reduce((a,b)=>a+b.fol,0))}</td><td>${tblPlats.reduce((a,b)=>a+b.posts,0)}</td><td>${fmt(tblPlats.reduce((a,b)=>a+b.views,0))}</td><td>${fmt(tblPlats.reduce((a,b)=>a+b.likes,0))}</td><td>${fmt(tblPlats.reduce((a,b)=>a+b.com,0))}</td><td>${fmt(tblPlats.reduce((a,b)=>a+b.shr,0))}</td><td class="td-int">${fmt(tblPlats.reduce((a,b)=>a+b.inter,0))}</td><td class="td-er">${CONSOLIDADO.erv.toFixed(2)}%</td><td style="color:#18B89A;font-weight:800;">+${CONSOLIDADO.netSent.toFixed(1)}%</td></tr>`;
+    }
+  } else {
+    /* Week filter active → recalculate from filtered CONTENIDOS */
+    const platNames = hasPlat ? [S.fPlat] : ['Instagram','TikTok','Facebook'];
+    let totP=0,totV=0,totLk=0,totCm=0,totSh=0,totIt=0;
+    platNames.forEach(pn=>{
+      const pItems = filtered.filter(x=>x.pl===pn);
+      const pltRef = PLATS.find(x=>x.name===pn);
+      const cnt=pItems.length, vw=pItems.reduce((a,b)=>a+b.v,0), lk=pItems.reduce((a,b)=>a+b.lk,0),
+            cm=pItems.reduce((a,b)=>a+b.cm,0), sh=pItems.reduce((a,b)=>a+b.sh,0), it=pItems.reduce((a,b)=>a+b.it,0);
+      totP+=cnt;totV+=vw;totLk+=lk;totCm+=cm;totSh+=sh;totIt+=it;
+      if(cnt>0){
+        perfRows+=`<tr><td>${platBadge(pn)}</td><td>${fmtM(pltRef?pltRef.fol:0)}</td><td>${cnt}</td><td>${fmt(vw)}</td><td>${fmt(lk)}</td><td>${fmt(cm)}</td><td>${fmt(sh)}</td><td class="td-int">${fmt(it)}</td><td class="td-null" style="font-style:italic;color:var(--subtle);">Sin data</td><td class="td-null" style="font-style:italic;color:var(--subtle);">Sin data</td></tr>`;
+      }
+    });
+    if(platNames.length>1 && totP>0){
+      perfRows+=`<tr><td>TOTAL</td><td>${fmtM(PLATS.reduce((a,b)=>a+b.fol,0))}</td><td>${totP}</td><td>${fmt(totV)}</td><td>${fmt(totLk)}</td><td>${fmt(totCm)}</td><td>${fmt(totSh)}</td><td class="td-int">${fmt(totIt)}</td><td class="td-null" style="font-style:italic;color:var(--subtle);">Sin data</td><td class="td-null" style="font-style:italic;color:var(--subtle);">Sin data</td></tr>`;
+    }
+  }
+  h+=`<div class="sec-hdr sec-detail fu fu3"><span class="sec-hdr-ic"><svg width="16" height="16" fill="currentColor"><rect x="1" y="2" width="14" height="12" rx="1" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M1 6h14" stroke="currentColor" stroke-width="1.3"/></svg></span>Performance × Plataforma${ctx?' · '+ctx:''}${hasWeek?' · Semana '+S.fWk:''}</div>
   <div class="tbl-wrap fu fu3">
     <table class="dt"><thead><tr>
       <th style="text-align:left;background:#2D6AC4;color:#fff;">Plataforma</th><th style="background:#2D6AC4;color:#fff;">Seguidores</th><th style="background:#2D6AC4;color:#fff;">Posts</th><th style="background:#2D6AC4;color:#fff;">Views</th><th style="background:#2D6AC4;color:#fff;">Likes</th><th style="background:#2D6AC4;color:#fff;">Comments</th><th style="background:#2D6AC4;color:#fff;">Shares</th><th style="background:#2D6AC4;color:#fff;">Interacc.</th><th style="background:#2D6AC4;color:#fff;">ERV</th><th style="background:#2D6AC4;color:#fff;">Net Sent.</th>
     </tr></thead>
-    <tbody>${tblPlats.map(p=>`<tr><td>${platBadge(p.name)}</td><td>${fmtM(p.fol)}</td><td>${p.posts}</td><td>${fmt(p.views)}</td><td>${fmt(p.likes)}</td><td>${fmt(p.com)}</td><td>${fmt(p.shr)}</td><td class="td-int">${fmt(p.inter)}</td><td class="td-er">${p.erv.toFixed(2)}%</td><td style="color:${p.netSent>=0?'#18B89A':'#E85A44'};font-weight:800;">${p.netSent>=0?'+':''}${p.netSent.toFixed(1)}%</td></tr>`).join('')}
-    ${tblPlats.length>1?`<tr><td>TOTAL</td><td>${fmtM(tblPlats.reduce((a,b)=>a+b.fol,0))}</td><td>${tblPlats.reduce((a,b)=>a+b.posts,0)}</td><td>${fmt(tblPlats.reduce((a,b)=>a+b.views,0))}</td><td>${fmt(tblPlats.reduce((a,b)=>a+b.likes,0))}</td><td>${fmt(tblPlats.reduce((a,b)=>a+b.com,0))}</td><td>${fmt(tblPlats.reduce((a,b)=>a+b.shr,0))}</td><td class="td-int">${fmt(tblPlats.reduce((a,b)=>a+b.inter,0))}</td><td class="td-er">${CONSOLIDADO.erv.toFixed(2)}%</td><td style="color:#18B89A;font-weight:800;">+${CONSOLIDADO.netSent.toFixed(1)}%</td></tr>`:''}
-    </tbody></table>
+    <tbody>${perfRows}</tbody></table>
   </div>`;
 
   /* ── Contenidos filtrados ── */
@@ -847,6 +898,7 @@ function renderInfluencer(){
     <div class="tbl-wrap fu fu4">
       <table class="dt"><thead><tr>
         <th style="text-align:left;background:#E879A0;color:#fff;">#</th>
+        <th style="text-align:left;background:#E879A0;color:#fff;">Fecha</th>
         <th style="text-align:left;background:#E879A0;color:#fff;">Plat.</th>
         <th style="text-align:left;background:#E879A0;color:#fff;">Formato</th>
         <th style="text-align:left;background:#E879A0;color:#fff;">Enlace</th>
@@ -858,6 +910,7 @@ function renderInfluencer(){
       </tr></thead>
       <tbody>${filtered.map((c,i)=>`<tr>
         <td><b style="color:${i<3?'var(--lime-d)':'var(--muted)'};">${i+1}</b></td>
+        <td style="font-size:10px;font-weight:700;color:var(--muted);white-space:nowrap;">${c.fd}</td>
         <td>${platBadge(c.pl)}</td><td>${c.fm}</td>
         <td style="text-align:left;"><a href="${c.url}" target="_blank" style="color:#3A86E8;text-decoration:none;font-weight:600;font-size:10px;">${c.url.length>48?c.url.slice(0,48)+'…':c.url}</a></td>
         <td>${fmt(c.v)}</td><td>${fmt(c.lk)}</td><td>${fmt(c.cm)}</td>
