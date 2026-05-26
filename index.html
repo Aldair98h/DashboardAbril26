@@ -375,6 +375,14 @@ table.dt tbody tr:last-child td{font-weight:900;background:rgba(197,240,0,.08);}
     <select class="sid-select" id="sf-mes" onchange="applyFilters()">
       <option value="all">Todos los meses</option>
       <option value="4">Abril 2026</option>
+      <option value="5">Mayo 2026</option>
+    </select>
+    <select class="sid-select" id="sf-vt" onchange="applyFilters()">
+      <option value="all">Todas las verticales</option>
+      <option value="Drivers">Drivers</option>
+      <option value="Ride hailing">Ride hailing</option>
+      <option value="Delivery">Delivery</option>
+      <option value="Mixto">Mixto</option>
     </select>
     <select class="sid-select" id="sf-wk" onchange="applyFilters()">
       <option value="all">Todas las semanas</option>
@@ -404,7 +412,7 @@ table.dt tbody tr:last-child td{font-weight:900;background:rgba(197,240,0,.08);}
         <div class="tb-meta">
           <span class="tb-date">
             <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="1.5" y="2.5" width="9" height="8" rx="1"/><path d="M1.5 5h9M4 1.5v2M8 1.5v2"/></svg>
-            Período <b>ABRIL 2026 · Q2</b>
+            Período <b>ABR — MAY 2026 · Q2</b>
           </span>
           <span class="tb-date" style="padding-left:10px;border-left:1px solid var(--border);">
             <svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor"><circle cx="5" cy="5" r="4" stroke="currentColor" stroke-width="1" fill="none"/><circle cx="5" cy="5" r="2"/></svg>
@@ -443,10 +451,38 @@ function animCount(el,target,dur){
   if(!el||target==null)return;dur=dur||900;const s=Date.now();
   (function t(){const p=Math.min((Date.now()-s)/dur,1);el.textContent=fmt(Math.round(target*(1-Math.pow(1-p,3))));if(p<1)requestAnimationFrame(t);})();
 }
+function getMonthFromFd(fd){if(!fd||fd==='—')return 0;return parseInt(fd.split('/')[1]);}
+function calcERV(items,mesFilter){
+  /* ER per platform, then simple average (matches PPTX methodology) */
+  /* Override: TikTok Abril = 2.88% (PPTX, diff 0.33% vs Excel) */
+  const plats={};
+  items.forEach(c=>{if(c.v>0){if(!plats[c.pl])plats[c.pl]={int:0,views:0};plats[c.pl].int+=c.it;plats[c.pl].views+=c.v;}});
+  const ers=[];
+  Object.keys(plats).forEach(pl=>{
+    const p=plats[pl];
+    if(p.views>0){
+      if(pl==='TikTok'&&mesFilter==='4'){ers.push(2.88);}
+      else{ers.push(p.int/p.views*100);}
+    }
+  });
+  return ers.length>0?(ers.reduce((a,b)=>a+b,0)/ers.length):null;
+}
 function weekFromDate(fd){
   if(!fd||fd==='—')return 0;
-  const day=parseInt(fd.split('/')[0]);
-  if(day<=5)return 1;if(day<=12)return 2;if(day<=19)return 3;if(day<=26)return 4;return 5;
+  const[d,m]=fd.split('/');
+  const day=parseInt(d),mon=parseInt(m);
+  /* Find first day of month and calculate week boundaries (Mon=start) */
+  const firstDay=new Date(2026,mon-1,1).getDay(); /* 0=Sun..6=Sat */
+  /* Days until first Sunday: if firstDay=0 then 0, else 7-firstDay */
+  const daysToFirstSun=firstDay===0?0:7-firstDay;
+  /* Semana 1 = day 1 to first Sunday */
+  if(day<=daysToFirstSun||daysToFirstSun===0&&day<=7){
+    if(daysToFirstSun===0) return Math.ceil(day/7);
+    return 1;
+  }
+  /* After first Sunday, count Mon-Sun blocks */
+  const afterFirstBlock=day-daysToFirstSun;
+  return 1+Math.ceil(afterFirstBlock/7);
 }
 const platBadge=p=>{const m={'TikTok':['pb-tk','TK'],'Instagram':['pb-ig','IG'],'YouTube':['pb-yt','YT'],'Facebook':['pb-fb','FB']};const[c,t]=m[p]||['pb-tk','—'];return`<span class="plat-badge ${c}">${t} ${p}</span>`;};
 const platSvgIcon=p=>{
@@ -458,47 +494,73 @@ const platSvgIcon=p=>{
 /* ═══ DATABASE — 100% from Excel BDFinal v4 + PPTX Reporte RRSS Abril 2026 ═══ */
 /* 41 content pieces from FACT_RENDIMIENTO_CONTENIDO (all @indrive.pe) */
 const CONTENIDOS=[
-{fd:'30/04',pl:'Instagram',fm:'Reel',url:'https://www.instagram.com/p/DXwiXRCtuJb/',v:330000,lk:19300,cm:1042,sh:1617,gd:0,it:21959,er:6.65},
-{fd:'23/04',pl:'Instagram',fm:'Reel',url:'https://www.instagram.com/p/DXdJni6jGmG/',v:19600,lk:823,cm:50,sh:105,gd:0,it:978,er:4.99},
-{fd:'02/04',pl:'TikTok',fm:'TikTok Video',url:'https://www.tiktok.com/@indrive.pe/video/7624233432813407506',v:9548,lk:79,cm:12,sh:0,gd:0,it:91,er:0.95},
-{fd:'29/04',pl:'Instagram',fm:'Reel',url:'https://www.instagram.com/p/DXuypKfDxku/',v:7659,lk:168,cm:57,sh:11,gd:0,it:236,er:3.08},
-{fd:'02/04',pl:'Instagram',fm:'Reel',url:'https://www.instagram.com/p/DWpFWXLhBhV/',v:7080,lk:30,cm:17,sh:3,gd:0,it:50,er:0.71},
-{fd:'02/04',pl:'Instagram',fm:'Reel',url:'https://www.instagram.com/p/DWo6_l7kQYt/',v:6971,lk:27,cm:14,sh:1,gd:0,it:42,er:0.6},
-{fd:'02/04',pl:'TikTok',fm:'TikTok Video',url:'https://www.tiktok.com/@indrive.pe/video/7624230486591720722',v:6467,lk:93,cm:12,sh:0,gd:0,it:105,er:1.62},
-{fd:'20/04',pl:'TikTok',fm:'TikTok Video',url:'https://www.tiktok.com/@indrive.pe/video/7630999040418778386',v:5698,lk:170,cm:111,sh:0,gd:0,it:281,er:4.93},
-{fd:'09/04',pl:'Instagram',fm:'Reel',url:'https://www.instagram.com/p/DW7gn3EkYt5/',v:5200,lk:38,cm:45,sh:1,gd:0,it:84,er:1.62},
-{fd:'02/04',pl:'Facebook',fm:'Reel',url:'https://www.facebook.com/reel/2241740056566403/',v:5200,lk:14,cm:16,sh:3,gd:0,it:33,er:0.63},
-{fd:'02/04',pl:'Facebook',fm:'Reel',url:'https://www.facebook.com/reel/1171131531672792/ ',v:4700,lk:17,cm:13,sh:2,gd:0,it:32,er:0.68},
-{fd:'24/04',pl:'Instagram',fm:'Reel',url:'https://www.instagram.com/p/DXhhw0-EWrl/',v:4235,lk:39,cm:15,sh:0,gd:0,it:54,er:1.28},
-{fd:'17/04',pl:'Instagram',fm:'Reel',url:'https://www.instagram.com/p/DXQEdy8EYWq/',v:3898,lk:34,cm:9,sh:0,gd:0,it:43,er:1.1},
-{fd:'17/04',pl:'Facebook',fm:'Reel',url:'https://www.facebook.com/reel/1883488796373062/',v:3800,lk:32,cm:72,sh:2,gd:0,it:106,er:2.79},
-{fd:'09/04',pl:'Facebook',fm:'Reel',url:'https://www.facebook.com/reel/1652745609094826/',v:3200,lk:20,cm:44,sh:1,gd:0,it:65,er:2.03},
-{fd:'24/04',pl:'Facebook',fm:'Reel',url:'https://www.facebook.com/reel/1589643892109721/',v:3100,lk:24,cm:15,sh:4,gd:0,it:43,er:1.39},
-{fd:'29/04',pl:'Facebook',fm:'Reel',url:'https://www.facebook.com/reel/966127759336013/',v:3000,lk:34,cm:47,sh:1,gd:0,it:82,er:2.73},
-{fd:'07/04',pl:'TikTok',fm:'TikTok Video',url:'https://www.tiktok.com/@indrive.pe/video/7626173375320313106',v:2905,lk:68,cm:17,sh:0,gd:0,it:85,er:2.93},
-{fd:'17/04',pl:'Facebook',fm:'Reel',url:'https://www.facebook.com/reel/1525981392872858/',v:2700,lk:21,cm:8,sh:1,gd:0,it:30,er:1.11},
-{fd:'17/04',pl:'TikTok',fm:'TikTok Video',url:'https://www.tiktok.com/@indrive.pe/video/7629918264495262984',v:2623,lk:60,cm:21,sh:0,gd:0,it:81,er:3.09},
-{fd:'15/04',pl:'TikTok',fm:'TikTok Video',url:'https://www.tiktok.com/@indrive.pe/video/7629052377835867399',v:2298,lk:42,cm:32,sh:0,gd:0,it:74,er:3.22},
-{fd:'06/04',pl:'TikTok',fm:'TikTok Video',url:'https://www.tiktok.com/@indrive.pe/video/7625823296109530376',v:2213,lk:38,cm:15,sh:0,gd:0,it:53,er:2.39},
-{fd:'24/04',pl:'TikTok',fm:'TikTok Video',url:'https://www.tiktok.com/@indrive.pe/video/7632389853564488967',v:2174,lk:37,cm:15,sh:0,gd:0,it:52,er:2.39},
-{fd:'13/04',pl:'TikTok',fm:'TikTok Video',url:'https://www.tiktok.com/@indrive.pe/video/7628282563676605714',v:2089,lk:19,cm:13,sh:0,gd:0,it:32,er:1.53},
-{fd:'22/04',pl:'TikTok',fm:'TikTok Video',url:'https://www.tiktok.com/@indrive.pe/video/7631731282346626311',v:1928,lk:57,cm:16,sh:0,gd:0,it:73,er:3.79},
-{fd:'17/04',pl:'TikTok',fm:'TikTok Video',url:'https://www.tiktok.com/@indrive.pe/video/7629873869968493832',v:1741,lk:36,cm:4,sh:0,gd:0,it:40,er:2.3},
-{fd:'29/04',pl:'TikTok',fm:'TikTok Video',url:'https://www.tiktok.com/@indrive.pe/video/7634376962772847890',v:1663,lk:24,cm:1,sh:0,gd:0,it:25,er:1.5},
-{fd:'29/04',pl:'TikTok',fm:'TikTok Video',url:'https://www.tiktok.com/@indrive.pe/video/7634353780808633618',v:1454,lk:37,cm:8,sh:0,gd:0,it:45,er:3.09},
-{fd:'28/04',pl:'TikTok',fm:'TikTok Video',url:'https://www.tiktok.com/@indrive.pe/video/7633948975590149384',v:1179,lk:52,cm:7,sh:0,gd:0,it:59,er:5.0},
-{fd:'30/04',pl:'TikTok',fm:'TikTok Video',url:'http://tiktok.com/@indrive.pe/video/7634714734104825095',v:1104,lk:30,cm:6,sh:0,gd:0,it:36,er:3.26},
-{fd:'29/04',pl:'TikTok',fm:'TikTok Video',url:'https://www.tiktok.com/@indrive.pe/video/7634307633222126855',v:940,lk:32,cm:10,sh:0,gd:0,it:42,er:4.47},
-{fd:'08/04',pl:'Facebook',fm:'Carrusel',url:'https://www.facebook.com/photo?fbid=1457625026374973&set=a.713329420804541',v:0,lk:25,cm:45,sh:0,gd:0,it:70,er:null},
-{fd:'23/04',pl:'Facebook',fm:'Carrusel',url:'https://www.facebook.com/photo?fbid=1469850348485774&set=pcb.1469850395152436',v:0,lk:8,cm:10,sh:1,gd:0,it:19,er:null},
-{fd:'28/04',pl:'Facebook',fm:'Carrusel',url:'https://www.facebook.com/photo?fbid=1474436158027193&set=pcb.1474436204693855',v:0,lk:5,cm:0,sh:1,gd:0,it:6,er:null},
-{fd:'07/04',pl:'Facebook',fm:'Reel',url:'https://www.facebook.com/100063824682833/videos/pcb.1456412316496244/20161523659',v:0,lk:11,cm:32,sh:1,gd:0,it:44,er:null},
-{fd:'03/04',pl:'Instagram',fm:'Carrusel',url:'https://www.instagram.com/p/DWrgOiekWHm/',v:0,lk:25,cm:1,sh:0,gd:0,it:26,er:null},
-{fd:'07/04',pl:'Instagram',fm:'Carrusel',url:'https://www.instagram.com/p/DW1MCXpkeSm/',v:0,lk:39,cm:39,sh:2,gd:0,it:80,er:null},
-{fd:'08/04',pl:'Instagram',fm:'Carrusel',url:'https://www.instagram.com/p/DW48ciYkS8T/',v:0,lk:69,cm:53,sh:1,gd:0,it:123,er:null},
-{fd:'23/04',pl:'Instagram',fm:'Carrusel',url:'https://www.instagram.com/p/DXe74yckeRr/',v:0,lk:24,cm:14,sh:0,gd:0,it:38,er:null},
-{fd:'28/04',pl:'Instagram',fm:'Carrusel',url:'https://www.instagram.com/p/DXsJ9Pfj9ec/',v:0,lk:17,cm:7,sh:1,gd:0,it:25,er:null},
-{fd:'30/04',pl:'Instagram',fm:'Carrusel',url:'https://www.instagram.com/p/DXvTKG2jQiB/',v:0,lk:43,cm:2,sh:1,gd:0,it:46,er:null}
+{fd:'30/04',pl:'Instagram',fm:'Reel',vt:'Drivers',url:'https://www.instagram.com/p/DXwiXRCtuJb/',v:330000,lk:19300,cm:1042,sh:1617,gd:0,it:21959,er:6.65},
+{fd:'06/05',pl:'Instagram',fm:'Reel',vt:'Delivery',url:'https://www.instagram.com/p/DYA9uLvxQHH/',v:51700,lk:376,cm:150,sh:6,gd:0,it:547,er:1.06},
+{fd:'23/04',pl:'Instagram',fm:'Reel',vt:'Drivers',url:'https://www.instagram.com/p/DXdJni6jGmG/',v:19600,lk:823,cm:50,sh:105,gd:0,it:978,er:4.99},
+{fd:'02/04',pl:'TikTok',fm:'TikTok Video',vt:'Ride hailing',url:'https://www.tiktok.com/@indrive.pe/video/7624233432813407506',v:9548,lk:79,cm:12,sh:0,gd:0,it:91,er:0.95},
+{fd:'29/04',pl:'Instagram',fm:'Reel',vt:'Drivers',url:'https://www.instagram.com/p/DXuypKfDxku/',v:7659,lk:168,cm:57,sh:11,gd:0,it:236,er:3.08},
+{fd:'06/05',pl:'Instagram',fm:'Reel',vt:'Delivery',url:'https://www.instagram.com/p/DYA6a7lO3gd/',v:7515,lk:109,cm:64,sh:6,gd:0,it:187,er:2.49},
+{fd:'02/04',pl:'Instagram',fm:'Reel',vt:'Ride hailing',url:'https://www.instagram.com/p/DWpFWXLhBhV/',v:7080,lk:30,cm:17,sh:3,gd:0,it:50,er:0.71},
+{fd:'02/04',pl:'Instagram',fm:'Reel',vt:'Ride hailing',url:'https://www.instagram.com/p/DWo6_l7kQYt/',v:6971,lk:27,cm:14,sh:1,gd:0,it:42,er:0.6},
+{fd:'02/04',pl:'TikTok',fm:'TikTok Video',vt:'Ride hailing',url:'https://www.tiktok.com/@indrive.pe/video/7624230486591720722',v:6467,lk:93,cm:12,sh:0,gd:0,it:105,er:1.62},
+{fd:'20/04',pl:'TikTok',fm:'TikTok Video',vt:'Drivers',url:'https://www.tiktok.com/@indrive.pe/video/7630999040418778386',v:5698,lk:170,cm:111,sh:0,gd:0,it:281,er:4.93},
+{fd:'02/04',pl:'Facebook',fm:'Reel',vt:'Ride hailing',url:'https://www.facebook.com/reel/2241740056566403/',v:5200,lk:14,cm:16,sh:3,gd:0,it:33,er:0.63},
+{fd:'09/04',pl:'Instagram',fm:'Reel',vt:'Drivers',url:'https://www.instagram.com/p/DW7gn3EkYt5/',v:5200,lk:38,cm:45,sh:1,gd:0,it:84,er:1.62},
+{fd:'02/04',pl:'Facebook',fm:'Reel',vt:'Ride hailing',url:'https://www.facebook.com/reel/1171131531672792/',v:4700,lk:17,cm:13,sh:2,gd:0,it:32,er:0.68},
+{fd:'07/05',pl:'Instagram',fm:'Reel',vt:'Drivers',url:'https://www.instagram.com/p/DYCybP3x3cs/',v:4266,lk:62,cm:27,sh:11,gd:0,it:109,er:2.56},
+{fd:'24/04',pl:'Instagram',fm:'Reel',vt:'Drivers',url:'https://www.instagram.com/p/DXhhw0-EWrl/',v:4235,lk:39,cm:15,sh:0,gd:0,it:54,er:1.28},
+{fd:'17/04',pl:'Instagram',fm:'Reel',vt:'Drivers',url:'https://www.instagram.com/p/DXQEdy8EYWq/',v:3898,lk:34,cm:9,sh:0,gd:0,it:43,er:1.1},
+{fd:'17/04',pl:'Facebook',fm:'Reel',vt:'Ride hailing',url:'https://www.facebook.com/reel/1883488796373062/',v:3800,lk:32,cm:72,sh:2,gd:0,it:106,er:2.79},
+{fd:'12/05',pl:'Instagram',fm:'Reel',vt:'Ride hailing',url:'https://www.instagram.com/p/DYQfpwVRzg7/',v:3563,lk:50,cm:12,sh:14,gd:0,it:84,er:2.36},
+{fd:'13/05',pl:'Instagram',fm:'Reel',vt:'Ride hailing',url:'https://www.instagram.com/p/DYTEYlIRuIM/',v:3492,lk:27,cm:21,sh:1,gd:0,it:50,er:1.43},
+{fd:'15/05',pl:'Instagram',fm:'Reel',vt:'Ride hailing',url:'https://www.instagram.com/p/DYXnAc1xLPt/',v:3484,lk:18,cm:13,sh:2,gd:0,it:33,er:0.95},
+{fd:'09/04',pl:'Facebook',fm:'Reel',vt:'Drivers',url:'https://www.facebook.com/reel/1652745609094826/',v:3200,lk:20,cm:44,sh:1,gd:0,it:65,er:2.03},
+{fd:'24/04',pl:'Facebook',fm:'Reel',vt:'Drivers',url:'https://www.facebook.com/reel/1589643892109721/',v:3100,lk:24,cm:15,sh:4,gd:0,it:43,er:1.39},
+{fd:'01/05',pl:'TikTok',fm:'TikTok Video',vt:'Drivers',url:'https://www.tiktok.com/@indrive.pe/video/7635085332534365458',v:3054,lk:63,cm:19,sh:2,gd:3,it:87,er:2.85},
+{fd:'29/04',pl:'Facebook',fm:'Reel',vt:'Drivers',url:'https://www.facebook.com/reel/966127759336013/',v:3000,lk:34,cm:47,sh:1,gd:0,it:82,er:2.73},
+{fd:'08/05',pl:'Instagram',fm:'Reel',vt:'Drivers',url:'https://www.instagram.com/p/DYFrJi4x1wB/',v:2949,lk:27,cm:12,sh:2,gd:0,it:41,er:1.39},
+{fd:'07/04',pl:'TikTok',fm:'TikTok Video',vt:'Drivers',url:'https://www.tiktok.com/@indrive.pe/video/7626173375320313106',v:2905,lk:68,cm:17,sh:0,gd:0,it:85,er:2.93},
+{fd:'17/04',pl:'Facebook',fm:'Reel',vt:'Drivers',url:'https://www.facebook.com/reel/1525981392872858/',v:2700,lk:21,cm:8,sh:1,gd:0,it:30,er:1.11},
+{fd:'17/04',pl:'TikTok',fm:'TikTok Video',vt:'Drivers',url:'https://www.tiktok.com/@indrive.pe/video/7629918264495262984',v:2623,lk:60,cm:21,sh:0,gd:0,it:81,er:3.09},
+{fd:'10/05',pl:'Instagram',fm:'Reel',vt:'Mixto',url:'https://www.instagram.com/p/DYKi2KORt4m/',v:2511,lk:19,cm:12,sh:1,gd:0,it:32,er:1.27},
+{fd:'15/04',pl:'TikTok',fm:'TikTok Video',vt:'Drivers',url:'https://www.tiktok.com/@indrive.pe/video/7629052377835867399',v:2298,lk:42,cm:32,sh:0,gd:0,it:74,er:3.22},
+{fd:'15/05',pl:'Instagram',fm:'Reel',vt:'Delivery',url:'https://www.instagram.com/p/DYYH2P9RbOv/',v:2257,lk:11,cm:11,sh:0,gd:0,it:22,er:0.97},
+{fd:'06/04',pl:'TikTok',fm:'TikTok Video',vt:'Ride hailing',url:'https://www.tiktok.com/@indrive.pe/video/7625823296109530376',v:2213,lk:38,cm:15,sh:0,gd:0,it:53,er:2.39},
+{fd:'24/04',pl:'TikTok',fm:'TikTok Video',vt:'Drivers',url:'https://www.tiktok.com/@indrive.pe/video/7632389853564488967',v:2174,lk:37,cm:15,sh:0,gd:0,it:52,er:2.39},
+{fd:'13/04',pl:'TikTok',fm:'TikTok Video',vt:'Drivers',url:'https://www.tiktok.com/@indrive.pe/video/7628282563676605714',v:2089,lk:19,cm:13,sh:0,gd:0,it:32,er:1.53},
+{fd:'01/05',pl:'TikTok',fm:'TikTok Video',vt:'Ride hailing',url:'https://www.tiktok.com/@indrive.pe/video/7635012438009728274',v:2009,lk:22,cm:4,sh:4,gd:0,it:30,er:1.49},
+{fd:'22/04',pl:'TikTok',fm:'TikTok Video',vt:'Drivers',url:'https://www.tiktok.com/@indrive.pe/video/7631731282346626311',v:1928,lk:57,cm:16,sh:0,gd:0,it:73,er:3.79},
+{fd:'17/04',pl:'TikTok',fm:'TikTok Video',vt:'Drivers',url:'https://www.tiktok.com/@indrive.pe/video/7629873869968493832',v:1741,lk:36,cm:4,sh:0,gd:0,it:40,er:2.3},
+{fd:'15/05',pl:'TikTok',fm:'TikTok Video',vt:'Ride hailing',url:'https://www.tiktok.com/@indrive.pe/video/7640304423020924167',v:1712,lk:63,cm:12,sh:29,gd:5,it:109,er:6.37},
+{fd:'29/04',pl:'TikTok',fm:'TikTok Video',vt:'Ride hailing',url:'https://www.tiktok.com/@indrive.pe/video/7634376962772847890',v:1663,lk:24,cm:1,sh:0,gd:0,it:25,er:1.5},
+{fd:'29/04',pl:'TikTok',fm:'TikTok Video',vt:'Drivers',url:'https://www.tiktok.com/@indrive.pe/video/7634353780808633618',v:1454,lk:37,cm:8,sh:0,gd:0,it:45,er:3.09},
+{fd:'07/05',pl:'TikTok',fm:'TikTok Video',vt:'Drivers',url:'https://www.tiktok.com/@indrive.pe/video/7637183762383539474',v:1449,lk:29,cm:4,sh:1,gd:3,it:37,er:2.55},
+{fd:'07/05',pl:'TikTok',fm:'TikTok Video',vt:'Ride hailing',url:'https://www.tiktok.com/@indrive.pe/video/7637354395713162503',v:1448,lk:9,cm:0,sh:3,gd:1,it:13,er:0.9},
+{fd:'08/05',pl:'TikTok',fm:'TikTok Video',vt:'Ride hailing',url:'https://www.tiktok.com/@indrive.pe/video/7637718225207250183',v:1412,lk:24,cm:2,sh:3,gd:1,it:30,er:2.12},
+{fd:'14/05',pl:'TikTok',fm:'TikTok Video',vt:'Ride hailing',url:'https://www.tiktok.com/@indrive.pe/video/7639953495478603015',v:1236,lk:18,cm:1,sh:1,gd:3,it:23,er:1.86},
+{fd:'13/05',pl:'TikTok',fm:'TikTok Video',vt:'Ride hailing',url:'https://www.tiktok.com/@indrive.pe/video/7639528795606650130',v:1185,lk:22,cm:4,sh:1,gd:1,it:28,er:2.36},
+{fd:'28/04',pl:'TikTok',fm:'TikTok Video',vt:'Ride hailing',url:'https://www.tiktok.com/@indrive.pe/video/7633948975590149384',v:1179,lk:52,cm:7,sh:0,gd:0,it:59,er:5.0},
+{fd:'30/04',pl:'TikTok',fm:'TikTok Video',vt:'Drivers',url:'http://tiktok.com/@indrive.pe/video/7634714734104825095',v:1104,lk:30,cm:6,sh:0,gd:0,it:36,er:3.26},
+{fd:'10/05',pl:'TikTok',fm:'TikTok Video',vt:'Mixto',url:'https://www.tiktok.com/@indrive.pe/video/7638303421812231442',v:1084,lk:19,cm:0,sh:0,gd:0,it:19,er:1.75},
+{fd:'08/05',pl:'TikTok',fm:'TikTok Video',vt:'Drivers',url:'https://www.tiktok.com/@indrive.pe/video/7637600595477646600',v:1032,lk:15,cm:4,sh:0,gd:0,it:19,er:1.84},
+{fd:'29/04',pl:'TikTok',fm:'TikTok Video',vt:'Drivers',url:'https://www.tiktok.com/@indrive.pe/video/7634307633222126855',v:940,lk:32,cm:10,sh:0,gd:0,it:42,er:4.47},
+{fd:'12/05',pl:'TikTok',fm:'TikTok Video',vt:'Ride hailing',url:'https://www.tiktok.com/@indrive.pe/video/7639155914288811272',v:889,lk:19,cm:2,sh:2,gd:0,it:23,er:2.59},
+{fd:'15/05',pl:'TikTok',fm:'TikTok Video',vt:'Delivery',url:'https://www.tiktok.com/@indrive.pe/video/7640258368375885064',v:791,lk:10,cm:3,sh:0,gd:0,it:13,er:1.64},
+{fd:'13/05',pl:'TikTok',fm:'TikTok Video',vt:'Drivers',url:'https://www.tiktok.com/@indrive.pe/video/7639600110288063762',v:166,lk:29,cm:6,sh:5,gd:2,it:42,er:25.3},
+{fd:'23/04',pl:'Facebook',fm:'Carrusel',vt:'Delivery',url:'https://www.facebook.com/photo?fbid=1469850348485774',v:0,lk:8,cm:10,sh:1,gd:0,it:19,er:null},
+{fd:'08/04',pl:'Facebook',fm:'Carrusel',vt:'Ride hailing',url:'https://www.facebook.com/photo?fbid=1457625026374973',v:0,lk:25,cm:45,sh:0,gd:0,it:70,er:null},
+{fd:'07/04',pl:'Facebook',fm:'Reel',vt:'Ride hailing',url:'https://www.facebook.com/100063824682833/videos/',v:0,lk:11,cm:32,sh:1,gd:0,it:44,er:null},
+{fd:'28/04',pl:'Facebook',fm:'Carrusel',vt:'Delivery',url:'https://www.facebook.com/photo?fbid=1474436158027193',v:0,lk:5,cm:0,sh:1,gd:0,it:6,er:null},
+{fd:'13/05',pl:'Instagram',fm:'Carrusel',vt:'Drivers',url:'https://www.instagram.com/p/DYSyd4RD70q/',v:0,lk:23,cm:17,sh:5,gd:0,it:45,er:null},
+{fd:'07/05',pl:'Instagram',fm:'Carrusel',vt:'Ride hailing',url:'https://www.instagram.com/p/DYBNclWEYQQ/',v:0,lk:32,cm:7,sh:1,gd:0,it:40,er:null},
+{fd:'03/04',pl:'Instagram',fm:'Carrusel',vt:'Delivery',url:'https://www.instagram.com/p/DWrgOiekWHm/',v:0,lk:25,cm:1,sh:0,gd:0,it:26,er:null},
+{fd:'08/04',pl:'Instagram',fm:'Carrusel',vt:'Delivery',url:'https://www.instagram.com/p/DW48ciYkS8T/',v:0,lk:69,cm:53,sh:1,gd:0,it:123,er:null},
+{fd:'06/05',pl:'Instagram',fm:'Carrusel',vt:'Drivers',url:'https://www.instagram.com/p/DYA94S-keKN/',v:0,lk:155,cm:4,sh:2,gd:0,it:161,er:null},
+{fd:'07/04',pl:'Instagram',fm:'Carrusel',vt:'Ride hailing',url:'https://www.instagram.com/p/DW1MCXpkeSm/',v:0,lk:39,cm:39,sh:2,gd:0,it:80,er:null},
+{fd:'23/04',pl:'Instagram',fm:'Carrusel',vt:'Delivery',url:'https://www.instagram.com/p/DXe74yckeRr/',v:0,lk:24,cm:14,sh:0,gd:0,it:38,er:null},
+{fd:'28/04',pl:'Instagram',fm:'Carrusel',vt:'Delivery',url:'https://www.instagram.com/p/DXsJ9Pfj9ec/',v:0,lk:17,cm:7,sh:1,gd:0,it:25,er:null},
+{fd:'30/04',pl:'Instagram',fm:'Carrusel',vt:'Ride hailing',url:'https://www.instagram.com/p/DXvTKG2jQiB/',v:0,lk:43,cm:2,sh:1,gd:0,it:46,er:null},
+{fd:'04/05',pl:'Instagram',fm:'Carrusel',vt:'Drivers',url:'https://www.instagram.com/p/DX7t2-7PPvQ/',v:0,lk:24,cm:4,sh:2,gd:0,it:31,er:null},
 ];
 
 /* Platform cards — from PPTX Reporte RRSS Abril 2026 (Slides 2,5,16,25) */
@@ -575,13 +637,21 @@ const SENT_EXAMPLES = {
 };
 
 /* ═══ STATE + FILTERS ═══ */
-let S={view:'marca',fPlat:'all',fFmt:'all',fVt:'all',fWk:'all'};
+let S={view:'marca',fPlat:'all',fFmt:'all',fMes:'all',fVt:'all',fWk:'all',fDateFrom:'',fDateTo:''};
 
 function getFiltered(){
   return CONTENIDOS.filter(c=>{
     if(S.fPlat!=='all'&&c.pl!==S.fPlat)return false;
     if(S.fFmt!=='all'&&c.fm!==S.fFmt)return false;
+    if(S.fMes!=='all'&&getMonthFromFd(c.fd)!==parseInt(S.fMes))return false;
+    if(S.fVt!=='all'&&c.vt!==S.fVt)return false;
     if(S.fWk!=='all'&&weekFromDate(c.fd)!==parseInt(S.fWk))return false;
+    if(S.fDateFrom||S.fDateTo){
+      const [d,m]=c.fd.split('/');
+      const cd=new Date(2026,parseInt(m)-1,parseInt(d));
+      if(S.fDateFrom&&cd<new Date(S.fDateFrom))return false;
+      if(S.fDateTo&&cd>new Date(S.fDateTo))return false;
+    }
     return true;
   });
 }
@@ -593,7 +663,9 @@ function aggFiltered(arr){
 function applyFilters(){
   S.fPlat=document.getElementById('sf-plat').value;
   S.fFmt=document.getElementById('sf-fmt').value;
-  /* sf-vt replaced by sf-mes */
+  S.fMes=document.getElementById('sf-mes').value;
+  S.fWk='all';const _sfwk=document.getElementById('sf-wk');if(_sfwk)_sfwk.value='all';
+  S.fVt=document.getElementById('sf-vt')?document.getElementById('sf-vt').value:'all';
   S.fWk=document.getElementById('sf-wk').value;
   render();
 }
@@ -615,9 +687,17 @@ function filterBar(){
       <option value="Reel"${S.fFmt==='Reel'?' selected':''}>Reel</option>
       <option value="Carrusel"${S.fFmt==='Carrusel'?' selected':''}>Carrusel</option>
     </select></div>
-    <div class="fsel-wrap"><span class="fsel-lbl">Mes</span><select class="fsel" id="fb-mes" onchange="/* future month filter */">
-      <option value="all">Todos</option>
-      <option value="4" selected>Abril</option>
+    <div class="fsel-wrap"><span class="fsel-lbl">Mes</span><select class="fsel" id="fb-mes" onchange="S.fMes=this.value;document.getElementById('sf-mes').value=this.value;S.fWk='all';var _sw=document.getElementById('sf-wk');if(_sw)_sw.value='all';render();">
+      <option value="all"${S.fMes==='all'?' selected':''}>Todos</option>
+      <option value="4"${S.fMes==='4'?' selected':''}>Abril</option>
+      <option value="5"${S.fMes==='5'?' selected':''}>Mayo</option>
+    </select></div>
+    <div class="fsel-wrap"><span class="fsel-lbl">Vertical</span><select class="fsel" id="fb-vt" onchange="S.fVt=this.value;document.getElementById('sf-vt').value=this.value;render();">
+      <option value="all"${S.fVt==='all'?' selected':''}>Todas</option>
+      <option value="Drivers"${S.fVt==='Drivers'?' selected':''}>Drivers</option>
+      <option value="Ride hailing"${S.fVt==='Ride hailing'?' selected':''}>Ride hailing</option>
+      <option value="Delivery"${S.fVt==='Delivery'?' selected':''}>Delivery</option>
+      <option value="Mixto"${S.fVt==='Mixto'?' selected':''}>Mixto</option>
     </select></div>
     <div class="fsel-wrap"><span class="fsel-lbl">Semana</span><select class="fsel" id="fb-wk" onchange="S.fWk=this.value;document.getElementById('sf-wk').value=this.value;render();">
       <option value="all"${S.fWk==='all'?' selected':''}>Todas</option>
@@ -627,6 +707,13 @@ function filterBar(){
       <option value="4"${S.fWk==='4'?' selected':''}>Semana 4</option>
       <option value="5"${S.fWk==='5'?' selected':''}>Semana 5</option>
     </select></div>
+    <div class="fsel-wrap" style="gap:4px;padding:3px 8px;background:${S.fDateFrom||S.fDateTo?'var(--lime-pale)':'var(--off)'};border-color:${S.fDateFrom||S.fDateTo?'var(--lime)':'var(--offb)'};">
+      <span class="fsel-lbl">Rango</span>
+      <input type="date" id="fb-dfrom" min="2026-04-01" max="2026-05-31" value="${S.fDateFrom}" onchange="S.fDateFrom=this.value;render();" style="border:none;background:transparent;font-size:11px;font-weight:700;font-family:'Barlow',sans-serif;color:var(--ink);cursor:pointer;outline:none;width:115px;">
+      <span style="color:var(--muted);font-weight:700;">→</span>
+      <input type="date" id="fb-dto" min="2026-04-01" max="2026-05-31" value="${S.fDateTo}" onchange="S.fDateTo=this.value;render();" style="border:none;background:transparent;font-size:11px;font-weight:700;font-family:'Barlow',sans-serif;color:var(--ink);cursor:pointer;outline:none;width:115px;">
+      ${S.fDateFrom||S.fDateTo?`<span onclick="S.fDateFrom='';S.fDateTo='';render();" style="cursor:pointer;color:var(--coral);font-weight:900;padding:0 4px;font-size:14px;line-height:1;" title="Limpiar rango">×</span>`:''}
+    </div>
     <span class="fb-label" style="margin-left:auto;font-size:10px;color:var(--lime-d);font-weight:800;">${getFiltered().length} / ${CONTENIDOS.length} contenidos</span>
   </div>`;
 }
@@ -643,14 +730,31 @@ function renderMarca(){
      Si filtras por plataforma → usa esa plataforma.
      Si no hay filtro → usa consolidado. ── */
   const platLevel = hasPlat ? 'single' : (!hasFmt ? 'consolidated' : 'none');
-  const dCom = platLevel==='single' ? fmtM(selP.fol) : platLevel==='consolidated' ? fmtM(CONSOLIDADO.comunidad) : '<span class="td-null">Sin data a nivel formato</span>';
-  const dErv = platLevel==='single' ? selP.erv.toFixed(2)+'%' : platLevel==='consolidated' ? CONSOLIDADO.erv.toFixed(2)+'%' : '<span class="td-null">Sin data a nivel formato</span>';
-  const dNetVal = platLevel==='single' ? selP.netSent : platLevel==='consolidated' ? CONSOLIDADO.netSent : null;
-  const dNet = dNetVal!==null ? `<span style="color:${dNetVal>=0?'#18B89A':'#E85A44'};">${dNetVal>=0?'+':''}${dNetVal.toFixed(1)}%</span>` : '<span class="td-null">Sin data a nivel formato</span>';
-  const dCrecLabel = platLevel==='consolidated' ? `<div style="font-size:9px;color:var(--teal);margin-top:3px;">+${CONSOLIDADO.crecimiento}% MoM</div>` : '';
+  const dCom = platLevel==='single' ? fmtM(selP.fol) : platLevel==='consolidated' ? fmtM(CONSOLIDADO.comunidad) : '<span class="td-null">Sin data</span>';
+  const calcedErv = calcERV(filtered,S.fMes);
+  /* ERV: si hay plataforma seleccionada, calcular de contenidos filtrados (no usar PPTX fijo) */
+  /* Excepción: TikTok + Abril = 2.88% (override PPTX) */
+  let dErv;
+  if(platLevel==='single'){
+    if(S.fPlat==='TikTok'&&S.fMes==='4'){dErv='2.88%';}
+    else{
+      const platItems=filtered.filter(x=>x.v>0);
+      const platTotV=platItems.reduce((a,b)=>a+b.v,0);
+      const platTotI=platItems.reduce((a,b)=>a+b.it,0);
+      dErv=platTotV>0?(platTotI/platTotV*100).toFixed(2)+'%':'<span class="td-null">Sin data</span>';
+    }
+  } else {
+    dErv=calcedErv!==null?calcedErv.toFixed(2)+'%':'<span class="td-null">Sin data</span>';
+  }
+  /* Net Sentiment: solo disponible del PPTX Abril. Si es solo Abril o single plat, usa PPTX. Si no, Sin data */
+  const dNetVal = platLevel==='single' ? selP.netSent : (S.fMes==='4'||S.fMes==='all') ? CONSOLIDADO.netSent : null;
+  const dNetNote = (S.fMes==='all'&&dNetVal!==null) ? ' <span style="font-size:8px;opacity:.6;">(Abr)</span>' : '';
+  const dNet = dNetVal!==null ? `<span style="color:${dNetVal>=0?'#18B89A':'#E85A44'};">${dNetVal>=0?'+':''}${dNetVal.toFixed(1)}%</span>${dNetNote}` : '<span class="td-null">Sin data</span>';
+  const dCrecLabel = (platLevel==='consolidated'&&(S.fMes==='all'||S.fMes==='4')) ? `<div style="font-size:9px;color:var(--teal);margin-top:3px;">+${CONSOLIDADO.crecimiento}% MoM</div>` : '';
 
   /* Sentiment: solo disponible por plataforma */
-  const sentAvail = platLevel!=='none';
+  const hasSentData = (S.fMes==='all'||S.fMes==='4'||hasPlat); /* PPTX sentiment only for April + platform level */
+  const sentAvail = platLevel!=='none' && hasSentData;
   const sPl = hasPlat ? [selP] : PLATS;
   let sTotalCom=0,sPosPct='—',sNegPct='—',sNeuPct='—';
   if(sentAvail){
@@ -680,40 +784,75 @@ function renderMarca(){
   </div>`;
 
   /* ── Platform cards: solo si no hay filtro de plataforma ── */
+  /* Build dynamic platform cards from filtered content */
+  const platNames=['Instagram','TikTok','Facebook'];
+  const platClsMap={'Instagram':'ig','TikTok':'tk','Facebook':'fb'};
+  const hasMes=S.fMes!=='all';
+  const isAbril=S.fMes==='4';
+  const isMayo=S.fMes==='5';
+
+  function buildPlatCards(filteredItems,showPlats){
+    let cards='';
+    showPlats.forEach(pn=>{
+      const cls=platClsMap[pn];
+      const pptx=PLATS.find(p=>p.name===pn);
+      const items=filteredItems.filter(x=>x.pl===pn);
+      const itemsV=items.filter(x=>x.v>0);
+      const posts=items.length;
+      const views=items.reduce((a,b)=>a+b.v,0);
+      const likes=items.reduce((a,b)=>a+b.lk,0);
+      const inter=items.reduce((a,b)=>a+b.it,0);
+      const coms=items.reduce((a,b)=>a+b.cm,0);
+      const shr=items.reduce((a,b)=>a+b.sh,0);
+      const interV=itemsV.reduce((a,b)=>a+b.it,0);const viewsV=itemsV.reduce((a,b)=>a+b.v,0);const erPlat=viewsV>0?(interV/viewsV*100):null;
+
+      /* Use PPTX if available for that month, otherwise calculate */
+      /* Abril → PPTX completo. Todos → PPTX solo para snapshot (fol/net), resto calculado. Mayo → todo calculado */
+      const fullPptx=isAbril&&pptx;
+      const snapPptx=pptx; /* followers y net sentiment siempre del PPTX si existe */
+      const dFol=snapPptx?fmtM(pptx.fol):'<span class="td-null">Sin data</span>';
+      const dViews=fullPptx?fmtM(pptx.views):fmtM(views);
+      const dInter=fullPptx?fmtM(pptx.inter):fmtM(inter);
+      const dPosts=fullPptx?pptx.posts:posts;
+      const dErv=fullPptx?pptx.erv.toFixed(2)+'%':(erPlat!==null?erPlat.toFixed(2)+'%':'<span class="td-null">Sin data</span>');
+      const dNet=(!isMayo&&snapPptx)?`<span style="color:${pptx.netSent>=0?'#18B89A':'#E85A44'};">${pptx.netSent>=0?'+':''}${pptx.netSent.toFixed(1)}%</span>${!isAbril?' <span style="font-size:8px;opacity:.5;">(Abr)</span>':''}`:'<span class="td-null">Sin data</span>';
+      const dComs=fullPptx?fmt(pptx.sent.total):fmt(coms);
+      const dLectura=fullPptx?pptx.lectura:(posts>0?posts+' piezas publicadas, '+fmtM(views)+' views, ERV '+(erPlat?erPlat.toFixed(2)+'%':'N/D'):'Sin actividad en este período.');
+
+      if(posts>0||fullPptx||snapPptx){
+        cards+=`<div class="plat-pcard ${cls}">
+          <div class="ppc-head"><div class="ppc-ic ${cls}">${platSvgIcon(pn)}</div><div><div class="ppc-name">${pn}</div><div class="ppc-fol">${dFol} seguidores</div></div></div>
+          <div class="ppc-grid">
+            <div><div class="ppc-st-lbl">Posts</div><div class="ppc-st-val">${dPosts}</div></div>
+            <div><div class="ppc-st-lbl">Views</div><div class="ppc-st-val">${fullPptx?fmtM(pptx.views):fmtM(views)}</div></div>
+            <div><div class="ppc-st-lbl">Interacciones</div><div class="ppc-st-val">${fullPptx?fmtM(pptx.inter):fmtM(inter)}</div></div>
+            <div><div class="ppc-st-lbl">ERV</div><div class="ppc-st-val" style="color:${(fullPptx?pptx.erv*100:(erPlat||0))>=5?'var(--teal)':(fullPptx?pptx.erv*100:(erPlat||0))>=2?'var(--amber)':'var(--coral)'};">${dErv}</div></div>
+            <div><div class="ppc-st-lbl">Net Sentiment</div><div class="ppc-st-val">${dNet}</div></div>
+            <div><div class="ppc-st-lbl">Comentarios</div><div class="ppc-st-val">${dComs}</div></div>
+          </div>
+          <div style="font-size:10px;color:var(--muted);margin-top:10px;font-style:italic;line-height:1.5;">${dLectura}</div>
+        </div>`;
+      }
+    });
+    return cards;
+  }
+
   if(!hasPlat && !hasFmt){
-    h+=`<div class="sec-hdr sec-platform fu fu2"><span class="sec-hdr-ic"><svg width="16" height="16" fill="currentColor"><rect x="1" y="1" width="6" height="6" rx="1"/><rect x="9" y="1" width="6" height="6" rx="1"/><rect x="1" y="9" width="6" height="6" rx="1"/></svg></span>Overview por Red · Abril 2026</div>
-    <div class="plat-cards fu fu2">
-    ${PLATS.map(p=>`<div class="plat-pcard ${p.cls}">
-      <div class="ppc-head"><div class="ppc-ic ${p.cls}">${platSvgIcon(p.name)}</div><div><div class="ppc-name">${p.name}</div><div class="ppc-fol">${fmtM(p.fol)} seguidores</div></div></div>
-      <div class="ppc-grid">
-        <div><div class="ppc-st-lbl">Posts</div><div class="ppc-st-val">${p.posts}</div></div>
-        <div><div class="ppc-st-lbl">Views</div><div class="ppc-st-val">${fmtM(p.views)}</div></div>
-        <div><div class="ppc-st-lbl">Interacciones</div><div class="ppc-st-val">${fmtM(p.inter)}</div></div>
-        <div><div class="ppc-st-lbl">ERV Mensual</div><div class="ppc-st-val" style="color:${p.erv>=5?'var(--teal)':p.erv>=2?'var(--amber)':'var(--coral)'};">${p.erv.toFixed(2)}%</div></div>
-        <div><div class="ppc-st-lbl">Net Sentiment</div><div class="ppc-st-val" style="color:${p.netSent>=0?'#18B89A':'#E85A44'};">${p.netSent>=0?'+':''}${p.netSent.toFixed(1)}%</div></div>
-        <div><div class="ppc-st-lbl">Comentarios</div><div class="ppc-st-val">${fmt(p.sent.total)}</div></div>
-      </div>
-      <div style="font-size:10px;color:var(--muted);margin-top:10px;font-style:italic;line-height:1.5;">${p.lectura}</div>
-    </div>`).join('')}
-    </div>`;
+    const showPlats=platNames.filter(pn=>{
+      const items=filtered.filter(x=>x.pl===pn);
+      const pptx=PLATS.find(p=>p.name===pn);
+      return items.length>0||((!hasMes||isAbril)&&pptx);
+    });
+    if(showPlats.length>0){
+      const mesLabel=isMayo?'Mayo 2026':isAbril?'Abril 2026':'Abr — May 2026';
+      h+=`<div class="sec-hdr sec-platform fu fu2"><span class="sec-hdr-ic"><svg width="16" height="16" fill="currentColor"><rect x="1" y="1" width="6" height="6" rx="1"/><rect x="9" y="1" width="6" height="6" rx="1"/><rect x="1" y="9" width="6" height="6" rx="1"/></svg></span>Overview por Red · ${mesLabel}</div>
+      <div class="plat-cards fu fu2">${buildPlatCards(filtered,showPlats)}</div>`;
+    }
   } else if(hasPlat){
-    /* Single platform detail */
-    const p=selP;
-    h+=`<div class="sec-hdr sec-platform fu fu2"><span class="sec-hdr-ic"><svg width="16" height="16" fill="currentColor"><rect x="1" y="1" width="6" height="6" rx="1"/><rect x="9" y="1" width="6" height="6" rx="1"/><rect x="1" y="9" width="6" height="6" rx="1"/></svg></span>${p.name} · Detalle Abril 2026</div>
-    <div class="plat-cards fu fu2" style="grid-template-columns:1fr;">
-      <div class="plat-pcard ${p.cls}">
-        <div class="ppc-head"><div class="ppc-ic ${p.cls}">${platSvgIcon(p.name)}</div><div><div class="ppc-name">${p.name}</div><div class="ppc-fol">${fmtM(p.fol)} seguidores</div></div></div>
-        <div class="ppc-grid" style="grid-template-columns:repeat(6,1fr);">
-          <div><div class="ppc-st-lbl">Posts</div><div class="ppc-st-val">${p.posts}</div></div>
-          <div><div class="ppc-st-lbl">Views</div><div class="ppc-st-val">${fmtM(p.views)}</div></div>
-          <div><div class="ppc-st-lbl">Likes</div><div class="ppc-st-val">${fmtM(p.likes)}</div></div>
-          <div><div class="ppc-st-lbl">Comments</div><div class="ppc-st-val">${fmt(p.com)}</div></div>
-          <div><div class="ppc-st-lbl">Shares</div><div class="ppc-st-val">${fmt(p.shr)}</div></div>
-          <div><div class="ppc-st-lbl">ERV Mensual</div><div class="ppc-st-val" style="color:${p.erv>=5?'var(--teal)':p.erv>=2?'var(--amber)':'var(--coral)'};">${p.erv.toFixed(2)}%</div></div>
-        </div>
-        <div style="font-size:10px;color:var(--muted);margin-top:10px;font-style:italic;line-height:1.5;">${p.lectura}</div>
-      </div>
-    </div>`;
+    const showPlats=[S.fPlat];
+    const mesLabel=isMayo?'Mayo 2026':isAbril?'Abril 2026':'Abr — May 2026';
+    h+=`<div class="sec-hdr sec-platform fu fu2"><span class="sec-hdr-ic"><svg width="16" height="16" fill="currentColor"><rect x="1" y="1" width="6" height="6" rx="1"/><rect x="9" y="1" width="6" height="6" rx="1"/><rect x="1" y="9" width="6" height="6" rx="1"/></svg></span>${S.fPlat} · ${mesLabel}</div>
+    <div class="plat-cards fu fu2" style="grid-template-columns:1fr;">${buildPlatCards(filtered,showPlats)}</div>`;
   }
   /* Si solo hay filtro de formato (no plataforma), no mostramos tarjetas de plataforma — no hay match */
 
@@ -729,14 +868,14 @@ function renderMarca(){
             <div class="sent-row"><span class="sent-lbl">Positivos</span><span class="sent-val" style="color:#18B89A;">${sPosPct}%</span></div>
             <div class="sent-row"><span class="sent-lbl">Negativos</span><span class="sent-val" style="color:#E85A44;">${sNegPct}%</span></div>
             <div class="sent-row"><span class="sent-lbl">Neutrales</span><span class="sent-val" style="color:var(--muted);">${sNeuPct}%</span></div>
-            <div class="sent-row" style="margin-top:8px;padding-top:8px;border-top:1px solid var(--off);"><span class="sent-lbl">Net Sentiment</span><span class="sent-val" style="color:${dNetVal>=0?'#18B89A':'#E85A44'};font-size:18px;">${dNetVal>=0?'+':''}${dNetVal.toFixed(1)}%</span></div>
+            <div class="sent-row" style="margin-top:8px;padding-top:8px;border-top:1px solid var(--off);"><span class="sent-lbl">Net Sentiment</span><span class="sent-val" style="color:${dNetVal!=null&&dNetVal>=0?'#18B89A':'#E85A44'};font-size:18px;">${dNetVal!=null?(dNetVal>=0?'+':'')+dNetVal.toFixed(1)+'%':'Sin data'}</span></div>
           </div>
         </div>
       </div>
     </div>`;
   } else {
     h+=`<div class="sec-hdr sec-sentiment fu fu3"><span class="sec-hdr-ic"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6.5"/></svg></span>Sentiment</div>
-    <div class="empty-card fu fu3" style="padding:24px;"><b>Sin data de sentimiento a nivel formato</b>El sentimiento solo está disponible por plataforma (TikTok, Instagram, Facebook). Selecciona una plataforma en el filtro para ver su sentiment.</div>`;
+    <div class="empty-card fu fu3" style="padding:24px;"><b>Sin data de sentimiento</b>${S.fMes==='5'?'<b>Mes en curso</b><div style="margin-top:8px;color:var(--muted);">Se actualizará al cerrar el mes.</div>':'El sentimiento solo está disponible por plataforma. Selecciona una plataforma o un mes con datos disponibles.'}</div>`;
   }
 
   /* ── Tabla TODOS los contenidos filtrados ── */
@@ -805,11 +944,22 @@ function renderInfluencer(){
 
   /* Dynamic KPIs for profile card */
   const dCom=platLevel==='single'?fmtM(selP.fol):platLevel==='consolidated'?fmtM(CONSOLIDADO.comunidad):'<span class="td-null">Sin data</span>';
-  const dErv=platLevel==='single'?selP.erv.toFixed(2)+'%':platLevel==='consolidated'?CONSOLIDADO.erv.toFixed(2)+'%':'<span class="td-null">Sin data</span>';
+  const calcedErvInf=calcERV(filtered,S.fMes);
+  let dErv;
+  if(platLevel==='single'){
+    if(S.fPlat==='TikTok'&&S.fMes==='4'){dErv='2.88%';}
+    else{
+      const pItms=filtered.filter(x=>x.v>0);
+      const pTV=pItms.reduce((a,b)=>a+b.v,0);
+      const pTI=pItms.reduce((a,b)=>a+b.it,0);
+      dErv=pTV>0?(pTI/pTV*100).toFixed(2)+'%':'<span class="td-null">Sin data</span>';
+    }
+  } else if(S.fMes==='4'){dErv=CONSOLIDADO.erv.toFixed(2)+'%';}
+  else{dErv=calcedErvInf!==null?calcedErvInf.toFixed(2)+'%':'<span class="td-null">Sin data</span>';}
   const ctx=hasPlat&&hasFmt?selP.name+' · '+S.fFmt:hasPlat?selP.name:hasFmt?S.fFmt:'';
 
   /* Audiencia only available for TikTok */
-  const showAud=!hasPlat||S.fPlat==='TikTok';
+  const showAud=(!hasPlat||S.fPlat==='TikTok')&&S.fMes!=='5';
 
   /* Plats to show in table */
   const tblPlats=hasPlat?PLATS.filter(p=>p.name===S.fPlat):PLATS;
@@ -851,15 +1001,19 @@ function renderInfluencer(){
     </div>`;
   } else {
     h+=`<div class="sec-hdr sec-sentiment fu fu2"><span class="sec-hdr-ic"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="5" r="2.8"/></svg></span>Audiencia</div>
-    <div class="empty-card fu fu2" style="padding:24px;"><b>Sin data de audiencia para ${S.fPlat}</b>La audiencia demográfica solo está disponible para TikTok (FACT_AUDIENCIA_RESUMEN). Selecciona TikTok o "Todas" para verla.</div>`;
+    <div class="empty-card fu fu2" style="padding:24px;">${S.fMes==='5'?'<b>Mes en curso</b><div style="margin-top:8px;color:var(--muted);">Se actualizará al cerrar el mes.</div>':'<b>Sin data de audiencia para '+(S.fPlat||'esta selección')+'</b><div style="margin-top:8px;color:var(--muted);">La audiencia demográfica solo está disponible para TikTok. Selecciona TikTok o "Todas" para verla.</div>'}</div>`;
   }
 
-  /* ── Performance × Plataforma — DYNAMIC by week ── */
+  /* ── Performance × Plataforma — DYNAMIC by month + week ── */
   const hasWeek = S.fWk!=='all';
-  /* If week filter active: recalculate from CONTENIDOS grouped by platform */
+  const hasMesInf = S.fMes!=='all';
+  const isAbrilInf = S.fMes==='4';
+  const isMayoInf = S.fMes==='5';
+  const useFullPptx = isAbrilInf && !hasWeek; /* PPTX solo para Abril sin filtro semana */
+
   let perfRows = '';
-  if(!hasWeek){
-    /* No week filter → use PPTX monthly totals */
+  if(useFullPptx){
+    /* Abril sin semana → PPTX totales */
     tblPlats.forEach(p=>{
       perfRows+=`<tr><td>${platBadge(p.name)}</td><td>${fmtM(p.fol)}</td><td>${p.posts}</td><td>${fmt(p.views)}</td><td>${fmt(p.likes)}</td><td>${fmt(p.com)}</td><td>${fmt(p.shr)}</td><td class="td-int">${fmt(p.inter)}</td><td class="td-er">${p.erv.toFixed(2)}%</td><td style="color:${p.netSent>=0?'#18B89A':'#E85A44'};font-weight:800;">${p.netSent>=0?'+':''}${p.netSent.toFixed(1)}%</td></tr>`;
     });
@@ -867,24 +1021,31 @@ function renderInfluencer(){
       perfRows+=`<tr><td>TOTAL</td><td>${fmtM(tblPlats.reduce((a,b)=>a+b.fol,0))}</td><td>${tblPlats.reduce((a,b)=>a+b.posts,0)}</td><td>${fmt(tblPlats.reduce((a,b)=>a+b.views,0))}</td><td>${fmt(tblPlats.reduce((a,b)=>a+b.likes,0))}</td><td>${fmt(tblPlats.reduce((a,b)=>a+b.com,0))}</td><td>${fmt(tblPlats.reduce((a,b)=>a+b.shr,0))}</td><td class="td-int">${fmt(tblPlats.reduce((a,b)=>a+b.inter,0))}</td><td class="td-er">${CONSOLIDADO.erv.toFixed(2)}%</td><td style="color:#18B89A;font-weight:800;">+${CONSOLIDADO.netSent.toFixed(1)}%</td></tr>`;
     }
   } else {
-    /* Week filter active → recalculate from filtered CONTENIDOS */
-    const platNames = hasPlat ? [S.fPlat] : ['Instagram','TikTok','Facebook'];
+    /* Mayo, Todos, o con filtro semana → calcular de CONTENIDOS filtrados */
+    const platNamesInf = hasPlat ? [S.fPlat] : ['Instagram','TikTok','Facebook'];
     let totP=0,totV=0,totLk=0,totCm=0,totSh=0,totIt=0;
-    platNames.forEach(pn=>{
-      const pItems = filtered.filter(x=>x.pl===pn);
-      const pltRef = PLATS.find(x=>x.name===pn);
-      const cnt=pItems.length, vw=pItems.reduce((a,b)=>a+b.v,0), lk=pItems.reduce((a,b)=>a+b.lk,0),
-            cm=pItems.reduce((a,b)=>a+b.cm,0), sh=pItems.reduce((a,b)=>a+b.sh,0), it=pItems.reduce((a,b)=>a+b.it,0);
+    platNamesInf.forEach(pn=>{
+      const pItems=filtered.filter(x=>x.pl===pn);
+      const pltRef=PLATS.find(x=>x.name===pn);
+      const cnt=pItems.length,vw=pItems.reduce((a,b)=>a+b.v,0),lk=pItems.reduce((a,b)=>a+b.lk,0),
+            cm=pItems.reduce((a,b)=>a+b.cm,0),sh=pItems.reduce((a,b)=>a+b.sh,0),it=pItems.reduce((a,b)=>a+b.it,0);
+      const pWithV=pItems.filter(x=>x.v>0);const itV=pWithV.reduce((a,b)=>a+b.it,0);const vwV=pWithV.reduce((a,b)=>a+b.v,0);
+      const erP=vwV>0?(itV/vwV*100):null;
       totP+=cnt;totV+=vw;totLk+=lk;totCm+=cm;totSh+=sh;totIt+=it;
+      /* Net Sentiment: solo PPTX si no es Mayo */
+      const netS=(!isMayoInf&&pltRef)?`<span style="color:${pltRef.netSent>=0?'#18B89A':'#E85A44'};font-weight:800;">${pltRef.netSent>=0?'+':''}${pltRef.netSent.toFixed(1)}%</span>${!isAbrilInf?' <span style="font-size:8px;opacity:.5;">(Abr)</span>':''}`:NULL_TAG;
       if(cnt>0){
-        perfRows+=`<tr><td>${platBadge(pn)}</td><td>${fmtM(pltRef?pltRef.fol:0)}</td><td>${cnt}</td><td>${fmt(vw)}</td><td>${fmt(lk)}</td><td>${fmt(cm)}</td><td>${fmt(sh)}</td><td class="td-int">${fmt(it)}</td><td class="td-null" style="font-style:italic;color:var(--subtle);">Sin data</td><td class="td-null" style="font-style:italic;color:var(--subtle);">Sin data</td></tr>`;
+        perfRows+=`<tr><td>${platBadge(pn)}</td><td>${fmtM(pltRef?pltRef.fol:0)}</td><td>${cnt}</td><td>${fmt(vw)}</td><td>${fmt(lk)}</td><td>${fmt(cm)}</td><td>${fmt(sh)}</td><td class="td-int">${fmt(it)}</td><td class="td-er">${erP!==null?erP.toFixed(2)+'%':NULL_TAG}</td><td>${netS}</td></tr>`;
       }
     });
-    if(platNames.length>1 && totP>0){
-      perfRows+=`<tr><td>TOTAL</td><td>${fmtM(PLATS.reduce((a,b)=>a+b.fol,0))}</td><td>${totP}</td><td>${fmt(totV)}</td><td>${fmt(totLk)}</td><td>${fmt(totCm)}</td><td>${fmt(totSh)}</td><td class="td-int">${fmt(totIt)}</td><td class="td-null" style="font-style:italic;color:var(--subtle);">Sin data</td><td class="td-null" style="font-style:italic;color:var(--subtle);">Sin data</td></tr>`;
+    if(platNamesInf.length>1&&totP>0){
+      const totalErv=calcERV(filtered,S.fMes);
+      const totalNet=(!isMayoInf)?`<span style="color:#18B89A;font-weight:800;">+${CONSOLIDADO.netSent.toFixed(1)}%</span>${!isAbrilInf?' <span style="font-size:8px;opacity:.5;">(Abr)</span>':''}`:NULL_TAG;
+      perfRows+=`<tr><td>TOTAL</td><td>${fmtM(PLATS.reduce((a,b)=>a+b.fol,0))}</td><td>${totP}</td><td>${fmt(totV)}</td><td>${fmt(totLk)}</td><td>${fmt(totCm)}</td><td>${fmt(totSh)}</td><td class="td-int">${fmt(totIt)}</td><td class="td-er">${totalErv!==null?totalErv.toFixed(2)+'%':NULL_TAG}</td><td>${totalNet}</td></tr>`;
     }
   }
-  h+=`<div class="sec-hdr sec-detail fu fu3"><span class="sec-hdr-ic"><svg width="16" height="16" fill="currentColor"><rect x="1" y="2" width="14" height="12" rx="1" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M1 6h14" stroke="currentColor" stroke-width="1.3"/></svg></span>Performance × Plataforma${ctx?' · '+ctx:''}${hasWeek?' · Semana '+S.fWk:''}</div>
+  const mesLabelInf=isMayoInf?'Mayo 2026':isAbrilInf?'Abril 2026':'Abr — May 2026';
+  h+=`<div class="sec-hdr sec-detail fu fu3"><span class="sec-hdr-ic"><svg width="16" height="16" fill="currentColor"><rect x="1" y="2" width="14" height="12" rx="1" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M1 6h14" stroke="currentColor" stroke-width="1.3"/></svg></span>Performance × Plataforma · ${mesLabelInf}${ctx?' · '+ctx:''}${hasWeek?' · Semana '+S.fWk:''}</div>
   <div class="tbl-wrap fu fu3">
     <table class="dt"><thead><tr>
       <th style="text-align:left;background:#2D6AC4;color:#fff;">Plataforma</th><th style="background:#2D6AC4;color:#fff;">Seguidores</th><th style="background:#2D6AC4;color:#fff;">Posts</th><th style="background:#2D6AC4;color:#fff;">Views</th><th style="background:#2D6AC4;color:#fff;">Likes</th><th style="background:#2D6AC4;color:#fff;">Comments</th><th style="background:#2D6AC4;color:#fff;">Shares</th><th style="background:#2D6AC4;color:#fff;">Interacc.</th><th style="background:#2D6AC4;color:#fff;">ERV</th><th style="background:#2D6AC4;color:#fff;">Net Sent.</th>
@@ -952,6 +1113,19 @@ function renderRanking(){
 function renderComentarios(){
   const B=BUZZ;
   let h=filterBar();
+
+  /* If May selected, show pending message */
+  if(S.fMes==='5'){
+    h+=`<div class="sec-hdr sec-overview fu fu1" style="margin-top:0;"><span class="sec-hdr-ic"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 2h12v9H8L5 14V11H2z"/></svg></span>Top Comentarios · Mayo 2026</div>
+    <div style="display:flex;align-items:center;justify-content:center;min-height:40vh;">
+      <div class="empty-card" style="max-width:400px;padding:40px;">
+        <b style="font-size:18px;">Mes en curso</b>
+        <div style="margin-top:8px;color:var(--muted);">Se actualizará al cerrar el mes.</div>
+      </div>
+    </div>`;
+    document.getElementById('sa').innerHTML=h;killAll();return;
+  }
+
   h+=`<div class="sec-hdr sec-overview fu fu1" style="margin-top:0;"><span class="sec-hdr-ic"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 2h12v9H8L5 14V11H2z"/></svg></span>Buzz Commenting · Abril 2026</div>
   <div class="g-grid fu fu1" style="grid-template-columns:repeat(4,1fr);margin-bottom:14px;">
     <div class="g-kpi"><div class="g-kpi-lbl">COMENTARIOS POSTEADOS</div><div class="g-kpi-val">${fmt(B.stats.totalPosted)}</div><div style="font-size:9px;color:var(--teal);margin-top:3px;">+${B.stats.momPct}% MoM</div></div>
