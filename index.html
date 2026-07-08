@@ -474,191 +474,291 @@ table.dt tbody tr:last-child td{font-weight:900;background:rgba(197,240,0,.08);}
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
 <script>
 const CREATORS=[
-  {id:'CRE_PE_INDRIVE',pais:'PE',nombre:'InDrive',handle:'@indrive.pe',tipo:'Marca',plat:'Multiplataforma',ini:'I'},
-  {id:'CRE_PE_LUIS_VASQUEZ',pais:'PE',nombre:'Luis Vasquez',handle:'@lugarestop',tipo:'Influencer',plat:'Instagram',ini:'LV'},
-  {id:'CRE_PE_LOS_MIRLOS',pais:'PE',nombre:'Los Mirlos',handle:'@losmirlos',tipo:'Cuenta colaboradora',plat:'Multiplataforma',ini:'LM'},
-  {id:'CRE_PE_LAS_GAVIOTAS_CEVICHERIA',pais:'PE',nombre:'Las Gaviotas Cevichería',handle:'@lasgaviotas.cevicheria',tipo:'Cuenta colaboradora',plat:'Multiplataforma',ini:'LG'},
-  {id:'CRE_PE_CAMILA_HEREDIA',pais:'PE',nombre:'Camila Heredia',handle:'@camilaherediaab',tipo:'Influencer',plat:'Instagram',ini:'CH'},
-  {id:'CRE_PE_LIZ_SANDOVA',pais:'PE',nombre:'Liz Sandova',handle:'@lizsandovalk',tipo:'Influencer',plat:'Instagram',ini:'LS'},
-  {id:'CRE_PE_COPA_CALIENTE_LIGA',pais:'PE',nombre:'Copa Caliente de la Liga',handle:'@copacaliente.pe',tipo:'Cuenta colaboradora',plat:'Instagram',ini:'CC'},
-  {id:'CRE_PE_LIGA1_TE_APUESTO',pais:'PE',nombre:'Liga1 Te Apuesto',handle:'@liga1teapuesto',tipo:'Cuenta colaboradora',plat:'Instagram',ini:'LT'},
-  {id:'CRE_PE_RODRIGO_PEREA',pais:'PE',nombre:'Rodrigo Perea',handle:'@rodrigol.pe',tipo:'Influencer',plat:'Instagram',ini:'RP'},
-  {id:'CRE_PE_KAREN_SCHWARZ',pais:'PE',nombre:'Karen Schwarz',handle:'@karenschwarzespinoza',tipo:'Influencer',plat:'Multiplataforma',ini:'KS'},
-  {id:'CRE_PE_EL_CHATO_RAUL',pais:'PE',nombre:'ElChatoRaul',handle:'@elchatoraul',tipo:'Influencer',plat:'Instagram',ini:'E'},
+  {id:'CRE_CL_ALTO_YOYO',pais:'CL',nombre:'Alto Yoyo',handle:'@altoyoyo',tipo:'Influencer',plat:'Instagram',ini:'AY'},
+  {id:'CRE_CL_EL_JANO_JEY',pais:'CL',nombre:'El Jano Jey',handle:'@eljanojey',tipo:'Influencer',plat:'Instagram',ini:'EJ'},
   {id:'CRE_CL_INDRIVE',pais:'CL',nombre:'InDrive Chile',handle:'@indrive.cl',tipo:'Marca',plat:'TikTok',ini:'IC'},
+  {id:'CRE_CL_LUCAS_PINOZA',pais:'CL',nombre:'Lucas Pinoza',handle:'@lucas_pinoza.cl',tipo:'Influencer',plat:'Instagram',ini:'LP'},
+  {id:'CRE_PE_CAMILA_HEREDIA',pais:'PE',nombre:'Camila Heredia',handle:'@camilaherediaab',tipo:'Influencer',plat:'Instagram',ini:'CH'},
+  {id:'CRE_PE_COPA_CALIENTE_LIGA',pais:'PE',nombre:'Copa Caliente de la Liga',handle:'@copacaliente.pe',tipo:'Cuenta colaboradora',plat:'Instagram',ini:'CC'},
+  {id:'CRE_PE_DIEGO_URBENIA',pais:'PE',nombre:'Diego Urbenia',handle:'@diegourbenia',tipo:'Influencer',plat:'Facebook',ini:'DU'},
+  {id:'CRE_PE_EL_CHATO_RAUL',pais:'PE',nombre:'ElChatoRaul',handle:'@elchatoraul',tipo:'Influencer',plat:'Instagram',ini:'E'},
+  {id:'CRE_PE_ENFOCADOS_PODCAST',pais:'PE',nombre:'Enfocados Podcast',handle:'@enfocadospodcast',tipo:'Influencer',plat:'Instagram',ini:'EP'},
+  {id:'CRE_PE_FARFAN',pais:'PE',nombre:'Farfan',handle:'@farfan.pe',tipo:'Influencer',plat:'Facebook',ini:'F'},
+  {id:'CRE_PE_INDRIVE',pais:'PE',nombre:'InDrive',handle:'@indrive.pe',tipo:'Marca',plat:'Multiplataforma',ini:'I'},
+  {id:'CRE_PE_KAREN_SCHWARZ',pais:'PE',nombre:'Karen Schwarz',handle:'@karenschwarzespinoza',tipo:'Influencer',plat:'Multiplataforma',ini:'KS'},
+  {id:'CRE_PE_LAS_GAVIOTAS_CEVICHERIA',pais:'PE',nombre:'Las Gaviotas Cevichería',handle:'@lasgaviotas.cevicheria',tipo:'Cuenta colaboradora',plat:'Multiplataforma',ini:'LG'},
+  {id:'CRE_PE_LIGA1_TE_APUESTO',pais:'PE',nombre:'Liga1 Te Apuesto',handle:'@liga1teapuesto',tipo:'Cuenta colaboradora',plat:'Instagram',ini:'LT'},
+  {id:'CRE_PE_LIZ_SANDOVA',pais:'PE',nombre:'Liz Sandova',handle:'@lizsandovalk',tipo:'Influencer',plat:'Instagram',ini:'LS'},
+  {id:'CRE_PE_LOS_MIRLOS',pais:'PE',nombre:'Los Mirlos',handle:'@losmirlos',tipo:'Cuenta colaboradora',plat:'Multiplataforma',ini:'LM'},
+  {id:'CRE_PE_LUIS_VASQUEZ',pais:'PE',nombre:'Luis Vasquez',handle:'@lugarestop',tipo:'Influencer',plat:'Instagram',ini:'LV'},
+  {id:'CRE_PE_NIETOS_ITINERANTES',pais:'PE',nombre:'Nietos Itinerantes',handle:'@nietos_itinerantes.pe',tipo:'Influencer',plat:'Facebook',ini:'NI'},
+  {id:'CRE_PE_RODRIGO_PEREA',pais:'PE',nombre:'Rodrigo Perea',handle:'@rodrigol.pe',tipo:'Influencer',plat:'Instagram',ini:'RP'},
+  {id:'CRE_PE_TALIA_AZCARATE',pais:'PE',nombre:'Talia Azcarate',handle:'@talia_azcarate.pe',tipo:'Influencer',plat:'Instagram',ini:'TA'},
+  {id:'CRE_PE_lUGARES_TOP',pais:'PE',nombre:'Lugares Top',handle:'@lugarestop',tipo:'Influencer',plat:'Facebook',ini:'LT'},
+  {id:'CRE_PE_MASHA_SEKUTOROVA',pais:'PE',nombre:'Masha',handle:'@mashayeloso',tipo:'Influencer',plat:'Instagram',ini:'M'},
+  {id:'CRE_PE_WARIQUEANDO',pais:'PE',nombre:'Whariqueando',handle:'@wariqueando',tipo:'Influencer',plat:'Instagram',ini:'W'},
 ];
 let selCreator='CRE_PE_INDRIVE';
 const CONTENIDOS=[
-{fd:'30/04',pais:'PE',pl:'Instagram',fm:'Reel',vt:'Drivers',cre:'CRE_PE_LAS_GAVIOTAS_CEVICHERIA',url:'https://www.instagram.com/p/DXwiXRCtuJb/',v:330000,alc:null,lk:19300,cm:1042,sh:1617,gd:0,it:21959,er:6.65},
-{fd:'30/04',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Drivers',cre:'CRE_PE_LAS_GAVIOTAS_CEVICHERIA',url:'https://www.tiktok.com/@lasgaviotas.cevicheria/video/7634553673179221265',v:315400,alc:null,lk:20800,cm:633,sh:1912,gd:1023,it:24368,er:7.73},
-{fd:'25/05',pais:'PE',pl:'Instagram',fm:'Reel',vt:'Ride hailing',cre:'CRE_PE_KAREN_SCHWARZ',url:'https://www.instagram.com/p/DYxPpb1RWUD/',v:144000,alc:null,lk:1194,cm:51,sh:25,gd:0,it:1270,er:0.88},
-{fd:'06/05',pais:'PE',pl:'Instagram',fm:'Reel',vt:'Delivery',cre:'CRE_PE_LIZ_SANDOVA',url:'https://www.instagram.com/p/DYA9uLvxQHH/?next=%2Freel%2FDXkqHnYEWDs%2F',v:51700,alc:null,lk:376,cm:150,sh:6,gd:0,it:532,er:1.03},
-{fd:'23/05',pais:'PE',pl:'Instagram',fm:'Reel',vt:'Delivery',cre:'CRE_PE_LIGA1_TE_APUESTO',url:'https://www.instagram.com/p/DYtDwQ_Mw6o/',v:40100,alc:null,lk:925,cm:39,sh:97,gd:0,it:1061,er:2.65},
-{fd:'28/05',pais:'PE',pl:'Instagram',fm:'Reel',vt:'Drivers',cre:'CRE_PE_EL_CHATO_RAUL',url:'https://www.instagram.com/p/DY4nt3XxAMS/',v:20800,alc:null,lk:1383,cm:151,sh:132,gd:0,it:1666,er:8.01},
-{fd:'23/04',pais:'PE',pl:'Instagram',fm:'Reel',vt:'Drivers',cre:'CRE_PE_LUIS_VASQUEZ',url:'https://www.instagram.com/p/DXdJni6jGmG/',v:19600,alc:null,lk:823,cm:50,sh:105,gd:0,it:978,er:4.99},
-{fd:'18/05',pais:'PE',pl:'Instagram',fm:'Reel',vt:'Drivers',cre:'CRE_PE_INDRIVE',url:'https://www.instagram.com/p/DYfUWUGRYRc/',v:13600,alc:null,lk:105,cm:20,sh:30,gd:0,it:155,er:1.14},
-{fd:'02/04',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Ride hailing',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7624233432813407506',v:9548,alc:null,lk:79,cm:12,sh:3,gd:4,it:98,er:1.03},
-{fd:'29/04',pais:'PE',pl:'Instagram',fm:'Reel',vt:'Drivers',cre:'CRE_PE_LOS_MIRLOS',url:'https://www.instagram.com/p/DXuypKfDxku/',v:7659,alc:null,lk:168,cm:57,sh:11,gd:0,it:236,er:3.08},
-{fd:'06/05',pais:'PE',pl:'Instagram',fm:'Reel',vt:'Delivery',cre:'CRE_PE_CAMILA_HEREDIA',url:'https://www.instagram.com/p/DYA6a7lO3gd/?next=%2Freel%2FDXkqHnYEWDs%2F',v:7515,alc:2000,lk:109,cm:64,sh:6,gd:0,it:179,er:2.38},
-{fd:'02/04',pais:'PE',pl:'Instagram',fm:'Reel',vt:'Ride hailing',cre:'CRE_PE_INDRIVE',url:'https://www.instagram.com/p/DWpFWXLhBhV/',v:7080,alc:null,lk:30,cm:17,sh:3,gd:0,it:50,er:0.71},
-{fd:'02/04',pais:'PE',pl:'Instagram',fm:'Reel',vt:'Ride hailing',cre:'CRE_PE_INDRIVE',url:'https://www.instagram.com/p/DWo6_l7kQYt/',v:6971,alc:null,lk:27,cm:14,sh:1,gd:0,it:42,er:0.6},
-{fd:'18/05',pais:'PE',pl:'Facebook',fm:'Reel',vt:'Drivers',cre:'CRE_PE_INDRIVE',url:'https://www.facebook.com/reel/1768092660881744/',v:6700,alc:null,lk:25,cm:19,sh:1,gd:0,it:45,er:0.67},
-{fd:'02/04',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Ride hailing',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7624230486591720722',v:6467,alc:null,lk:93,cm:12,sh:2,gd:5,it:112,er:1.73},
-{fd:'26/05',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Ride hailing',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7644213942423735560',v:6000,alc:null,lk:82,cm:13,sh:4,gd:5,it:104,er:1.73},
-{fd:'20/04',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Drivers',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7630999040418778386',v:5698,alc:null,lk:170,cm:111,sh:66,gd:26,it:373,er:6.55},
-{fd:'24/05',pais:'PE',pl:'Instagram',fm:'Reel',vt:'Mixto',cre:'CRE_PE_RODRIGO_PEREA',url:'https://www.instagram.com/p/DYvoRxNsgnt/',v:5235,alc:null,lk:136,cm:8,sh:0,gd:0,it:144,er:2.75},
-{fd:'09/04',pais:'PE',pl:'Instagram',fm:'Reel',vt:'Drivers',cre:'CRE_PE_INDRIVE',url:'https://www.instagram.com/p/DW7gn3EkYt5/',v:5200,alc:null,lk:38,cm:45,sh:1,gd:0,it:84,er:1.62},
-{fd:'02/04',pais:'PE',pl:'Facebook',fm:'Reel',vt:'Ride hailing',cre:'CRE_PE_INDRIVE',url:'https://www.facebook.com/reel/2241740056566403/',v:5200,alc:null,lk:14,cm:16,sh:3,gd:0,it:33,er:0.63},
-{fd:'22/05',pais:'PE',pl:'Instagram',fm:'Reel',vt:'Drivers',cre:'CRE_PE_INDRIVE',url:'https://www.instagram.com/p/DYqX3mERShH/',v:4727,alc:1400,lk:57,cm:10,sh:2,gd:0,it:69,er:1.46},
-{fd:'02/04',pais:'PE',pl:'Facebook',fm:'Reel',vt:'Ride hailing',cre:'CRE_PE_INDRIVE',url:'https://www.facebook.com/reel/1171131531672792/',v:4700,alc:null,lk:17,cm:13,sh:2,gd:0,it:32,er:0.68},
-{fd:'07/05',pais:'PE',pl:'Instagram',fm:'Reel',vt:'Drivers',cre:'CRE_PE_INDRIVE',url:'https://www.instagram.com/p/DYCybP3x3cs/?next=%2Freel%2FDXkqHnYEWDs%2F',v:4266,alc:null,lk:62,cm:27,sh:11,gd:0,it:100,er:2.34},
-{fd:'24/04',pais:'PE',pl:'Instagram',fm:'Reel',vt:'Drivers',cre:'CRE_PE_INDRIVE',url:'https://www.instagram.com/p/DXhhw0-EWrl/',v:4235,alc:null,lk:39,cm:15,sh:0,gd:0,it:54,er:1.28},
-{fd:'27/05',pais:'PE',pl:'Instagram',fm:'Reel',vt:'Drivers',cre:'CRE_PE_INDRIVE',url:'https://www.instagram.com/p/DY3Ju9NxDyW/',v:4209,alc:1000,lk:44,cm:16,sh:2,gd:0,it:62,er:1.47},
-{fd:'17/04',pais:'PE',pl:'Instagram',fm:'Reel',vt:'Drivers',cre:'CRE_PE_INDRIVE',url:'https://www.instagram.com/p/DXQEdy8EYWq/',v:3898,alc:null,lk:34,cm:9,sh:0,gd:0,it:43,er:1.1},
-{fd:'28/05',pais:'PE',pl:'Instagram',fm:'Reel',vt:'Drivers',cre:'CRE_PE_INDRIVE',url:'https://www.instagram.com/p/DY4-h85xMFS/',v:3872,alc:null,lk:51,cm:28,sh:6,gd:0,it:85,er:2.2},
-{fd:'17/04',pais:'PE',pl:'Facebook',fm:'Reel',vt:'Ride hailing',cre:'CRE_PE_INDRIVE',url:'https://www.facebook.com/reel/1883488796373062/',v:3800,alc:null,lk:32,cm:72,sh:2,gd:0,it:106,er:2.79},
-{fd:'25/05',pais:'PE',pl:'Instagram',fm:'Reel',vt:'Ride hailing',cre:'CRE_PE_INDRIVE',url:'https://www.instagram.com/p/DYx_Mu4RHke/',v:3679,alc:1400,lk:47,cm:7,sh:6,gd:0,it:60,er:1.63},
-{fd:'12/05',pais:'PE',pl:'Instagram',fm:'Reel',vt:'Ride hailing',cre:'CRE_PE_INDRIVE',url:'https://www.instagram.com/p/DYQfpwVRzg7/?next=%2Freel%2FDXkqHnYEWDs%2F',v:3563,alc:900,lk:50,cm:12,sh:14,gd:0,it:76,er:2.13},
-{fd:'13/05',pais:'PE',pl:'Instagram',fm:'Reel',vt:'Ride hailing',cre:'CRE_PE_INDRIVE',url:'https://www.instagram.com/p/DYTEYlIRuIM/?next=%2Freel%2FDXkqHnYEWDs%2F',v:3492,alc:null,lk:27,cm:21,sh:1,gd:0,it:49,er:1.4},
-{fd:'15/05',pais:'PE',pl:'Instagram',fm:'Reel',vt:'Ride hailing',cre:'CRE_PE_INDRIVE',url:'https://www.instagram.com/p/DYXnAc1xLPt/?next=%2Freel%2FDXkqHnYEWDs%2F',v:3484,alc:750,lk:18,cm:13,sh:2,gd:0,it:33,er:0.95},
-{fd:'31/05',pais:'PE',pl:'Instagram',fm:'Reel',vt:'Drivers',cre:'CRE_PE_INDRIVE',url:'https://www.instagram.com/p/DZB1D4it0Ej/',v:3356,alc:null,lk:32,cm:13,sh:0,gd:0,it:45,er:1.34},
-{fd:'21/05',pais:'PE',pl:'Instagram',fm:'Reel',vt:'Drivers',cre:'CRE_PE_INDRIVE',url:'https://www.instagram.com/p/DYm_q2hR48L/',v:3333,alc:1010,lk:47,cm:11,sh:11,gd:0,it:69,er:2.07},
-{fd:'22/05',pais:'PE',pl:'Facebook',fm:'Reel',vt:'Drivers',cre:'CRE_PE_INDRIVE',url:'https://www.facebook.com/reel/2263102317430818/',v:3300,alc:null,lk:23,cm:9,sh:1,gd:0,it:33,er:1.0},
-{fd:'09/04',pais:'PE',pl:'Facebook',fm:'Reel',vt:'Drivers',cre:'CRE_PE_INDRIVE',url:'https://www.facebook.com/reel/1652745609094826/',v:3200,alc:null,lk:20,cm:44,sh:1,gd:0,it:65,er:2.03},
-{fd:'30/05',pais:'PE',pl:'Instagram',fm:'Reel',vt:'Drivers',cre:'CRE_PE_INDRIVE',url:'https://www.instagram.com/p/DY-6zfFRXb3/',v:3189,alc:1700,lk:50,cm:9,sh:2,gd:0,it:61,er:1.91},
-{fd:'27/05',pais:'PE',pl:'Instagram',fm:'Reel',vt:'Drivers',cre:'CRE_PE_INDRIVE',url:'https://www.instagram.com/p/DY3jqsTNLx2/',v:3188,alc:null,lk:38,cm:20,sh:2,gd:0,it:60,er:1.88},
-{fd:'27/05',pais:'PE',pl:'Instagram',fm:'Reel',vt:'Drivers',cre:'CRE_PE_INDRIVE',url:'https://www.instagram.com/p/DY2xGQ3PSbu/',v:3143,alc:1000,lk:47,cm:21,sh:10,gd:0,it:78,er:2.48},
-{fd:'24/04',pais:'PE',pl:'Facebook',fm:'Reel',vt:'Drivers',cre:'CRE_PE_INDRIVE',url:'https://www.facebook.com/reel/1589643892109721/',v:3100,alc:null,lk:24,cm:15,sh:4,gd:0,it:43,er:1.39},
-{fd:'01/05',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Drivers',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7635085332534365458',v:3054,alc:null,lk:63,cm:19,sh:2,gd:3,it:87,er:2.85},
-{fd:'01/06',pais:'PE',pl:'Instagram',fm:'Reel',vt:'Drivers',cre:'CRE_PE_INDRIVE',url:'https://www.instagram.com/p/DZKrIsxxpmH/',v:3041,alc:null,lk:34,cm:11,sh:1,gd:0,it:46,er:1.51},
-{fd:'29/04',pais:'PE',pl:'Facebook',fm:'Reel',vt:'Drivers',cre:'CRE_PE_LOS_MIRLOS',url:'https://www.facebook.com/reel/966127759336013/',v:3000,alc:null,lk:34,cm:47,sh:1,gd:0,it:82,er:2.73},
-{fd:'27/05',pais:'PE',pl:'Facebook',fm:'Reel',vt:'Drivers',cre:'CRE_PE_INDRIVE',url:'https://www.facebook.com/reel/4427237387535279/',v:3000,alc:null,lk:32,cm:15,sh:0,gd:0,it:47,er:1.57},
-{fd:'08/05',pais:'PE',pl:'Instagram',fm:'Reel',vt:'Drivers',cre:'CRE_PE_INDRIVE',url:'https://www.instagram.com/p/DYFrJi4x1wB/?next=%2Freel%2FDXkqHnYEWDs%2F',v:2949,alc:1500,lk:27,cm:12,sh:2,gd:0,it:41,er:1.39},
-{fd:'07/04',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Drivers',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7626173375320313106',v:2905,alc:null,lk:68,cm:17,sh:28,gd:4,it:117,er:4.03},
-{fd:'20/05',pais:'PE',pl:'Facebook',fm:'Reel',vt:'Drivers',cre:'CRE_PE_INDRIVE',url:'https://www.facebook.com/reel/2063184017579112/',v:2800,alc:null,lk:8,cm:11,sh:1,gd:0,it:20,er:0.71},
-{fd:'15/05',pais:'PE',pl:'Facebook',fm:'Reel',vt:'Ride hailing',cre:'CRE_PE_INDRIVE',url:'https://www.facebook.com/reel/4315389272108194/',v:2700,alc:null,lk:11,cm:9,sh:1,gd:0,it:21,er:0.78},
-{fd:'17/04',pais:'PE',pl:'Facebook',fm:'Reel',vt:'Drivers',cre:'CRE_PE_INDRIVE',url:'https://www.facebook.com/reel/1525981392872858/',v:2700,alc:null,lk:21,cm:8,sh:1,gd:0,it:30,er:1.11},
-{fd:'17/04',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Drivers',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7629918264495262984',v:2623,alc:null,lk:60,cm:21,sh:7,gd:3,it:91,er:3.47},
-{fd:'01/06',pais:'PE',pl:'Instagram',fm:'Reel',vt:'Drivers',cre:'CRE_PE_INDRIVE',url:'https://www.instagram.com/p/DZNeIF3x0YO/',v:2558,alc:null,lk:14,cm:12,sh:1,gd:0,it:27,er:1.06},
-{fd:'10/05',pais:'PE',pl:'Instagram',fm:'Reel',vt:'Mixto',cre:'CRE_PE_INDRIVE',url:'https://www.instagram.com/p/DYKi2KORt4m/?next=%2Freel%2FDXkqHnYEWDs%2F',v:2511,alc:null,lk:19,cm:12,sh:1,gd:0,it:32,er:1.27},
-{fd:'18/05',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Drivers',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7641295052991433991',v:2401,alc:null,lk:38,cm:7,sh:2,gd:2,it:49,er:2.04},
-{fd:'13/05',pais:'PE',pl:'Facebook',fm:'Reel',vt:'Ride hailing',cre:'CRE_PE_INDRIVE',url:'https://www.facebook.com/reel/4273631209616404/',v:2400,alc:null,lk:16,cm:19,sh:2,gd:0,it:37,er:1.54},
-{fd:'27/05',pais:'PE',pl:'Facebook',fm:'Reel',vt:'Drivers',cre:'CRE_PE_INDRIVE',url:'https://www.facebook.com/reel/2578153885920521/',v:2300,alc:null,lk:14,cm:15,sh:0,gd:0,it:29,er:1.26},
-{fd:'15/04',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Drivers',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7629052377835867399',v:2298,alc:null,lk:42,cm:32,sh:5,gd:4,it:83,er:3.61},
-{fd:'22/05',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Drivers',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7642886693162421511',v:2298,alc:1100,lk:42,cm:6,sh:1,gd:0,it:49,er:2.13},
-{fd:'15/05',pais:'PE',pl:'Instagram',fm:'Reel',vt:'Delivery',cre:'CRE_PE_INDRIVE',url:'https://www.instagram.com/p/DYYH2P9RbOv/?next=%2Freel%2FDXkqHnYEWDs%2F',v:2257,alc:null,lk:11,cm:11,sh:0,gd:0,it:22,er:0.97},
-{fd:'06/04',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Ride hailing',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7625823296109530376',v:2213,alc:null,lk:38,cm:15,sh:3,gd:3,it:59,er:2.67},
-{fd:'24/04',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Drivers',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7632389853564488967',v:2174,alc:null,lk:37,cm:15,sh:1,gd:4,it:57,er:2.62},
-{fd:'28/05',pais:'PE',pl:'Facebook',fm:'Reel',vt:'Drivers',cre:'CRE_PE_INDRIVE',url:'https://www.facebook.com/reel/1472072714144482/',v:2100,alc:null,lk:14,cm:20,sh:2,gd:0,it:36,er:1.71},
-{fd:'13/04',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Drivers',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7628282563676605714',v:2089,alc:null,lk:19,cm:13,sh:6,gd:1,it:39,er:1.87},
-{fd:'01/05',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Ride hailing',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7635012438009728274',v:2009,alc:null,lk:22,cm:4,sh:4,gd:0,it:30,er:1.49},
-{fd:'27/05',pais:'PE',pl:'Facebook',fm:'Reel',vt:'Drivers',cre:'CRE_PE_INDRIVE',url:'https://www.facebook.com/reel/981015191348985/',v:2000,alc:null,lk:16,cm:18,sh:1,gd:0,it:35,er:1.75},
-{fd:'22/04',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Drivers',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7631731282346626311',v:1928,alc:null,lk:57,cm:16,sh:5,gd:1,it:79,er:4.1},
-{fd:'04/06',pais:'PE',pl:'Facebook',fm:'Reel',vt:'Drivers',cre:'CRE_PE_INDRIVE',url:'https://www.facebook.com/reel/992067513807215',v:1900,alc:null,lk:17,cm:9,sh:0,gd:0,it:26,er:1.37},
-{fd:'03/06',pais:'PE',pl:'TikTok',fm:'Reel',vt:'Ride hailing',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/photo/7647324824171367687',v:1900,alc:1700,lk:27,cm:13,sh:1,gd:2,it:43,er:2.26},
-{fd:'07/05',pais:'PE',pl:'Facebook',fm:'Reel',vt:'Drivers',cre:'CRE_PE_INDRIVE',url:'https://www.facebook.com/reel/1603105327451699/',v:1900,alc:null,lk:10,cm:14,sh:1,gd:0,it:25,er:1.32},
-{fd:'15/05',pais:'PE',pl:'Facebook',fm:'Reel',vt:'Delivery',cre:'CRE_PE_INDRIVE',url:'https://www.facebook.com/reel/1353140030197295/',v:1800,alc:null,lk:8,cm:10,sh:1,gd:0,it:19,er:1.06},
-{fd:'01/06',pais:'CL',pl:'Instagram',fm:'Reel',vt:'Drivers',cre:'CRE_CL_INDRIVE',url:'https://www.instagram.com/p/DZEMxzvAzE3/',v:1786,alc:null,lk:18,cm:16,sh:0,gd:0,it:34,er:1.9},
-{fd:'17/04',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Drivers',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7629873869968493832',v:1741,alc:null,lk:36,cm:4,sh:4,gd:1,it:45,er:2.58},
-{fd:'15/05',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Ride hailing',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7640304423020924167',v:1712,alc:800,lk:63,cm:12,sh:29,gd:5,it:109,er:6.37},
-{fd:'29/04',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Ride hailing',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7634376962772847890',v:1663,alc:2900,lk:24,cm:1,sh:2,gd:1,it:28,er:1.68},
-{fd:'14/05',pais:'PE',pl:'Facebook',fm:'Reel',vt:'Ride hailing',cre:'CRE_PE_INDRIVE',url:'https://www.facebook.com/reel/1336459108426853/',v:1600,alc:null,lk:6,cm:25,sh:0,gd:0,it:31,er:1.94},
-{fd:'10/05',pais:'PE',pl:'Facebook',fm:'Reel',vt:'Mixto',cre:'CRE_PE_INDRIVE',url:'https://www.facebook.com/reel/998697092700306/',v:1600,alc:null,lk:6,cm:7,sh:1,gd:0,it:14,er:0.88},
-{fd:'25/05',pais:'PE',pl:'Facebook',fm:'Reel',vt:'Ride hailing',cre:'CRE_PE_INDRIVE',url:'https://www.facebook.com/reel/4376336965970291/',v:1600,alc:null,lk:15,cm:0,sh:1,gd:0,it:16,er:1.0},
-{fd:'05/06',pais:'PE',pl:'Facebook',fm:'Reel',vt:'Drivers',cre:'CRE_PE_INDRIVE',url:'facebook.com/reel/1667911034258792/',v:1600,alc:null,lk:5,cm:9,sh:0,gd:0,it:14,er:0.88},
-{fd:'12/05',pais:'PE',pl:'Facebook',fm:'Reel',vt:'Ride hailing',cre:'CRE_PE_INDRIVE',url:'https://www.facebook.com/reel/987340770430495/',v:1500,alc:null,lk:8,cm:0,sh:2,gd:0,it:10,er:0.67},
-{fd:'08/05',pais:'PE',pl:'Facebook',fm:'Reel',vt:'Drivers',cre:'CRE_PE_INDRIVE',url:'https://www.facebook.com/reel/1909864373021503/',v:1500,alc:null,lk:12,cm:6,sh:1,gd:0,it:19,er:1.27},
-{fd:'25/05',pais:'PE',pl:'Facebook',fm:'Reel',vt:'Ride hailing',cre:'CRE_PE_KAREN_SCHWARZ',url:'https://www.facebook.com/reel/1148322700815381/',v:1500,alc:null,lk:8,cm:8,sh:0,gd:0,it:16,er:1.07},
-{fd:'20/05',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Ride hailing',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7641969962818571528',v:1463,alc:2000,lk:30,cm:21,sh:1,gd:1,it:53,er:3.62},
-{fd:'29/04',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Drivers',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7634353780808633618',v:1454,alc:1500,lk:37,cm:8,sh:11,gd:6,it:62,er:4.26},
-{fd:'07/05',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Drivers',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7637183762383539474',v:1449,alc:null,lk:29,cm:4,sh:1,gd:3,it:37,er:2.55},
-{fd:'07/05',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Ride hailing',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7637354395713162503',v:1448,alc:null,lk:9,cm:0,sh:3,gd:1,it:13,er:0.9},
-{fd:'08/05',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Ride hailing',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7637718225207250183',v:1412,alc:null,lk:24,cm:2,sh:3,gd:1,it:30,er:2.12},
-{fd:'02/06',pais:'PE',pl:'TikTok',fm:'Reel',vt:'Ride hailing',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7646970906132221202',v:1407,alc:1300,lk:28,cm:4,sh:5,gd:0,it:37,er:2.63},
-{fd:'21/05',pais:'PE',pl:'Facebook',fm:'Reel',vt:'Drivers',cre:'CRE_PE_INDRIVE',url:'https://www.facebook.com/reel/1493038798870118/',v:1400,alc:null,lk:11,cm:11,sh:1,gd:0,it:23,er:1.64},
-{fd:'25/05',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Ride hailing',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7643987716052356360',v:1359,alc:null,lk:21,cm:0,sh:2,gd:3,it:26,er:1.91},
-{fd:'05/06',pais:'PE',pl:'TikTok',fm:'Reel',vt:'Drivers',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7647945976585538834',v:1300,alc:1100,lk:16,cm:2,sh:0,gd:0,it:18,er:1.38},
-{fd:'27/05',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Drivers',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7644730639329135880',v:1266,alc:612,lk:27,cm:1,sh:1,gd:3,it:32,er:2.53},
-{fd:'14/05',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Ride hailing',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7639953495478603015',v:1236,alc:5600,lk:18,cm:1,sh:1,gd:3,it:23,er:1.86},
-{fd:'05/06',pais:'PE',pl:'TikTok',fm:'Reel',vt:'Ride hailing',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7647912466198039815',v:1200,alc:944,lk:31,cm:32,sh:17,gd:2,it:82,er:6.83},
-{fd:'13/05',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Ride hailing',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7639528795606650130',v:1185,alc:null,lk:22,cm:4,sh:1,gd:1,it:28,er:2.36},
-{fd:'28/04',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Ride hailing',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7633948975590149384',v:1179,alc:709,lk:52,cm:7,sh:8,gd:1,it:68,er:5.77},
-{fd:'28/05',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Drivers',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7644993745271655687',v:1137,alc:null,lk:15,cm:6,sh:7,gd:3,it:31,er:2.73},
-{fd:'30/04',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Drivers',cre:'CRE_PE_INDRIVE',url:'http://tiktok.com/@indrive.pe/video/7634714734104825095',v:1104,alc:2200,lk:30,cm:6,sh:0,gd:0,it:36,er:3.26},
-{fd:'04/06',pais:'PE',pl:'TikTok',fm:'Reel',vt:'Drivers',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7647543508039109906',v:1100,alc:912,lk:10,cm:2,sh:1,gd:1,it:14,er:1.27},
-{fd:'10/05',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Mixto',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7638303421812231442',v:1084,alc:null,lk:19,cm:0,sh:0,gd:0,it:19,er:1.75},
-{fd:'22/05',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Drivers',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7642764728976133384',v:1083,alc:400,lk:19,cm:9,sh:2,gd:4,it:34,er:3.14},
-{fd:'30/05',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Drivers',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7645847792459582738',v:1072,alc:1000,lk:18,cm:10,sh:4,gd:0,it:32,er:2.99},
-{fd:'08/05',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Drivers',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7637600595477646600',v:1032,alc:750,lk:15,cm:4,sh:0,gd:0,it:19,er:1.84},
-{fd:'01/06',pais:'CL',pl:'Instagram',fm:'Reel',vt:'Drivers',cre:'CRE_CL_INDRIVE',url:'https://www.instagram.com/p/DZNiC9PxBHJ/',v:1028,alc:null,lk:15,cm:3,sh:0,gd:0,it:18,er:1.75},
-{fd:'29/04',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Drivers',cre:'CRE_PE_LOS_MIRLOS',url:'https://www.tiktok.com/@indrive.pe/video/7634307633222126855',v:940,alc:1000,lk:32,cm:10,sh:2,gd:1,it:45,er:4.79},
-{fd:'31/05',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Drivers',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7646268079302839570',v:894,alc:null,lk:23,cm:5,sh:0,gd:0,it:28,er:3.13},
-{fd:'12/05',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Ride hailing',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7639155914288811272',v:889,alc:null,lk:19,cm:2,sh:2,gd:0,it:23,er:2.59},
-{fd:'29/05',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Ride hailing',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7645361428060261639',v:868,alc:1037,lk:16,cm:4,sh:0,gd:0,it:20,er:2.3},
-{fd:'29/05',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Drivers',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7645519170427227399',v:850,alc:664,lk:16,cm:2,sh:0,gd:0,it:18,er:2.12},
-{fd:'27/05',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Drivers',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7644786932882443528',v:850,alc:null,lk:18,cm:8,sh:2,gd:1,it:29,er:3.41},
-{fd:'15/05',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Delivery',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7640258368375885064',v:791,alc:700,lk:10,cm:3,sh:0,gd:0,it:13,er:1.64},
-{fd:'25/05',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Ride hailing',cre:'CRE_PE_KAREN_SCHWARZ',url:'https://www.tiktok.com/@indrive.pe/video/7643883511862103314',v:764,alc:550,lk:23,cm:4,sh:1,gd:0,it:28,er:3.66},
-{fd:'29/05',pais:'PE',pl:'TikTok',fm:'Carrusel',vt:'Ride hailing',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/photo/7645314193989586184?image_index=2',v:764,alc:950,lk:13,cm:0,sh:2,gd:0,it:15,er:1.96},
-{fd:'29/05',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Drivers',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7645400873023098130',v:714,alc:null,lk:15,cm:3,sh:0,gd:0,it:18,er:2.52},
-{fd:'27/05',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Drivers',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7644588313109679367',v:691,alc:950,lk:18,cm:4,sh:2,gd:0,it:24,er:3.47},
-{fd:'05/06',pais:'PE',pl:'TikTok',fm:'Reel',vt:'Ride hailing',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/photo/7647925140973522194',v:667,alc:513,lk:11,cm:0,sh:1,gd:0,it:12,er:1.8},
-{fd:'04/06',pais:'PE',pl:'TikTok',fm:'Reel',vt:'Ride hailing',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/photo/7647704460331863304',v:641,alc:509,lk:12,cm:2,sh:9,gd:1,it:24,er:3.74},
-{fd:'31/05',pais:'PE',pl:'Facebook',fm:'Reel',vt:'Drivers',cre:'CRE_PE_INDRIVE',url:'https://www.facebook.com/reel/962901896743420/',v:572,alc:null,lk:7,cm:0,sh:0,gd:0,it:7,er:1.22},
-{fd:'30/05',pais:'PE',pl:'Facebook',fm:'Reel',vt:'Drivers',cre:'CRE_PE_INDRIVE',url:'https://www.facebook.com/reel/2228397867932770/',v:476,alc:null,lk:13,cm:6,sh:0,gd:0,it:19,er:3.99},
-{fd:'29/05',pais:'PE',pl:'Facebook',fm:'Reel',vt:'Drivers',cre:'CRE_PE_INDRIVE',url:'https://www.facebook.com/reel/997715992808490/',v:406,alc:null,lk:10,cm:1,sh:0,gd:0,it:11,er:2.71},
-{fd:'01/06',pais:'CL',pl:'TikTok',fm:'Reel',vt:'Drivers',cre:'CRE_CL_INDRIVE',url:'https://www.tiktok.com/@indrive.cl/video/7647953472951749895',v:310,alc:null,lk:4,cm:1,sh:0,gd:1,it:6,er:1.94},
-{fd:'29/05',pais:'PE',pl:'Instagram',fm:'Reel',vt:'Drivers',cre:'CRE_PE_INDRIVE',url:'https://www.instagram.com/p/DY8o5U7tkRR/',v:256,alc:null,lk:27,cm:3,sh:0,gd:0,it:30,er:11.72},
-{fd:'01/06',pais:'CL',pl:'TikTok',fm:'Reel',vt:'Drivers',cre:'CRE_CL_INDRIVE',url:'https://www.tiktok.com/@indrive.cl/video/7646610047212080392',v:224,alc:null,lk:2,cm:0,sh:0,gd:0,it:2,er:0.89},
-{fd:'13/05',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Drivers',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7639600110288063762',v:166,alc:694,lk:29,cm:6,sh:5,gd:2,it:42,er:25.3},
-{fd:'01/06',pais:'CL',pl:'TikTok',fm:'Reel',vt:'Ride hailing',cre:'CRE_CL_INDRIVE',url:'https://www.tiktok.com/@indrive.cl/video/7647663149197397255',v:149,alc:null,lk:1,cm:0,sh:0,gd:0,it:1,er:0.67},
-{fd:'08/04',pais:'PE',pl:'Facebook',fm:'Carrusel',vt:'Ride hailing',cre:'CRE_PE_INDRIVE',url:'https://www.facebook.com/photo?fbid=1457625026374973&set=a.713329420804541',v:0,alc:null,lk:25,cm:45,sh:0,gd:0,it:70,er:null},
-{fd:'08/04',pais:'PE',pl:'Instagram',fm:'Carrusel',vt:'Delivery',cre:'CRE_PE_INDRIVE',url:'https://www.instagram.com/p/DW48ciYkS8T/',v:0,alc:null,lk:69,cm:53,sh:1,gd:0,it:123,er:null},
-{fd:'07/04',pais:'PE',pl:'Instagram',fm:'Carrusel',vt:'Ride hailing',cre:'CRE_PE_INDRIVE',url:'https://www.instagram.com/p/DW1MCXpkeSm/',v:0,alc:null,lk:39,cm:39,sh:2,gd:0,it:80,er:null},
-{fd:'07/04',pais:'PE',pl:'Facebook',fm:'Facebook Video',vt:'Ride hailing',cre:'CRE_PE_INDRIVE',url:'https://www.facebook.com/100063824682833/videos/pcb.1456412316496244/2016152365914711',v:0,alc:null,lk:11,cm:32,sh:1,gd:0,it:44,er:null},
-{fd:'03/04',pais:'PE',pl:'Instagram',fm:'Carrusel',vt:'Delivery',cre:'CRE_PE_INDRIVE',url:'https://www.instagram.com/p/DWrgOiekWHm/',v:0,alc:null,lk:25,cm:1,sh:0,gd:0,it:26,er:null},
-{fd:'28/04',pais:'PE',pl:'Facebook',fm:'Carrusel',vt:'Delivery',cre:'CRE_PE_INDRIVE',url:'https://www.facebook.com/photo?fbid=1474436158027193&set=pcb.1474436204693855',v:0,alc:null,lk:5,cm:0,sh:1,gd:0,it:6,er:null},
-{fd:'06/05',pais:'PE',pl:'Instagram',fm:'Foto',vt:'Drivers',cre:'CRE_PE_COPA_CALIENTE_LIGA',url:'https://www.instagram.com/p/DYA94S-keKN/?next=%2Freel%2FDXkqHnYEWDs%2F',v:0,alc:null,lk:155,cm:4,sh:2,gd:0,it:161,er:null},
-{fd:'07/05',pais:'PE',pl:'Instagram',fm:'Carrusel',vt:'Ride hailing',cre:'CRE_PE_INDRIVE',url:'https://www.instagram.com/p/DYBNclWEYQQ/?next=%2Freel%2FDXkqHnYEWDs%2F&img_index=1',v:0,alc:null,lk:32,cm:7,sh:1,gd:0,it:40,er:null},
-{fd:'13/05',pais:'PE',pl:'Instagram',fm:'Carrusel',vt:'Drivers',cre:'CRE_PE_INDRIVE',url:'https://www.instagram.com/p/DYSyd4RD70q/?next=%2Freel%2FDXkqHnYEWDs%2F&img_index=1',v:0,alc:null,lk:23,cm:17,sh:5,gd:0,it:45,er:null},
-{fd:'28/04',pais:'PE',pl:'Instagram',fm:'Carrusel',vt:'Delivery',cre:'CRE_PE_INDRIVE',url:'https://www.instagram.com/p/DXsJ9Pfj9ec/',v:0,alc:null,lk:17,cm:7,sh:1,gd:0,it:25,er:null},
-{fd:'23/04',pais:'PE',pl:'Instagram',fm:'Carrusel',vt:'Delivery',cre:'CRE_PE_INDRIVE',url:'https://www.instagram.com/p/DXe74yckeRr/',v:0,alc:null,lk:24,cm:14,sh:0,gd:0,it:38,er:null},
-{fd:'23/04',pais:'PE',pl:'Facebook',fm:'Carrusel',vt:'Delivery',cre:'CRE_PE_INDRIVE',url:'https://www.facebook.com/photo?fbid=1469850348485774&set=pcb.1469850395152436',v:0,alc:null,lk:8,cm:10,sh:1,gd:0,it:19,er:null},
-{fd:'30/04',pais:'PE',pl:'Instagram',fm:'Carrusel',vt:'Ride hailing',cre:'CRE_PE_INDRIVE',url:'https://www.instagram.com/p/DXvTKG2jQiB/',v:0,alc:null,lk:43,cm:2,sh:1,gd:0,it:46,er:null},
-{fd:'04/05',pais:'PE',pl:'Instagram',fm:'Carrusel',vt:'Drivers',cre:'CRE_PE_INDRIVE',url:'https://www.instagram.com/p/DX7t2-7PPvQ/?next=%2Freel%2FDXkqHnYEWDs%2F',v:0,alc:null,lk:24,cm:4,sh:2,gd:0,it:30,er:null},
-{fd:'21/05',pais:'PE',pl:'Instagram',fm:'Carrusel',vt:'Delivery',cre:'CRE_PE_INDRIVE',url:'https://www.instagram.com/p/DYnsfaakdI7/?img_index=1',v:0,alc:null,lk:33,cm:20,sh:0,gd:0,it:53,er:null},
-{fd:'23/05',pais:'PE',pl:'Instagram',fm:'Foto',vt:'Ride hailing',cre:'CRE_PE_LIGA1_TE_APUESTO',url:'https://www.instagram.com/p/DYs6zrOt9Jq/',v:0,alc:null,lk:234,cm:6,sh:4,gd:0,it:244,er:null},
-{fd:'29/05',pais:'PE',pl:'Instagram',fm:'Carrusel',vt:'ride hailing',cre:'CRE_PE_INDRIVE',url:'https://www.instagram.com/p/DY7NUkckeoU/?img_index=1',v:0,alc:null,lk:11,cm:1,sh:1,gd:0,it:13,er:null},
-{fd:'01/06',pais:'PE',pl:'Instagram',fm:'Carrusel',vt:'Drivers',cre:'CRE_PE_INDRIVE',url:'https://www.instagram.com/p/DZOUET1EVxJ/?img_index=1',v:0,alc:null,lk:14,cm:6,sh:3,gd:0,it:23,er:null},
-{fd:'13/05',pais:'PE',pl:'Facebook',fm:'Carrusel',vt:'Drivers',cre:'CRE_PE_INDRIVE',url:'https://www.facebook.com/indrive.peru/posts/pfbid02BricRt7SADmnxtYs51onczxTdv...',v:0,alc:null,lk:6,cm:13,sh:1,gd:0,it:20,er:null},
-{fd:'21/05',pais:'PE',pl:'Facebook',fm:'Carrusel',vt:'Delivery',cre:'CRE_PE_INDRIVE',url:'https://www.facebook.com/indrive.peru/posts/pfbid032xUrSeacKuuMvXnCYtC4bRMEai...',v:0,alc:null,lk:17,cm:17,sh:0,gd:0,it:34,er:null},
-{fd:'06/05',pais:'PE',pl:'Facebook',fm:'Carrusel',vt:'Ride hailing',cre:'CRE_PE_INDRIVE',url:'https://web.facebook.com/indrive.peru/posts/pfbid02bVXKPmYZ4CzLkErTzbp6TNKEQTsP58SVNZ',v:0,alc:null,lk:9,cm:5,sh:1,gd:0,it:15,er:null},
-{fd:'01/06',pais:'PE',pl:'Instagram',fm:'Carrusel',vt:'Ride hailing',cre:'CRE_PE_INDRIVE',url:'https://www.instagram.com/p/DZJKDoYEXuU/?img_index=1',v:0,alc:null,lk:24,cm:9,sh:1,gd:0,it:34,er:null},
-{fd:'03/06',pais:'PE',pl:'Facebook',fm:'Carrusel',vt:'Drivers',cre:'CRE_PE_INDRIVE',url:'https://www.facebook.com/indrive.peru/posts/pfbid0K99aNcMxm3XyDnVJ5o4TDFgQtTH4fFkH8GJ',v:0,alc:null,lk:13,cm:9,sh:3,gd:0,it:25,er:null},
-{fd:'05/06',pais:'PE',pl:'Facebook',fm:'Carrusel',vt:'Drivers',cre:'CRE_PE_INDRIVE',url:'https://www.facebook.com/indrive.peru/posts/pfbid023dh8gypsSGqX3VfwFn3GrzNWWb7r8fMYuw',v:0,alc:null,lk:8,cm:1,sh:2,gd:0,it:11,er:null},
+{fd:'30/04',pais:'PE',pl:'Instagram',fm:'Reel',vt:'Drivers',pilar:'',camp:'Drivers',cre:'CRE_PE_LAS_GAVIOTAS_CEVICHERIA',url:'https://www.instagram.com/p/DXwiXRCtuJb/',v:330000,alc:null,lk:19300,cm:1042,sh:1617,gd:0,it:21959,er:6.65,ci:13990.08,ct:27980.16,fv:330000.0,fe:21959.0,cpe:1.2742,cpv:0.0848},
+{fd:'30/04',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Drivers',pilar:'',camp:'Drivers',cre:'CRE_PE_LAS_GAVIOTAS_CEVICHERIA',url:'https://www.tiktok.com/@lasgaviotas.cevicheria/video/7634553673179221265',v:315400,alc:null,lk:20800,cm:633,sh:1912,gd:1023,it:24368,er:7.73,ci:13990.08,ct:27980.16,fv:315400.0,fe:24368.0,cpe:1.1482,cpv:0.0887},
+{fd:'26/06',pais:'PE',pl:'Instagram',fm:'Reel',vt:'Ride hailing',pilar:'',camp:'',cre:'CRE_PE_WARIQUEANDO',url:'https://www.instagram.com/p/DaDl5KZPJNr/',v:213853,alc:null,lk:9082,cm:173,sh:3619,gd:0,it:12874,er:6.02,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'25/05',pais:'PE',pl:'Instagram',fm:'Reel',vt:'Ride hailing',pilar:'',camp:'Ride hailing',cre:'CRE_PE_KAREN_SCHWARZ',url:'https://www.instagram.com/p/DYxPpb1RWUD/',v:144000,alc:null,lk:1194,cm:51,sh:25,gd:0,it:1270,er:0.88,ci:2000.0,ct:6000.0,fv:144000.0,fe:1270.0,cpe:4.7244,cpv:0.0417},
+{fd:'06/05',pais:'PE',pl:'Instagram',fm:'Reel',vt:'Delivery',pilar:'Repartidor',camp:'Delivery',cre:'CRE_PE_LIZ_SANDOVA',url:'https://www.instagram.com/p/DYA9uLvxQHH/?next=%2Freel%2FDXkqHnYEWDs%2F',v:51700,alc:null,lk:376,cm:150,sh:6,gd:0,it:532,er:1.03,ci:1345.0,ct:1749.0,fv:51700.0,fe:532.0,cpe:3.2876,cpv:0.0338},
+{fd:'24/06',pais:'PE',pl:'Instagram',fm:'Reel',vt:'Mixto',pilar:'',camp:'World Cup 2026',cre:'CRE_PE_ENFOCADOS_PODCAST',url:'https://www.instagram.com/p/DZ_Vdy9K3fT/',v:45785,alc:45785,lk:475,cm:4,sh:9,gd:0,it:488,er:1.07,ci:11210.0,ct:33630.0,fv:47900.0,fe:529.0,cpe:63.5728,cpv:0.7021},
+{fd:'22/06',pais:'CL',pl:'Instagram',fm:'Reel',vt:'Drivers',pilar:'',camp:'',cre:'CRE_CL_EL_JANO_JEY',url:'https://www.instagram.com/p/DZ5_bamRyLs/',v:44599,alc:25944,lk:1600,cm:42,sh:26,gd:60,it:1753,er:3.93,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'23/06',pais:'CL',pl:'Instagram',fm:'Reel',vt:'Ride hailing',pilar:'',camp:'',cre:'CRE_CL_ALTO_YOYO',url:'https://www.instagram.com/p/DZ_JvffAut8/',v:41988,alc:24844,lk:721,cm:30,sh:60,gd:49,it:869,er:2.07,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'23/05',pais:'PE',pl:'Instagram',fm:'Reel',vt:'Delivery',pilar:'Marca',camp:'Delivery',cre:'CRE_PE_LIGA1_TE_APUESTO',url:'https://www.instagram.com/p/DYtDwQ_Mw6o/',v:40100,alc:null,lk:925,cm:39,sh:97,gd:0,it:1061,er:2.65,ci:null,ct:null,fv:40100.0,fe:1061.0,cpe:null,cpv:null},
+{fd:'11/06',pais:'PE',pl:'Instagram',fm:'Reel',vt:'Drivers',pilar:'',camp:'World Cup 2026',cre:'CRE_PE_FARFAN',url:'https://www.instagram.com/p/DZdnugoxMSo/',v:23599,alc:13654,lk:295,cm:31,sh:27,gd:11,it:364,er:1.54,ci:11210.0,ct:33630.0,fv:23599.0,fe:364.0,cpe:92.3901,cpv:1.4251},
+{fd:'12/06',pais:'CL',pl:'Instagram',fm:'Reel',vt:'Ride hailing',pilar:'',camp:'',cre:'CRE_CL_LUCAS_PINOZA',url:'https://www.instagram.com/reel/DZfLCN4AeUA/',v:22700,alc:13855,lk:0,cm:26,sh:12,gd:0,it:38,er:0.17,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'28/05',pais:'PE',pl:'Instagram',fm:'Reel',vt:'Drivers',pilar:'',camp:'Drivers',cre:'CRE_PE_EL_CHATO_RAUL',url:'https://www.instagram.com/p/DY4nt3XxAMS/',v:20800,alc:null,lk:1383,cm:151,sh:132,gd:0,it:1666,er:8.01,ci:611.0,ct:611.0,fv:20800.0,fe:1666.0,cpe:0.3667,cpv:0.0294},
+{fd:'23/04',pais:'PE',pl:'Instagram',fm:'Reel',vt:'Drivers',pilar:'',camp:'Drivers',cre:'CRE_PE_LUIS_VASQUEZ',url:'https://www.instagram.com/p/DXdJni6jGmG/',v:19600,alc:null,lk:823,cm:50,sh:105,gd:0,it:978,er:4.99,ci:null,ct:null,fv:19600.0,fe:978.0,cpe:null,cpv:null},
+{fd:'18/05',pais:'PE',pl:'Instagram',fm:'Reel',vt:'Drivers',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.instagram.com/p/DYfUWUGRYRc/',v:13600,alc:null,lk:105,cm:20,sh:30,gd:0,it:155,er:1.14,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'27/06',pais:'PE',pl:'Instagram',fm:'Reel',vt:'Ride hailing',pilar:'',camp:'',cre:'CRE_PE_MASHA_SEKUTOROVA',url:'https://www.instagram.com/p/DaGUId2RxEK/',v:11353,alc:null,lk:455,cm:13,sh:57,gd:0,it:525,er:4.62,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'09/06',pais:'PE',pl:'Facebook',fm:'Reel',vt:'Drivers',pilar:'',camp:'World Cup 2026',cre:'CRE_PE_FARFAN',url:'https://www.facebook.com/reel/2032813674011467',v:10898,alc:10506,lk:122,cm:119,sh:6,gd:2,it:249,er:2.28,ci:11210.0,ct:33630.0,fv:10898.0,fe:249.0,cpe:135.0602,cpv:3.0859},
+{fd:'02/04',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Ride hailing',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7624233432813407506',v:9548,alc:null,lk:79,cm:12,sh:3,gd:4,it:98,er:1.03,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'29/04',pais:'PE',pl:'Instagram',fm:'Reel',vt:'Drivers',pilar:'',camp:'Drivers',cre:'CRE_PE_LOS_MIRLOS',url:'https://www.instagram.com/p/DXuypKfDxku/',v:7659,alc:null,lk:168,cm:57,sh:11,gd:0,it:236,er:3.08,ci:9326.72,ct:27980.16,fv:7659.0,fe:236.0,cpe:118.56,cpv:3.6532},
+{fd:'06/05',pais:'PE',pl:'Instagram',fm:'Reel',vt:'Delivery',pilar:'Repartidor',camp:'Delivery',cre:'CRE_PE_CAMILA_HEREDIA',url:'https://www.instagram.com/p/DYA6a7lO3gd/?next=%2Freel%2FDXkqHnYEWDs%2F',v:7515,alc:2000,lk:109,cm:64,sh:6,gd:0,it:179,er:2.38,ci:1345.0,ct:1345.0,fv:7515.0,fe:179.0,cpe:7.514,cpv:0.179},
+{fd:'02/04',pais:'PE',pl:'Instagram',fm:'Reel',vt:'Ride hailing',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.instagram.com/p/DWpFWXLhBhV/',v:7080,alc:null,lk:30,cm:17,sh:3,gd:0,it:50,er:0.71,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'02/04',pais:'PE',pl:'Instagram',fm:'Reel',vt:'Ride hailing',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.instagram.com/p/DWo6_l7kQYt/',v:6971,alc:null,lk:27,cm:14,sh:1,gd:0,it:42,er:0.6,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'18/05',pais:'PE',pl:'Facebook',fm:'Reel',vt:'Drivers',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.facebook.com/reel/1768092660881744/',v:6700,alc:null,lk:25,cm:19,sh:1,gd:0,it:45,er:0.67,ci:0.6716,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'02/04',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Ride hailing',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7624230486591720722',v:6467,alc:null,lk:93,cm:12,sh:2,gd:5,it:112,er:1.73,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'26/05',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Ride hailing',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7644213942423735560',v:6000,alc:null,lk:82,cm:13,sh:4,gd:5,it:104,er:1.73,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'20/04',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Drivers',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7630999040418778386',v:5698,alc:null,lk:170,cm:111,sh:66,gd:26,it:373,er:6.55,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'24/05',pais:'PE',pl:'Instagram',fm:'Reel',vt:'Mixto',pilar:'',camp:'Mixto',cre:'CRE_PE_RODRIGO_PEREA',url:'https://www.instagram.com/p/DYvoRxNsgnt/',v:5235,alc:null,lk:136,cm:8,sh:0,gd:0,it:144,er:2.75,ci:134.52,ct:134.52,fv:5235.0,fe:144.0,cpe:0.9342,cpv:0.0257},
+{fd:'09/04',pais:'PE',pl:'Instagram',fm:'Reel',vt:'Drivers',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.instagram.com/p/DW7gn3EkYt5/',v:5200,alc:null,lk:38,cm:45,sh:1,gd:0,it:84,er:1.62,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'02/04',pais:'PE',pl:'Facebook',fm:'Reel',vt:'Ride hailing',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.facebook.com/reel/2241740056566403/',v:5200,alc:null,lk:14,cm:16,sh:3,gd:0,it:33,er:0.63,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'15/06',pais:'PE',pl:'Facebook',fm:'Reel',vt:'Drivers',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.facebook.com/reel/27843763415215781',v:4850,alc:4980,lk:44,cm:38,sh:0,gd:1,it:83,er:1.71,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'22/05',pais:'PE',pl:'Instagram',fm:'Reel',vt:'Drivers',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.instagram.com/p/DYqX3mERShH/',v:4727,alc:1400,lk:57,cm:10,sh:2,gd:0,it:69,er:1.46,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'02/04',pais:'PE',pl:'Facebook',fm:'Reel',vt:'Ride hailing',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.facebook.com/reel/1171131531672792/',v:4700,alc:null,lk:17,cm:13,sh:2,gd:0,it:32,er:0.68,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'15/06',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Drivers',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7651701081164041480',v:4370,alc:3583,lk:84,cm:12,sh:4,gd:8,it:108,er:2.47,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'07/05',pais:'PE',pl:'Instagram',fm:'Reel',vt:'Drivers',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.instagram.com/p/DYCybP3x3cs/?next=%2Freel%2FDXkqHnYEWDs%2F',v:4266,alc:null,lk:62,cm:27,sh:11,gd:0,it:100,er:2.34,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'24/04',pais:'PE',pl:'Instagram',fm:'Reel',vt:'Drivers',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.instagram.com/p/DXhhw0-EWrl/',v:4235,alc:null,lk:39,cm:15,sh:0,gd:0,it:54,er:1.28,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'27/05',pais:'PE',pl:'Instagram',fm:'Reel',vt:'Drivers',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.instagram.com/p/DY3Ju9NxDyW/',v:4209,alc:1000,lk:44,cm:16,sh:2,gd:0,it:62,er:1.47,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'10/06',pais:'PE',pl:'Instagram',fm:'Reel',vt:'Mixto',pilar:'',camp:'Brand',cre:'CRE_PE_NIETOS_ITINERANTES',url:'https://www.instagram.com/p/DZbMWxTRfmJ/',v:4142,alc:2788,lk:93,cm:4,sh:31,gd:4,it:132,er:3.19,ci:null,ct:null,fv:4142.0,fe:132.0,cpe:null,cpv:null},
+{fd:'17/04',pais:'PE',pl:'Instagram',fm:'Reel',vt:'Drivers',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.instagram.com/p/DXQEdy8EYWq/',v:3898,alc:null,lk:34,cm:9,sh:0,gd:0,it:43,er:1.1,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'28/05',pais:'PE',pl:'Instagram',fm:'Reel',vt:'Drivers',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.instagram.com/p/DY4-h85xMFS/',v:3872,alc:null,lk:51,cm:28,sh:6,gd:0,it:85,er:2.2,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'17/04',pais:'PE',pl:'Facebook',fm:'Reel',vt:'Ride hailing',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.facebook.com/reel/1883488796373062/',v:3800,alc:null,lk:32,cm:72,sh:2,gd:0,it:106,er:2.79,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'03/06',pais:'PE',pl:'Facebook',fm:'Carrusel',vt:'Ride hailing',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.facebook.com/indrive.peru/posts/pfbid0JsybRucCfne1mJUhP4fBNRcN91T7c7LVGxm',v:3723,alc:2316,lk:14,cm:11,sh:3,gd:0,it:28,er:0.75,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'25/05',pais:'PE',pl:'Instagram',fm:'Reel',vt:'Ride hailing',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.instagram.com/p/DYx_Mu4RHke/',v:3679,alc:1400,lk:47,cm:7,sh:6,gd:0,it:60,er:1.63,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'12/05',pais:'PE',pl:'Instagram',fm:'Reel',vt:'Ride hailing',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.instagram.com/p/DYQfpwVRzg7/?next=%2Freel%2FDXkqHnYEWDs%2F',v:3563,alc:900,lk:50,cm:12,sh:14,gd:0,it:76,er:2.13,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'13/05',pais:'PE',pl:'Instagram',fm:'Reel',vt:'Ride hailing',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.instagram.com/p/DYTEYlIRuIM/?next=%2Freel%2FDXkqHnYEWDs%2F',v:3492,alc:null,lk:27,cm:21,sh:1,gd:0,it:49,er:1.4,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'15/05',pais:'PE',pl:'Instagram',fm:'Reel',vt:'Ride hailing',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.instagram.com/p/DYXnAc1xLPt/?next=%2Freel%2FDXkqHnYEWDs%2F',v:3484,alc:750,lk:18,cm:13,sh:2,gd:0,it:33,er:0.95,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'31/05',pais:'PE',pl:'Instagram',fm:'Reel',vt:'Drivers',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.instagram.com/p/DZB1D4it0Ej/',v:3356,alc:null,lk:32,cm:13,sh:0,gd:0,it:45,er:1.34,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'21/05',pais:'PE',pl:'Instagram',fm:'Reel',vt:'Drivers',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.instagram.com/p/DYm_q2hR48L/',v:3333,alc:1010,lk:47,cm:11,sh:11,gd:0,it:69,er:2.07,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'22/05',pais:'PE',pl:'Facebook',fm:'Reel',vt:'Drivers',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.facebook.com/reel/2263102317430818/',v:3300,alc:null,lk:23,cm:9,sh:1,gd:0,it:33,er:1.0,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'09/04',pais:'PE',pl:'Facebook',fm:'Reel',vt:'Drivers',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.facebook.com/reel/1652745609094826/',v:3200,alc:null,lk:20,cm:44,sh:1,gd:0,it:65,er:2.03,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'30/05',pais:'PE',pl:'Instagram',fm:'Reel',vt:'Drivers',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.instagram.com/p/DY-6zfFRXb3/',v:3189,alc:1700,lk:50,cm:9,sh:2,gd:0,it:61,er:1.91,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'27/05',pais:'PE',pl:'Instagram',fm:'Reel',vt:'Drivers',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.instagram.com/p/DY3jqsTNLx2/',v:3188,alc:null,lk:38,cm:20,sh:2,gd:0,it:60,er:1.88,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'27/05',pais:'PE',pl:'Instagram',fm:'Reel',vt:'Drivers',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.instagram.com/p/DY2xGQ3PSbu/',v:3143,alc:1000,lk:47,cm:21,sh:10,gd:0,it:78,er:2.48,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'24/04',pais:'PE',pl:'Facebook',fm:'Reel',vt:'Drivers',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.facebook.com/reel/1589643892109721/',v:3100,alc:null,lk:24,cm:15,sh:4,gd:0,it:43,er:1.39,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'01/05',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Drivers',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7635085332534365458',v:3054,alc:null,lk:63,cm:19,sh:2,gd:3,it:87,er:2.85,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'23/06',pais:'PE',pl:'Instagram',fm:'Reel',vt:'Ride hailing',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.instagram.com/reels/DZ8udDSxHYx/',v:3039,alc:1912,lk:28,cm:9,sh:17,gd:1,it:55,er:1.81,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'29/04',pais:'PE',pl:'Facebook',fm:'Reel',vt:'Drivers',pilar:'',camp:'Drivers',cre:'CRE_PE_LOS_MIRLOS',url:'https://www.facebook.com/reel/966127759336013/',v:3000,alc:null,lk:34,cm:47,sh:1,gd:0,it:82,er:2.73,ci:9326.72,ct:27980.16,fv:3000.0,fe:82.0,cpe:341.2215,cpv:9.3267},
+{fd:'27/05',pais:'PE',pl:'Facebook',fm:'Reel',vt:'Drivers',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.facebook.com/reel/4427237387535279/',v:3000,alc:null,lk:32,cm:15,sh:0,gd:0,it:47,er:1.57,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'17/06',pais:'PE',pl:'Instagram',fm:'Reel',vt:'Ride hailing',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.instagram.com/p/DZtSeBMR1Uq/',v:2991,alc:2243,lk:81,cm:4,sh:21,gd:7,it:113,er:3.78,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'08/05',pais:'PE',pl:'Instagram',fm:'Reel',vt:'Drivers',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.instagram.com/p/DYFrJi4x1wB/?next=%2Freel%2FDXkqHnYEWDs%2F',v:2949,alc:1500,lk:27,cm:12,sh:2,gd:0,it:41,er:1.39,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'19/06',pais:'PE',pl:'Instagram',fm:'Reel',vt:'Drivers',pilar:'',camp:'World Cup 2026',cre:'CRE_PE_TALIA_AZCARATE',url:'https://www.instagram.com/p/DZxTmiCR6Jx/',v:2927,alc:null,lk:116,cm:33,sh:18,gd:0,it:167,er:5.71,ci:3331.36,ct:3331.36,fv:2927.0,fe:167.0,cpe:19.9483,cpv:1.1381},
+{fd:'07/04',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Drivers',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7626173375320313106',v:2905,alc:null,lk:68,cm:17,sh:28,gd:4,it:117,er:4.03,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'29/05',pais:'PE',pl:'Instagram',fm:'Reel',vt:'Drivers',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.instagram.com/p/DY8o5U7tkRR/',v:2892,alc:null,lk:27,cm:3,sh:0,gd:0,it:30,er:1.04,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'20/05',pais:'PE',pl:'Facebook',fm:'Reel',vt:'Drivers',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.facebook.com/reel/2063184017579112/',v:2800,alc:null,lk:8,cm:11,sh:1,gd:0,it:20,er:0.71,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'15/05',pais:'PE',pl:'Facebook',fm:'Reel',vt:'Ride hailing',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.facebook.com/reel/4315389272108194/',v:2700,alc:null,lk:11,cm:9,sh:1,gd:0,it:21,er:0.78,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'17/04',pais:'PE',pl:'Facebook',fm:'Reel',vt:'Drivers',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.facebook.com/reel/1525981392872858/',v:2700,alc:null,lk:21,cm:8,sh:1,gd:0,it:30,er:1.11,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'24/06',pais:'PE',pl:'Instagram',fm:'Reel',vt:'Delivery',pilar:'Marca',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.instagram.com/reels/DZ_OC63B1FQ/',v:2624,alc:1742,lk:61,cm:24,sh:13,gd:0,it:98,er:3.73,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'17/04',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Drivers',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7629918264495262984',v:2623,alc:null,lk:60,cm:21,sh:7,gd:3,it:91,er:3.47,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'10/05',pais:'PE',pl:'Instagram',fm:'Reel',vt:'Mixto',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.instagram.com/p/DYKi2KORt4m/?next=%2Freel%2FDXkqHnYEWDs%2F',v:2511,alc:789,lk:19,cm:12,sh:1,gd:0,it:32,er:1.27,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'18/05',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Drivers',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7641295052991433991',v:2401,alc:null,lk:38,cm:7,sh:2,gd:2,it:49,er:2.04,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'13/05',pais:'PE',pl:'Facebook',fm:'Reel',vt:'Ride hailing',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.facebook.com/reel/4273631209616404/',v:2400,alc:null,lk:16,cm:19,sh:2,gd:0,it:37,er:1.54,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'27/05',pais:'PE',pl:'Facebook',fm:'Reel',vt:'Drivers',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.facebook.com/reel/2578153885920521/',v:2300,alc:null,lk:14,cm:15,sh:0,gd:0,it:29,er:1.26,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'15/04',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Drivers',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7629052377835867399',v:2298,alc:null,lk:42,cm:32,sh:5,gd:4,it:83,er:3.61,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'22/05',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Drivers',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7642886693162421511',v:2298,alc:1100,lk:42,cm:6,sh:1,gd:0,it:49,er:2.13,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'15/05',pais:'PE',pl:'Instagram',fm:'Reel',vt:'Delivery',pilar:'Marca',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.instagram.com/p/DYYH2P9RbOv/?next=%2Freel%2FDXkqHnYEWDs%2F',v:2257,alc:520,lk:11,cm:11,sh:0,gd:0,it:22,er:0.97,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'04/06',pais:'PE',pl:'Facebook',fm:'Reel',vt:'Drivers',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.facebook.com/reel/992067513807215',v:2248,alc:2417,lk:17,cm:9,sh:0,gd:0,it:26,er:1.16,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'12/06',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Ride hailing',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7650296830651108615',v:2246,alc:1841,lk:50,cm:5,sh:2,gd:3,it:60,er:2.67,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'15/06',pais:'PE',pl:'Instagram',fm:'Reel',vt:'Drivers',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.instagram.com/p/DZnfk1sxHkj/',v:2219,alc:1472,lk:81,cm:17,sh:9,gd:2,it:109,er:4.91,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'06/04',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Ride hailing',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7625823296109530376',v:2213,alc:null,lk:38,cm:15,sh:3,gd:3,it:59,er:2.67,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'25/06',pais:'PE',pl:'Facebook',fm:'Reel',vt:'Ride hailing',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.facebook.com/reel/883573571458220/',v:2179,alc:2054,lk:18,cm:22,sh:2,gd:0,it:42,er:1.93,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'24/04',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Drivers',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7632389853564488967',v:2174,alc:null,lk:37,cm:15,sh:1,gd:4,it:57,er:2.62,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'28/05',pais:'PE',pl:'Facebook',fm:'Reel',vt:'Drivers',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.facebook.com/reel/1472072714144482/',v:2100,alc:null,lk:14,cm:20,sh:2,gd:0,it:36,er:1.71,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'13/04',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Drivers',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7628282563676605714',v:2089,alc:null,lk:19,cm:13,sh:6,gd:1,it:39,er:1.87,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'01/05',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Ride hailing',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7635012438009728274',v:2009,alc:null,lk:22,cm:4,sh:4,gd:0,it:30,er:1.49,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'27/05',pais:'PE',pl:'Facebook',fm:'Reel',vt:'Drivers',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.facebook.com/reel/981015191348985/',v:2000,alc:null,lk:16,cm:18,sh:1,gd:0,it:35,er:1.75,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'15/05',pais:'PE',pl:'Facebook',fm:'Reel',vt:'Delivery',pilar:'Marca',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.facebook.com/reel/1353140030197295/',v:2000,alc:2200,lk:8,cm:10,sh:1,gd:0,it:19,er:0.95,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'05/06',pais:'PE',pl:'Facebook',fm:'Carrusel',vt:'Drivers',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.facebook.com/indrive.peru/posts/pfbid037DxrvwzwCU8crThTMLWFGPWbRBsZANDRLU',v:1972,alc:1223,lk:14,cm:8,sh:2,gd:0,it:24,er:1.22,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'05/06',pais:'PE',pl:'Facebook',fm:'Reel',vt:'Ride hailing',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.facebook.com/reel/1667911034258792/',v:1966,alc:1887,lk:7,cm:9,sh:0,gd:0,it:16,er:0.81,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'12/06',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Ride hailing',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7650502341895916818',v:1958,alc:1605,lk:33,cm:4,sh:10,gd:4,it:51,er:2.6,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'22/04',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Drivers',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7631731282346626311',v:1928,alc:null,lk:57,cm:16,sh:5,gd:1,it:79,er:4.1,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'13/05',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Drivers',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7639600110288063762',v:1916,alc:694,lk:29,cm:6,sh:5,gd:2,it:42,er:2.19,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'26/06',pais:'CL',pl:'Instagram',fm:'Reel',vt:'Drivers',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.instagram.com/p/DaDkPfgAfoi/',v:1903,alc:1090,lk:33,cm:25,sh:5,gd:2,it:69,er:3.63,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'25/06',pais:'PE',pl:'Instagram',fm:'Reel',vt:'Ride hailing',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.instagram.com/p/DaB1631RRQO/',v:1900,alc:1200,lk:41,cm:13,sh:4,gd:1,it:59,er:3.11,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'07/05',pais:'PE',pl:'Facebook',fm:'Reel',vt:'Drivers',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.facebook.com/reel/1603105327451699/',v:1900,alc:null,lk:10,cm:14,sh:1,gd:0,it:25,er:1.32,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'03/06',pais:'PE',pl:'TikTok',fm:'Carrusel',vt:'Ride hailing',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/photo/7647324824171367687',v:1900,alc:1700,lk:27,cm:13,sh:0,gd:0,it:40,er:2.11,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'12/06',pais:'PE',pl:'Instagram',fm:'Reel',vt:'Delivery',pilar:'Informacion para Pymes',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.instagram.com/p/DZgVoMSRTtH/',v:1832,alc:1251,lk:35,cm:9,sh:5,gd:2,it:51,er:2.78,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'13/06',pais:'PE',pl:'Facebook',fm:'Reel',vt:'Ride hailing',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.facebook.com/reel/2299264157484061',v:1809,alc:1875,lk:16,cm:16,sh:1,gd:0,it:33,er:1.82,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'10/05',pais:'PE',pl:'Facebook',fm:'Reel',vt:'Mixto',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.facebook.com/reel/998697092700306/',v:1800,alc:1800,lk:6,cm:7,sh:1,gd:0,it:14,er:0.78,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'01/06',pais:'CL',pl:'Instagram',fm:'Reel',vt:'Drivers',pilar:'',camp:'',cre:'CRE_CL_INDRIVE',url:'https://www.instagram.com/p/DZEMxzvAzE3/',v:1786,alc:1129,lk:18,cm:16,sh:0,gd:0,it:34,er:1.9,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'19/06',pais:'PE',pl:'TikTok',fm:'Carrusel',vt:'Ride hailing',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7652890637817138439',v:1783,alc:1462,lk:26,cm:13,sh:0,gd:6,it:45,er:2.52,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'03/06',pais:'PE',pl:'Instagram',fm:'Carrusel',vt:'Ride hailing',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.instagram.com/p/DZJKDoYEXuU/?img_index=1',v:1771,alc:810,lk:13,cm:0,sh:1,gd:1,it:15,er:0.85,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'17/04',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Drivers',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7629873869968493832',v:1741,alc:null,lk:36,cm:4,sh:4,gd:1,it:45,er:2.58,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'15/05',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Ride hailing',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7640304423020924167',v:1712,alc:800,lk:63,cm:12,sh:29,gd:5,it:109,er:6.37,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'17/06',pais:'PE',pl:'Facebook',fm:'Reel',vt:'Ride hailing',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.facebook.com/reel/1048506057860371',v:1688,alc:1637,lk:13,cm:1,sh:0,gd:0,it:14,er:0.83,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'29/04',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Ride hailing',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7634376962772847890',v:1663,alc:2900,lk:24,cm:1,sh:2,gd:1,it:28,er:1.68,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'08/06',pais:'CL',pl:'Instagram',fm:'Reel',vt:'Ride hailing',pilar:'',camp:'',cre:'CRE_CL_INDRIVE',url:'https://www.instagram.com/p/DZV7hqQgnU_/',v:1649,alc:980,lk:15,cm:9,sh:2,gd:0,it:26,er:1.58,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'05/06',pais:'PE',pl:'Instagram',fm:'Carrusel',vt:'Drivers',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.instagram.com/p/DZOUET1EVxJ/?img_index=1',v:1617,alc:714,lk:11,cm:4,sh:3,gd:1,it:19,er:1.18,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'08/06',pais:'PE',pl:'Instagram',fm:'Reel',vt:'Ride hailing',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.instagram.com/p/DZWM6PPRku8/',v:1610,alc:1001,lk:61,cm:7,sh:13,gd:4,it:85,er:5.28,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'25/05',pais:'PE',pl:'Facebook',fm:'Reel',vt:'Ride hailing',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.facebook.com/reel/4376336965970291/',v:1600,alc:null,lk:15,cm:0,sh:1,gd:0,it:16,er:1.0,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'14/05',pais:'PE',pl:'Facebook',fm:'Reel',vt:'Ride hailing',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.facebook.com/reel/1336459108426853/',v:1600,alc:null,lk:6,cm:25,sh:0,gd:0,it:31,er:1.94,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'13/06',pais:'PE',pl:'Instagram',fm:'Reel',vt:'Ride hailing',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.instagram.com/p/DZjBeRKRTMH/',v:1585,alc:1150,lk:38,cm:3,sh:25,gd:1,it:67,er:4.23,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'20/06',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Mixto',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7653275960434838791',v:1585,alc:1299,lk:28,cm:4,sh:1,gd:1,it:34,er:2.15,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'21/06',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Mixto',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7653909867492691207',v:1548,alc:1269,lk:24,cm:1,sh:2,gd:2,it:29,er:1.87,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'26/06',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Ride hailing',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7655535583607033106',v:1542,alc:1264,lk:43,cm:2,sh:12,gd:1,it:58,er:3.76,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'14/06',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Ride hailing',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7651050620647918855',v:1526,alc:1251,lk:33,cm:10,sh:12,gd:1,it:56,er:3.67,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'12/05',pais:'PE',pl:'Facebook',fm:'Reel',vt:'Ride hailing',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.facebook.com/reel/987340770430495/',v:1500,alc:null,lk:8,cm:0,sh:2,gd:0,it:10,er:0.67,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'25/05',pais:'PE',pl:'Facebook',fm:'Reel',vt:'Ride hailing',pilar:'',camp:'Ride hailing',cre:'CRE_PE_KAREN_SCHWARZ',url:'https://www.facebook.com/reel/1148322700815381/',v:1500,alc:null,lk:8,cm:8,sh:0,gd:0,it:16,er:1.07,ci:2000.0,ct:6000.0,fv:1500.0,fe:16.0,cpe:375.0,cpv:4.0},
+{fd:'08/05',pais:'PE',pl:'Facebook',fm:'Reel',vt:'Drivers',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.facebook.com/reel/1909864373021503/',v:1500,alc:null,lk:12,cm:6,sh:1,gd:0,it:19,er:1.27,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'11/06',pais:'PE',pl:'Facebook',fm:'Reel',vt:'Drivers',pilar:'',camp:'World Cup 2026',cre:'CRE_PE_FARFAN',url:'https://www.facebook.com/reel/4390792347809958',v:1490,alc:1388,lk:14,cm:17,sh:3,gd:0,it:34,er:2.28,ci:11210.0,ct:33630.0,fv:1490.0,fe:34.0,cpe:989.1176,cpv:22.5705},
+{fd:'10/06',pais:'PE',pl:'Instagram',fm:'Reel',vt:'Ride hailing',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.instagram.com/p/DZa3M9IR2PN/',v:1490,alc:1095,lk:30,cm:2,sh:2,gd:2,it:36,er:2.42,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'26/06',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Ride hailing',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7655488970372943111',v:1489,alc:1220,lk:31,cm:3,sh:3,gd:3,it:40,er:2.69,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'09/06',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Ride hailing',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7649203300444687623',v:1472,alc:1207,lk:38,cm:4,sh:2,gd:4,it:48,er:3.26,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'20/05',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Ride hailing',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7641969962818571528',v:1463,alc:2000,lk:30,cm:21,sh:1,gd:1,it:53,er:3.62,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'29/04',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Drivers',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7634353780808633618',v:1454,alc:1500,lk:37,cm:8,sh:11,gd:6,it:62,er:4.26,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'07/05',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Drivers',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7637183762383539474',v:1449,alc:null,lk:29,cm:4,sh:1,gd:3,it:37,er:2.55,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'07/05',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Ride hailing',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7637354395713162503',v:1448,alc:null,lk:9,cm:0,sh:3,gd:1,it:13,er:0.9,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'19/06',pais:'PE',pl:'Instagram',fm:'Reel',vt:'Mixto',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.instagram.com/p/DZycrLbRWHF/',v:1431,alc:1031,lk:33,cm:0,sh:6,gd:1,it:40,er:2.8,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'08/05',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Ride hailing',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7637718225207250183',v:1412,alc:null,lk:24,cm:2,sh:3,gd:1,it:30,er:2.12,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'18/06',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Ride hailing',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7652529689939938568',v:1409,alc:1155,lk:36,cm:2,sh:8,gd:4,it:50,er:3.55,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'02/06',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Ride hailing',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7646970906132221202',v:1407,alc:1300,lk:28,cm:4,sh:0,gd:0,it:32,er:2.27,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'21/05',pais:'PE',pl:'Facebook',fm:'Reel',vt:'Drivers',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.facebook.com/reel/1493038798870118/',v:1400,alc:null,lk:11,cm:11,sh:1,gd:0,it:23,er:1.64,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'25/06',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Ride hailing',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7655172305970121991',v:1399,alc:1147,lk:30,cm:12,sh:2,gd:0,it:44,er:3.15,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'30/06',pais:'PE',pl:'Instagram',fm:'Reel',vt:'Drivers',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.instagram.com/p/DaN_k8PRN0L/',v:1363,alc:943,lk:27,cm:8,sh:0,gd:1,it:36,er:2.64,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'25/05',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Ride hailing',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7643987716052356360',v:1359,alc:null,lk:21,cm:0,sh:2,gd:3,it:26,er:1.91,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'18/06',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Ride hailing',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7652544053296336136',v:1348,alc:1105,lk:18,cm:12,sh:1,gd:0,it:31,er:2.3,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'19/06',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Ride hailing',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7653236123388349703',v:1313,alc:1076,lk:18,cm:8,sh:6,gd:1,it:33,er:2.51,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'19/06',pais:'PE',pl:'Facebook',fm:'Carrusel',vt:'Delivery',pilar:'Marca',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.facebook.com/photo/?fbid=1521158156688326&set=pcb.1521158196688322',v:1309,alc:889,lk:5,cm:0,sh:2,gd:0,it:7,er:0.53,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'05/06',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Ride hailing',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7647945976585538834',v:1300,alc:1100,lk:16,cm:2,sh:0,gd:0,it:18,er:1.38,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'10/05',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Mixto',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7638303421812231442',v:1300,alc:1200,lk:19,cm:0,sh:0,gd:0,it:19,er:1.46,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'04/06',pais:'PE',pl:'Instagram',fm:'Reel',vt:'Drivers',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.instagram.com/p/DZKrIsxxpmH/',v:1296,alc:906,lk:20,cm:2,sh:1,gd:1,it:24,er:1.85,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'27/05',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Drivers',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7644730639329135880',v:1266,alc:612,lk:27,cm:1,sh:1,gd:3,it:32,er:2.53,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'10/06',pais:'PE',pl:'Facebook',fm:'Reel',vt:'Drivers',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'facebook.com/reel/1665043197908936/',v:1250,alc:1282,lk:12,cm:11,sh:1,gd:0,it:24,er:1.92,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'30/06',pais:'PE',pl:'Facebook',fm:'Reel',vt:'Drivers',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.facebook.com/reel/2479674789205909/',v:1248,alc:1214,lk:13,cm:9,sh:1,gd:0,it:23,er:1.84,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'24/06',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Ride hailing',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7655115351276997895',v:1247,alc:1022,lk:41,cm:10,sh:12,gd:2,it:65,er:5.21,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'24/06',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Ride hailing',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7654755231703534856',v:1240,alc:1016,lk:30,cm:8,sh:12,gd:2,it:52,er:4.19,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'14/05',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Ride hailing',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7639953495478603015',v:1236,alc:5600,lk:18,cm:1,sh:1,gd:3,it:23,er:1.86,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'25/06',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Ride hailing',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7655476579644001554',v:1235,alc:1012,lk:15,cm:10,sh:0,gd:0,it:25,er:2.02,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'12/06',pais:'PE',pl:'Facebook',fm:'Reel',vt:'Drivers',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.facebook.com/reel/2058470771408641',v:1217,alc:1260,lk:6,cm:6,sh:1,gd:1,it:14,er:1.15,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'08/06',pais:'PE',pl:'Facebook',fm:'Reel',vt:'Ride hailing',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.facebook.com/reel/2326726981189690',v:1208,alc:1191,lk:9,cm:5,sh:2,gd:0,it:16,er:1.32,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'05/06',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Ride hailing',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7647912466198039815',v:1200,alc:944,lk:31,cm:32,sh:0,gd:0,it:63,er:5.25,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'05/06',pais:'PE',pl:'Instagram',fm:'Reel',vt:'Ride hailing',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.instagram.com/p/DZNeIF3x0YO/',v:1194,alc:866,lk:14,cm:3,sh:1,gd:0,it:18,er:1.51,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'13/05',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Ride hailing',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7639528795606650130',v:1185,alc:null,lk:22,cm:4,sh:1,gd:1,it:28,er:2.36,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'28/04',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Ride hailing',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7633948975590149384',v:1179,alc:709,lk:52,cm:7,sh:8,gd:1,it:68,er:5.77,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'10/06',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Ride hailing',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7649875813176823048',v:1161,alc:952,lk:38,cm:9,sh:4,gd:4,it:55,er:4.74,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'13/06',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Delivery',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7650664764577778951',v:1155,alc:947,lk:15,cm:5,sh:0,gd:1,it:21,er:1.82,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'28/05',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Drivers',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7644993745271655687',v:1137,alc:null,lk:15,cm:6,sh:7,gd:3,it:31,er:2.73,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'19/06',pais:'PE',pl:'Instagram',fm:'Carrusel',vt:'Delivery',pilar:'Marca',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.instagram.com/p/DZxn5NRkeoh/?img_index=1',v:1113,alc:557,lk:6,cm:0,sh:0,gd:0,it:6,er:0.54,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'12/06',pais:'PE',pl:'Facebook',fm:'Reel',vt:'Delivery',pilar:'Informacion para Pymes',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.facebook.com/reel/2164960394351075',v:1112,alc:1117,lk:6,cm:8,sh:1,gd:0,it:15,er:1.35,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'17/06',pais:'CL',pl:'Instagram',fm:'Reel',vt:'Ride hailing',pilar:'',camp:'',cre:'CRE_CL_INDRIVE',url:'https://www.instagram.com/reel/DZtGZ6KAti3/',v:1107,alc:741,lk:12,cm:4,sh:0,gd:0,it:16,er:1.45,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'30/04',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Drivers',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'http://tiktok.com/@indrive.pe/video/7634714734104825095',v:1104,alc:2200,lk:30,cm:6,sh:0,gd:0,it:36,er:3.26,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'04/06',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Drivers',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7647543508039109906',v:1100,alc:912,lk:10,cm:2,sh:0,gd:0,it:12,er:1.09,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'22/05',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Drivers',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7642764728976133384',v:1083,alc:400,lk:19,cm:9,sh:2,gd:4,it:34,er:3.14,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'30/05',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Drivers',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7645847792459582738',v:1072,alc:1000,lk:18,cm:10,sh:4,gd:0,it:32,er:2.99,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'10/06',pais:'PE',pl:'Facebook',fm:'Reel',vt:'Mixto',pilar:'',camp:'Brand',cre:'CRE_PE_NIETOS_ITINERANTES',url:'https://www.facebook.com/reel/867936112454439/',v:1043,alc:1095,lk:5,cm:8,sh:1,gd:0,it:14,er:1.34,ci:null,ct:null,fv:1043.0,fe:14.0,cpe:null,cpv:null},
+{fd:'08/05',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Drivers',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7637600595477646600',v:1032,alc:750,lk:15,cm:4,sh:0,gd:0,it:19,er:1.84,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'05/06',pais:'CL',pl:'Instagram',fm:'Reel',vt:'Drivers',pilar:'',camp:'',cre:'CRE_CL_INDRIVE',url:'https://www.instagram.com/p/DZNiC9PxBHJ/',v:1028,alc:939,lk:15,cm:3,sh:0,gd:0,it:18,er:1.75,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'12/06',pais:'PE',pl:'Instagram',fm:'Reel',vt:'Drivers',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.instagram.com/p/DZfmXb5h_Yd/',v:1003,alc:721,lk:7,cm:3,sh:0,gd:1,it:11,er:1.1,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'21/06',pais:'PE',pl:'Instagram',fm:'Reel',vt:'Mixto',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.instagram.com/reels/DZ22FRKRvGx/',v:987,alc:743,lk:12,cm:1,sh:2,gd:0,it:15,er:1.52,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'30/06',pais:'PE',pl:'Instagram',fm:'Reel',vt:'Drivers',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.instagram.com/p/DaOsQAnxkXy/',v:978,alc:690,lk:18,cm:8,sh:3,gd:0,it:29,er:2.97,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'24/06',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Ride hailing',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7655104848244854024',v:960,alc:787,lk:38,cm:10,sh:17,gd:2,it:67,er:6.98,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'22/06',pais:'PE',pl:'Facebook',fm:'Reel',vt:'Ride hailing',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.facebook.com/reel/964972016576035',v:947,alc:940,lk:6,cm:8,sh:1,gd:0,it:15,er:1.58,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'29/04',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Drivers',pilar:'',camp:'Drivers',cre:'CRE_PE_LOS_MIRLOS',url:'https://www.tiktok.com/@indrive.pe/video/7634307633222126855',v:940,alc:1000,lk:32,cm:10,sh:2,gd:1,it:45,er:4.79,ci:9326.72,ct:27980.16,fv:940.0,fe:45.0,cpe:621.7813,cpv:29.7661},
+{fd:'29/06',pais:'PE',pl:'TikTok',fm:'Carrusel',vt:'Ride hailing',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7656614231030123784',v:920,alc:754,lk:7,cm:2,sh:0,gd:0,it:9,er:0.98,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'31/05',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Drivers',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7646268079302839570',v:894,alc:null,lk:23,cm:5,sh:0,gd:0,it:28,er:3.13,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'12/05',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Ride hailing',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7639155914288811272',v:889,alc:null,lk:19,cm:2,sh:2,gd:0,it:23,er:2.59,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'29/05',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Ride hailing',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7645361428060261639',v:868,alc:1037,lk:16,cm:4,sh:0,gd:0,it:20,er:2.3,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'27/05',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Drivers',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7644786932882443528',v:850,alc:null,lk:18,cm:8,sh:2,gd:1,it:29,er:3.41,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'29/05',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Drivers',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7645519170427227399',v:850,alc:664,lk:16,cm:2,sh:0,gd:0,it:18,er:2.12,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'19/06',pais:'PE',pl:'Facebook',fm:'Reel',vt:'Mixto',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.facebook.com/reel/1360395572615091',v:800,alc:839,lk:7,cm:4,sh:2,gd:0,it:13,er:1.62,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'15/05',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Delivery',pilar:'Marca',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7640258368375885064',v:791,alc:700,lk:10,cm:3,sh:0,gd:0,it:13,er:1.64,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'30/06',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Drivers',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7657245626320702728',v:785,alc:643,lk:11,cm:6,sh:0,gd:1,it:18,er:2.29,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'30/06',pais:'PE',pl:'Facebook',fm:'Reel',vt:'Drivers',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.facebook.com/reel/1556657185851315',v:781,alc:736,lk:4,cm:9,sh:0,gd:1,it:14,er:1.79,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'21/06',pais:'PE',pl:'Facebook',fm:'Reel',vt:'Mixto',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'facebook.com/reel/1027604046628168/',v:781,alc:804,lk:1,cm:1,sh:0,gd:0,it:2,er:0.26,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'25/05',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Ride hailing',pilar:'',camp:'Ride hailing',cre:'CRE_PE_KAREN_SCHWARZ',url:'https://www.tiktok.com/@indrive.pe/video/7643883511862103314',v:764,alc:550,lk:23,cm:4,sh:1,gd:0,it:28,er:3.66,ci:2000.0,ct:6000.0,fv:764.0,fe:28.0,cpe:214.2857,cpv:7.8534},
+{fd:'29/05',pais:'PE',pl:'TikTok',fm:'Carrusel',vt:'Ride hailing',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/photo/7645314193989586184?image_index=2',v:764,alc:950,lk:13,cm:0,sh:2,gd:0,it:15,er:1.96,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'23/06',pais:'PE',pl:'Facebook',fm:'Reel',vt:'Ride hailing',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.facebook.com/reel/1825033745136115/',v:761,alc:692,lk:2,cm:1,sh:0,gd:1,it:4,er:0.53,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'24/06',pais:'PE',pl:'Facebook',fm:'Reel',vt:'Delivery',pilar:'Marca',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.facebook.com/reel/1535874321411587',v:742,alc:736,lk:7,cm:9,sh:0,gd:0,it:16,er:2.16,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'29/05',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Drivers',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7645400873023098130',v:714,alc:null,lk:15,cm:3,sh:0,gd:0,it:18,er:2.52,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'27/05',pais:'PE',pl:'TikTok',fm:'TikTok Video',vt:'Drivers',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/video/7644588313109679367',v:691,alc:950,lk:18,cm:4,sh:2,gd:0,it:24,er:3.47,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'05/06',pais:'PE',pl:'TikTok',fm:'Carrusel',vt:'Mixto',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/photo/7647925140973522194',v:667,alc:513,lk:11,cm:0,sh:0,gd:0,it:11,er:1.65,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'04/06',pais:'PE',pl:'TikTok',fm:'Carrusel',vt:'Mixto',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.tiktok.com/@indrive.pe/photo/7647704460331863304',v:641,alc:509,lk:12,cm:2,sh:0,gd:0,it:14,er:2.18,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'31/05',pais:'PE',pl:'Facebook',fm:'Reel',vt:'Drivers',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.facebook.com/reel/962901896743420/',v:572,alc:null,lk:7,cm:0,sh:0,gd:0,it:7,er:1.22,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'08/06',pais:'CL',pl:'TikTok',fm:'TikTok Video',vt:'Ride hailing',pilar:'',camp:'',cre:'CRE_CL_INDRIVE',url:'https://www.tiktok.com/@indrive.cl/video/7649166793440759058',v:537,alc:null,lk:7,cm:0,sh:0,gd:1,it:8,er:1.49,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'22/06',pais:'PE',pl:'Instagram',fm:'Reel',vt:'Ride hailing',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.instagram.com/reels/DZ45l0-BLJw/',v:528,alc:366,lk:5,cm:0,sh:0,gd:0,it:5,er:0.95,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'30/05',pais:'PE',pl:'Facebook',fm:'Reel',vt:'Drivers',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.facebook.com/reel/2228397867932770/',v:476,alc:null,lk:13,cm:6,sh:0,gd:0,it:19,er:3.99,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'29/05',pais:'PE',pl:'Facebook',fm:'Reel',vt:'Drivers',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.facebook.com/reel/997715992808490/',v:406,alc:null,lk:10,cm:1,sh:0,gd:0,it:11,er:2.71,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'18/06',pais:'CL',pl:'TikTok',fm:'TikTok Video',vt:'Ride hailing',pilar:'',camp:'',cre:'CRE_CL_INDRIVE',url:'https://www.tiktok.com/@indrive.cl/video/7652504466561830152',v:330,alc:null,lk:7,cm:1,sh:0,gd:1,it:9,er:2.73,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'01/06',pais:'CL',pl:'TikTok',fm:'TikTok Video',vt:'Drivers',pilar:'',camp:'',cre:'CRE_CL_INDRIVE',url:'https://www.tiktok.com/@indrive.cl/video/7647953472951749895',v:310,alc:null,lk:4,cm:1,sh:0,gd:1,it:6,er:1.94,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'01/06',pais:'CL',pl:'TikTok',fm:'TikTok Video',vt:'Drivers',pilar:'',camp:'',cre:'CRE_CL_INDRIVE',url:'https://www.tiktok.com/@indrive.cl/video/7646610047212080392',v:224,alc:null,lk:2,cm:0,sh:0,gd:0,it:2,er:0.89,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'01/06',pais:'CL',pl:'TikTok',fm:'TikTok Video',vt:'Ride hailing',pilar:'',camp:'',cre:'CRE_CL_INDRIVE',url:'https://www.tiktok.com/@indrive.cl/video/7647663149197397255',v:149,alc:null,lk:1,cm:0,sh:0,gd:0,it:1,er:0.67,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'28/04',pais:'PE',pl:'Facebook',fm:'Carrusel',vt:'Delivery',pilar:'Informacion para Pymes',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.facebook.com/photo?fbid=1474436158027193&set=pcb.1474436204693855',v:0,alc:1700,lk:5,cm:0,sh:1,gd:0,it:6,er:null,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'28/04',pais:'PE',pl:'Instagram',fm:'Carrusel',vt:'Delivery',pilar:'Informacion para Pymes',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.instagram.com/p/DXsJ9Pfj9ec/',v:0,alc:878,lk:17,cm:7,sh:1,gd:0,it:25,er:null,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'23/04',pais:'PE',pl:'Facebook',fm:'Carrusel',vt:'Delivery',pilar:'Informacion para Pymes',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.facebook.com/photo?fbid=1469850348485774&set=pcb.1469850395152436',v:0,alc:2100,lk:8,cm:10,sh:1,gd:0,it:19,er:null,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'08/04',pais:'PE',pl:'Instagram',fm:'Carrusel',vt:'Ride hailing',pilar:'Meme',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.instagram.com/p/DW48ciYkS8T/',v:0,alc:1303,lk:69,cm:53,sh:1,gd:0,it:123,er:null,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'23/05',pais:'PE',pl:'Instagram',fm:'Foto',vt:'Ride hailing',pilar:'',camp:'Delivery',cre:'CRE_PE_LIGA1_TE_APUESTO',url:'https://www.instagram.com/p/DYs6zrOt9Jq/',v:0,alc:null,lk:234,cm:6,sh:4,gd:0,it:244,er:null,ci:null,ct:null,fv:15000.0,fe:244.0,cpe:null,cpv:null},
+{fd:'07/04',pais:'PE',pl:'Facebook',fm:'Facebook Video',vt:'Ride hailing',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.facebook.com/100063824682833/videos/pcb.1456412316496244/2016152365914711',v:0,alc:null,lk:11,cm:32,sh:1,gd:0,it:44,er:null,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'07/04',pais:'PE',pl:'Instagram',fm:'Carrusel',vt:'Ride hailing',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.instagram.com/p/DW1MCXpkeSm/',v:0,alc:null,lk:39,cm:39,sh:2,gd:0,it:80,er:null,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'08/04',pais:'PE',pl:'Facebook',fm:'Carrusel',vt:'Ride hailing',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.facebook.com/photo?fbid=1457625026374973&set=a.713329420804541',v:0,alc:null,lk:25,cm:45,sh:0,gd:0,it:70,er:null,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'03/04',pais:'PE',pl:'Instagram',fm:'Carrusel',vt:'Delivery',pilar:'Meme',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.instagram.com/p/DWrgOiekWHm/',v:0,alc:1850,lk:25,cm:1,sh:0,gd:0,it:26,er:null,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'23/04',pais:'PE',pl:'Instagram',fm:'Carrusel',vt:'Delivery',pilar:'Informacion para Pymes',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.instagram.com/p/DXe74yckeRr/',v:0,alc:870,lk:24,cm:14,sh:0,gd:0,it:38,er:null,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'29/05',pais:'PE',pl:'Instagram',fm:'Carrusel',vt:'Ride hailing',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.instagram.com/p/DY7NUkckeoU/?img_index=1',v:0,alc:null,lk:11,cm:1,sh:1,gd:0,it:13,er:null,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'21/05',pais:'PE',pl:'Facebook',fm:'Carrusel',vt:'Delivery',pilar:'Marca',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.facebook.com/photo/?fbid=1494817642655711&set=pcb.1494817685989040',v:0,alc:2200,lk:17,cm:17,sh:0,gd:0,it:34,er:null,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'21/05',pais:'PE',pl:'Instagram',fm:'Carrusel',vt:'Delivery',pilar:'Marca',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.instagram.com/p/DYnsfaakdI7/?img_index=1',v:0,alc:811,lk:33,cm:20,sh:0,gd:0,it:53,er:null,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'13/05',pais:'PE',pl:'Facebook',fm:'Carrusel',vt:'Drivers',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.facebook.com/indrive.peru/posts/pfbid02BricRt7SADmnxtYs51onczxTdv...',v:0,alc:null,lk:6,cm:13,sh:1,gd:0,it:20,er:null,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'13/05',pais:'PE',pl:'Instagram',fm:'Carrusel',vt:'Drivers',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.instagram.com/p/DYSyd4RD70q/?next=%2Freel%2FDXkqHnYEWDs%2F&img_index=1',v:0,alc:null,lk:23,cm:17,sh:5,gd:0,it:45,er:null,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'07/05',pais:'PE',pl:'Instagram',fm:'Carrusel',vt:'Ride hailing',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.instagram.com/p/DYBNclWEYQQ/?next=%2Freel%2FDXkqHnYEWDs%2F&img_index=1',v:0,alc:null,lk:32,cm:7,sh:1,gd:0,it:40,er:null,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'06/05',pais:'PE',pl:'Facebook',fm:'Carrusel',vt:'Ride hailing',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://web.facebook.com/indrive.peru/posts/pfbid02bVXKPmYZ4CzLkErTzbp6TNKEQTsP58SVNZ',v:0,alc:null,lk:9,cm:5,sh:1,gd:0,it:15,er:null,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'06/05',pais:'PE',pl:'Instagram',fm:'Foto',vt:'Drivers',pilar:'',camp:'Drivers',cre:'CRE_PE_COPA_CALIENTE_LIGA',url:'https://www.instagram.com/p/DYA94S-keKN/?next=%2Freel%2FDXkqHnYEWDs%2F',v:0,alc:null,lk:155,cm:4,sh:2,gd:0,it:161,er:null,ci:null,ct:null,fv:6100.0,fe:161.0,cpe:null,cpv:null},
+{fd:'30/04',pais:'PE',pl:'Instagram',fm:'Carrusel',vt:'Ride hailing',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.instagram.com/p/DXvTKG2jQiB/',v:0,alc:null,lk:43,cm:2,sh:1,gd:0,it:46,er:null,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
+{fd:'04/05',pais:'PE',pl:'Instagram',fm:'Carrusel',vt:'Drivers',pilar:'',camp:'',cre:'CRE_PE_INDRIVE',url:'https://www.instagram.com/p/DX7t2-7PPvQ/?next=%2Freel%2FDXkqHnYEWDs%2F',v:0,alc:null,lk:24,cm:4,sh:2,gd:0,it:30,er:null,ci:null,ct:null,fv:null,fe:null,cpe:null,cpv:null},
 ];
 const PLATS_MENS=[
-{mes:4,pais:'PE',pl:'Instagram',cre:'CRE_PE_INDRIVE',fol:38800,erv:1.00},
-{mes:4,pais:'PE',pl:'TikTok',cre:'CRE_PE_INDRIVE',fol:83660,erv:2.99},
-{mes:4,pais:'PE',pl:'Facebook',cre:'CRE_PE_INDRIVE',fol:1581000,erv:1.36},
-{mes:5,pais:'PE',pl:'Instagram',cre:'CRE_PE_INDRIVE',fol:39400,erv:1.63},
-{mes:5,pais:'PE',pl:'TikTok',cre:'CRE_PE_INDRIVE',fol:86300,erv:2.51},
-{mes:5,pais:'PE',pl:'Facebook',cre:'CRE_PE_INDRIVE',fol:1600000,erv:1.75},
-{mes:4,pais:'PE',pl:'Instagram',cre:'CRE_PE_LUIS_VASQUEZ',fol:88800,erv:4.99},
-{mes:4,pais:'PE',pl:'Instagram',cre:'CRE_PE_LOS_MIRLOS',fol:127000,erv:3.08},
-{mes:4,pais:'PE',pl:'TikTok',cre:'CRE_PE_LOS_MIRLOS',fol:79300,erv:4.79},
-{mes:4,pais:'PE',pl:'Facebook',cre:'CRE_PE_LOS_MIRLOS',fol:205000,erv:2.73},
-{mes:4,pais:'PE',pl:'Instagram',cre:'CRE_PE_LAS_GAVIOTAS_CEVICHERIA',fol:1700000,erv:6.65},
-{mes:4,pais:'PE',pl:'TikTok',cre:'CRE_PE_LAS_GAVIOTAS_CEVICHERIA',fol:2700000,erv:7.73},
-{mes:5,pais:'PE',pl:'Instagram',cre:'CRE_PE_CAMILA_HEREDIA',fol:112000,erv:2.38},
-{mes:5,pais:'PE',pl:'Instagram',cre:'CRE_PE_LIZ_SANDOVA',fol:235000,erv:1.03},
+{mes:4,pais:'PE',pl:'Facebook',cre:'CRE_PE_INDRIVE',fol:65500,erv:null},
+{mes:4,pais:'PE',pl:'Instagram',cre:'CRE_PE_INDRIVE',fol:38800,erv:null},
+{mes:4,pais:'PE',pl:'TikTok',cre:'CRE_PE_INDRIVE',fol:83660,erv:null},
+{mes:4,pais:'PE',pl:'Instagram',cre:'CRE_PE_LAS_GAVIOTAS_CEVICHERIA',fol:1700000,erv:null},
+{mes:4,pais:'PE',pl:'TikTok',cre:'CRE_PE_LAS_GAVIOTAS_CEVICHERIA',fol:2700000,erv:null},
+{mes:4,pais:'PE',pl:'Facebook',cre:'CRE_PE_LOS_MIRLOS',fol:205000,erv:null},
+{mes:4,pais:'PE',pl:'Instagram',cre:'CRE_PE_LOS_MIRLOS',fol:127000,erv:null},
+{mes:4,pais:'PE',pl:'TikTok',cre:'CRE_PE_LOS_MIRLOS',fol:79300,erv:null},
+{mes:4,pais:'PE',pl:'Instagram',cre:'CRE_PE_LUIS_VASQUEZ',fol:88800,erv:null},
+{mes:5,pais:'PE',pl:'Instagram',cre:'CRE_PE_CAMILA_HEREDIA',fol:112000,erv:null},
 {mes:5,pais:'PE',pl:'Instagram',cre:'CRE_PE_COPA_CALIENTE_LIGA',fol:6516,erv:null},
-{mes:5,pais:'PE',pl:'Instagram',cre:'CRE_PE_LIGA1_TE_APUESTO',fol:439000,erv:2.65},
-{mes:5,pais:'PE',pl:'Instagram',cre:'CRE_PE_RODRIGO_PEREA',fol:30700,erv:2.75},
-{mes:5,pais:'PE',pl:'Instagram',cre:'CRE_PE_KAREN_SCHWARZ',fol:3400000,erv:0.88},
-{mes:5,pais:'PE',pl:'TikTok',cre:'CRE_PE_KAREN_SCHWARZ',fol:792200,erv:3.66},
-{mes:5,pais:'PE',pl:'Facebook',cre:'CRE_PE_KAREN_SCHWARZ',fol:303000,erv:1.07},
-{mes:5,pais:'PE',pl:'Instagram',cre:'CRE_PE_EL_CHATO_RAUL',fol:25100,erv:8.01},
+{mes:5,pais:'PE',pl:'Instagram',cre:'CRE_PE_EL_CHATO_RAUL',fol:25100,erv:null},
+{mes:5,pais:'PE',pl:'Facebook',cre:'CRE_PE_INDRIVE',fol:65500,erv:null},
+{mes:5,pais:'PE',pl:'Instagram',cre:'CRE_PE_INDRIVE',fol:39400,erv:null},
+{mes:5,pais:'PE',pl:'TikTok',cre:'CRE_PE_INDRIVE',fol:86300,erv:null},
+{mes:5,pais:'PE',pl:'Facebook',cre:'CRE_PE_KAREN_SCHWARZ',fol:303000,erv:null},
+{mes:5,pais:'PE',pl:'Instagram',cre:'CRE_PE_KAREN_SCHWARZ',fol:3400000,erv:null},
+{mes:5,pais:'PE',pl:'TikTok',cre:'CRE_PE_KAREN_SCHWARZ',fol:792200,erv:null},
+{mes:5,pais:'PE',pl:'Instagram',cre:'CRE_PE_LIGA1_TE_APUESTO',fol:439000,erv:null},
+{mes:5,pais:'PE',pl:'Instagram',cre:'CRE_PE_LIZ_SANDOVA',fol:235000,erv:null},
+{mes:5,pais:'PE',pl:'Instagram',cre:'CRE_PE_RODRIGO_PEREA',fol:30700,erv:null},
+{mes:6,pais:'PE',pl:'Facebook',cre:'CRE_PE_INDRIVE',fol:65500,erv:null},
+{mes:6,pais:'PE',pl:'Instagram',cre:'CRE_PE_INDRIVE',fol:40100,erv:null},
+{mes:6,pais:'PE',pl:'TikTok',cre:'CRE_PE_INDRIVE',fol:92000,erv:null},
+{mes:6,pais:'PE',pl:'Instagram',cre:'CRE_PE_COPA_CALIENTE_LIGA',fol:6516,erv:null},
+{mes:6,pais:'PE',pl:'Facebook',cre:'CRE_PE_FARFAN',fol:2500000,erv:null},
+{mes:6,pais:'PE',pl:'Facebook',cre:'CRE_PE_NIETOS_ITINERANTES',fol:12700,erv:null},
+{mes:6,pais:'PE',pl:'Instagram',cre:'CRE_PE_NIETOS_ITINERANTES',fol:12700,erv:null},
+{mes:6,pais:'PE',pl:'Instagram',cre:'CRE_PE_FARFAN',fol:4100000,erv:null},
+{mes:6,pais:'CL',pl:'Instagram',cre:'CRE_CL_LUCAS_PINOZA',fol:240000,erv:null},
+{mes:6,pais:'PE',pl:'Instagram',cre:'CRE_PE_TALIA_AZCARATE',fol:100000,erv:null},
+{mes:6,pais:'CL',pl:'Instagram',cre:'CRE_CL_EL_JANO_JEY',fol:394000,erv:null},
+{mes:6,pais:'CL',pl:'Instagram',cre:'CRE_CL_ALTO_YOYO',fol:349000,erv:null},
+{mes:6,pais:'PE',pl:'Instagram',cre:'CRE_PE_ENFOCADOS_PODCAST',fol:394000,erv:null},
+{mes:6,pais:'PE',pl:'TikTok',cre:'CRE_PE_FARFAN',fol:377500,erv:null},
+{mes:6,pais:'PE',pl:'Instagram',cre:'CRE_PE_MASHA_SEKUTOROVA',fol:313000,erv:null},
+{mes:6,pais:'PE',pl:'Instagram',cre:'CRE_PE_WARIQUEANDO',fol:835000,erv:null},
+{mes:6,pais:'PE',pl:'Instagram',cre:'CRE_CL_INDRIVE',fol:21700,erv:null},
+{mes:6,pais:'PE',pl:'TikTok',cre:'CRE_CL_INDRIVE',fol:4908,erv:null},
 ];
 const IND_SENTIMENT=[
 {mes:4,pais:'PE',pl:'Instagram',fol:38800,netSent:66.0,pPos:76.6,pNeg:10.6,pNeu:12.8,tot:1365,lectura:'Canal mas eficiente del mes. Partners explican el salto de alcance e interaccion.'},
@@ -667,20 +767,11 @@ const IND_SENTIMENT=[
 {mes:5,pais:'PE',pl:'Instagram',fol:39400,netSent:63.5,pPos:72.2,pNeg:8.7,pNeu:19.1,tot:788,lectura:''},
 {mes:5,pais:'PE',pl:'TikTok',fol:86300,netSent:-25.6,pPos:18.3,pNeg:43.9,pNeu:37.8,tot:164,lectura:''},
 {mes:5,pais:'PE',pl:'Facebook',fol:1600000,netSent:-63.4,pPos:7.3,pNeg:70.7,pNeu:22.0,tot:258,lectura:''},
+{mes:6,pais:'PE',pl:'Instagram',fol:89000,netSent:72.7,pPos:83.6,pNeg:10.9,pNeu:5.5,tot:55,lectura:'Predomina ampliamente el sentimiento positivo: comentarios de aprobación hacia rutas gastronómicas, pet friendly, entregas y contenido de conductores. Las alertas negativas se concentran en soporte humano y seguridad de motorizados.'},
+{mes:6,pais:'PE',pl:'TikTok',fol:124000,netSent:-25.5,pPos:23.6,pNeg:49.1,pNeu:27.3,tot:55,lectura:'Conversación mixta con tendencia negativa: aparecen reclamos por bloqueos, robos/envíos, soporte, tarifas y experiencia de conductores. Lo positivo se concentra en pet friendly, confort y actualizaciones.'},
+{mes:6,pais:'PE',pl:'Facebook',fol:320000,netSent:-44.8,pPos:13.8,pNeg:58.6,pNeu:27.6,tot:29,lectura:'Es la plataforma más crítica: predominan reclamos por bloqueos, falta de respuesta, robos/envíos, activación de conductores y premios. Hay positivos aislados, pero pesan menos en la conversación.'},
 ];
 const CONS_MENS=[
-{mes:4,pais:'PE',cre:'CRE_PE_INDRIVE',comunidad:1703460,alcance:null,crec:1.86,views:95168,inter:2406,pub:36,netSent:33.0,comAnaliz:1963},
-{mes:5,pais:'PE',cre:'CRE_PE_INDRIVE',comunidad:1725700,alcance:null,crec:null,views:151905,inter:2909,pub:75,netSent:11.0,comAnaliz:725},
-{mes:4,pais:'PE',cre:'CRE_PE_LUIS_VASQUEZ',comunidad:88800,alcance:null,crec:null,views:19600,inter:978,pub:1,netSent:null,comAnaliz:null},
-{mes:4,pais:'PE',cre:'CRE_PE_LOS_MIRLOS',comunidad:411300,alcance:null,crec:null,views:11599,inter:363,pub:3,netSent:null,comAnaliz:null},
-{mes:4,pais:'PE',cre:'CRE_PE_LAS_GAVIOTAS_CEVICHERIA',comunidad:4400000,alcance:null,crec:null,views:645400,inter:46327,pub:2,netSent:null,comAnaliz:null},
-{mes:5,pais:'PE',cre:'CRE_PE_CAMILA_HEREDIA',comunidad:112000,alcance:null,crec:null,views:7515,inter:179,pub:1,netSent:null,comAnaliz:null},
-{mes:5,pais:'PE',cre:'CRE_PE_LIZ_SANDOVA',comunidad:235000,alcance:null,crec:null,views:51700,inter:532,pub:1,netSent:null,comAnaliz:null},
-{mes:5,pais:'PE',cre:'CRE_PE_COPA_CALIENTE_LIGA',comunidad:6516,alcance:null,crec:null,views:null,inter:161,pub:1,netSent:null,comAnaliz:null},
-{mes:5,pais:'PE',cre:'CRE_PE_LIGA1_TE_APUESTO',comunidad:439000,alcance:null,crec:null,views:40100,inter:1305,pub:2,netSent:null,comAnaliz:null},
-{mes:5,pais:'PE',cre:'CRE_PE_RODRIGO_PEREA',comunidad:30700,alcance:null,crec:null,views:5235,inter:144,pub:1,netSent:null,comAnaliz:null},
-{mes:5,pais:'PE',cre:'CRE_PE_KAREN_SCHWARZ',comunidad:4495200,alcance:null,crec:null,views:146264,inter:1314,pub:3,netSent:null,comAnaliz:null},
-{mes:5,pais:'PE',cre:'CRE_PE_EL_CHATO_RAUL',comunidad:25100,alcance:null,crec:null,views:20800,inter:1666,pub:1,netSent:null,comAnaliz:null},
 ];
 const AUD_DATA=[
 {mes:4,pais:'PE',cre:'CRE_PE_INDRIVE',pl:'Instagram',tipo:'Genero',seg:'Hombres',pct:null,base:null},
@@ -1039,10 +1130,41 @@ const AUD_DATA=[
 {mes:4,pais:'PE',cre:'CRE_PE_INDRIVE',pl:'TikTok',tipo:'Genero',seg:'Otro',pct:0.0,base:83660},
 {mes:4,pais:'PE',cre:'CRE_PE_INDRIVE',pl:'TikTok',tipo:'Edad',seg:'13-17',pct:null,base:83660},
 {mes:4,pais:'PE',cre:'CRE_PE_INDRIVE',pl:'TikTok',tipo:'Idioma',seg:'Español',pct:null,base:83660},
+{mes:0,pais:'PE',cre:'CRE_PE_INDRIVE',pl:'Instagram',tipo:'Genero',seg:'Hombres',pct:0.533,base:40101},
+{mes:0,pais:'PE',cre:'CRE_PE_INDRIVE',pl:'Instagram',tipo:'Genero',seg:'Mujeres',pct:0.467,base:40101},
+{mes:0,pais:'PE',cre:'CRE_PE_INDRIVE',pl:'Instagram',tipo:'Edad',seg:'18-24',pct:0.091,base:40101},
+{mes:0,pais:'PE',cre:'CRE_PE_INDRIVE',pl:'Instagram',tipo:'Edad',seg:'25-34',pct:0.397,base:40101},
+{mes:0,pais:'PE',cre:'CRE_PE_INDRIVE',pl:'Instagram',tipo:'Edad',seg:'35-44',pct:0.292,base:40101},
+{mes:0,pais:'PE',cre:'CRE_PE_INDRIVE',pl:'Instagram',tipo:'Edad',seg:'45-54',pct:0.135,base:40101},
+{mes:0,pais:'PE',cre:'CRE_PE_INDRIVE',pl:'Instagram',tipo:'Edad',seg:'55+',pct:0.085,base:40101},
+{mes:0,pais:'PE',cre:'CRE_PE_INDRIVE',pl:'Instagram',tipo:'Pais',seg:'Peru',pct:0.69,base:40101},
+{mes:0,pais:'PE',cre:'CRE_PE_INDRIVE',pl:'Instagram',tipo:'Ciudad',seg:'Lima',pct:0.443,base:40101},
+{mes:0,pais:'PE',cre:'CRE_PE_INDRIVE',pl:'Instagram',tipo:'Hora pico',seg:'',pct:null,base:40101},
+{mes:0,pais:'PE',cre:'CRE_PE_INDRIVE',pl:'Facebook',tipo:'Genero',seg:'Hombres',pct:0.73,base:65526},
+{mes:0,pais:'PE',cre:'CRE_PE_INDRIVE',pl:'Facebook',tipo:'Genero',seg:'Mujeres',pct:0.27,base:65526},
+{mes:0,pais:'PE',cre:'CRE_PE_INDRIVE',pl:'Facebook',tipo:'Edad',seg:'18-24',pct:0.054,base:65526},
+{mes:0,pais:'PE',cre:'CRE_PE_INDRIVE',pl:'Facebook',tipo:'Edad',seg:'25-34',pct:0.425,base:65526},
+{mes:0,pais:'PE',cre:'CRE_PE_INDRIVE',pl:'Facebook',tipo:'Edad',seg:'35-44',pct:0.314,base:65526},
+{mes:0,pais:'PE',cre:'CRE_PE_INDRIVE',pl:'Facebook',tipo:'Edad',seg:'45-54',pct:0.14,base:65526},
+{mes:0,pais:'PE',cre:'CRE_PE_INDRIVE',pl:'Facebook',tipo:'Edad',seg:'55+',pct:0.067,base:65526},
+{mes:0,pais:'PE',cre:'CRE_PE_INDRIVE',pl:'Facebook',tipo:'Pais',seg:'Peru',pct:0.99,base:65526},
+{mes:0,pais:'PE',cre:'CRE_PE_INDRIVE',pl:'Facebook',tipo:'Ciudad',seg:'Lima',pct:0.581,base:65526},
+{mes:0,pais:'PE',cre:'CRE_PE_INDRIVE',pl:'Facebook',tipo:'Hora pico',seg:'',pct:null,base:65526},
+{mes:0,pais:'PE',cre:'CRE_PE_INDRIVE',pl:'TikTok',tipo:'Genero',seg:'Hombres',pct:0.51,base:92200},
+{mes:0,pais:'PE',cre:'CRE_PE_INDRIVE',pl:'TikTok',tipo:'Genero',seg:'Mujeres',pct:0.49,base:92200},
+{mes:0,pais:'PE',cre:'CRE_PE_INDRIVE',pl:'TikTok',tipo:'Edad',seg:'18-24',pct:0.141,base:92200},
+{mes:0,pais:'PE',cre:'CRE_PE_INDRIVE',pl:'TikTok',tipo:'Edad',seg:'25-34',pct:0.391,base:92200},
+{mes:0,pais:'PE',cre:'CRE_PE_INDRIVE',pl:'TikTok',tipo:'Edad',seg:'35-44',pct:0.302,base:92200},
+{mes:0,pais:'PE',cre:'CRE_PE_INDRIVE',pl:'TikTok',tipo:'Edad',seg:'45-54',pct:0.131,base:92200},
+{mes:0,pais:'PE',cre:'CRE_PE_INDRIVE',pl:'TikTok',tipo:'Edad',seg:'55+',pct:0.035,base:92200},
+{mes:0,pais:'PE',cre:'CRE_PE_INDRIVE',pl:'TikTok',tipo:'Pais',seg:'Peru',pct:0.667,base:92200},
+{mes:0,pais:'PE',cre:'CRE_PE_INDRIVE',pl:'TikTok',tipo:'Ciudad',seg:'Lima',pct:null,base:92200},
+{mes:0,pais:'PE',cre:'CRE_PE_INDRIVE',pl:'TikTok',tipo:'Hora pico',seg:'',pct:null,base:92200},
 ];
 const BUZZ_DATA=[
 {mes:4,pais:'PE',posted:274,momPosted:119.2,likes:76311,momLikes:-45.2,avgViews:6406772,momViews:148.3,nss:38.72,momNss:61.6},
 {mes:5,pais:'PE',posted:364,momPosted:32.8,likes:78074,momLikes:2.3,avgViews:1335259,momViews:-79.2,nss:29.89,momNss:-22.8},
+{mes:6,pais:'PE',posted:401,momPosted:16.6,likes:276805,momLikes:236.4,avgViews:12269180,momViews:4.8,nss:-4.31,momNss:-112.5},
 ];
 const TOP10_DATA=[
 {mes:4,pais:'PE',rank:1,user:'@karencitajayolagos',alc:1825200,likes:24200},
@@ -1065,6 +1187,16 @@ const TOP10_DATA=[
 {mes:5,pais:'PE',rank:8,user:'@javiercitocaychop',alc:1100000,likes:2922},
 {mes:5,pais:'PE',rank:9,user:'@mafesinr',alc:720200,likes:2775},
 {mes:5,pais:'PE',rank:10,user:'@nosomostv.oficial',alc:481400,likes:2588},
+{mes:6,pais:'PE',rank:1,user:'@jomaxi17 ',alc:118800,likes:53501},
+{mes:6,pais:'PE',rank:2,user:'@yeltsinurbina   ',alc:302400,likes:21914},
+{mes:6,pais:'PE',rank:3,user:'@gerson.garcial',alc:378000,likes:19538},
+{mes:6,pais:'PE',rank:4,user:'@ryanriegner',alc:216000,likes:18991},
+{mes:6,pais:'PE',rank:5,user:'@mayormentepiero',alc:135000,likes:18128},
+{mes:6,pais:'PE',rank:6,user:'@rumbosconconsue',alc:91800,likes:14836},
+{mes:6,pais:'PE',rank:7,user:'@jescow2.0',alc:810000,likes:12625},
+{mes:6,pais:'PE',rank:8,user:'@elmarronstiven.25',alc:504000,likes:10023},
+{mes:6,pais:'PE',rank:9,user:'@chinohan7',alc:145800,likes:7400},
+{mes:6,pais:'PE',rank:10,user:'@elmodres2016',alc:252000,likes:5380},
 ];
 const SENT_DATA=[
 {mes:4,pais:'PE',pl:'TikTok',sent:'Positivo',user:'Marysita piscis',t:'que chevere ojala algun dia si gane el sorteo'},
@@ -1120,55 +1252,86 @@ const SENT_DATA=[
 {mes:5,pais:'PE',pl:'Facebook',sent:'Neutral',user:'Yancito Taquire',t:'Como me puedo registrar ? Tengo una camioneta tucson 2026'},
 {mes:5,pais:'PE',pl:'Facebook',sent:'Neutral',user:'Victor Cumpa Mendoza',t:'Hola, una consulta, para inscribirme como conductor me piden mi licencia, que categoría debe ser? Y me piden antecedentes penales, cierto???'},
 {mes:5,pais:'PE',pl:'Facebook',sent:'Neutral',user:'Oscar Tito',t:'Para moto que documentos se necesita'},
+{mes:6,pais:'PE',pl:'Instagram',sent:'Positivo',user:'Usuario no visible',t:'Que rica ruta 😍😍 me quedo con los 5'},
+{mes:6,pais:'PE',pl:'Instagram',sent:'Positivo',user:'Usuario no visible',t:'Es tan dificil conseguir taxis con perritos, me encanta esa opción 😍 grande indrive ❤️'},
+{mes:6,pais:'PE',pl:'Instagram',sent:'Positivo',user:'Usuario no visible',t:'Increíble! Ahora solo usaré inDrive Entregas.'},
+{mes:6,pais:'PE',pl:'Instagram',sent:'Negativo',user:'Usuario no visible',t:'Estoy tratando de hablar con un HUMANO en su chat y no puedo! Estoy desde anoche con un problema!'},
+{mes:6,pais:'PE',pl:'Instagram',sent:'Negativo',user:'Usuario no visible',t:'La fiscalía va a investigar porque honestamente algo anda mal con su sistema y deberían responsabilizarse.'},
+{mes:6,pais:'PE',pl:'Instagram',sent:'Negativo',user:'Usuario no visible',t:'UNOS SALVAJES ESTOS CONDUCTORES, VAN A EXCESIVA VELOCIDAD, HABLAN CON EL CELULAR, DENUNCIELOS'},
+{mes:6,pais:'PE',pl:'Instagram',sent:'Neutro',user:'Usuario no visible',t:'Me encanta cuando te dan en platos de loza o vidrio. El plástico le cambia el sabor al ceviche y sabe mal, todas las carretillas deberían de aplicarlo.'},
+{mes:6,pais:'PE',pl:'Instagram',sent:'Neutro',user:'Usuario no visible',t:'Falta Edison Mendez invitalo'},
+{mes:6,pais:'PE',pl:'Instagram',sent:'Neutro',user:'Usuario no visible',t:'😮😮😮'},
+{mes:6,pais:'PE',pl:'TikTok',sent:'Positivo',user:'💘',t:'que buena app, me alegro de que ya hayan puesto la opción pet friendly, la mejor para viajes a cualquier lugar'},
+{mes:6,pais:'PE',pl:'TikTok',sent:'Positivo',user:'🐦‍🔥Jean Claude VanDamme',t:'Siempre excelente servicio!!!!! 🔥🔥🔥'},
+{mes:6,pais:'PE',pl:'TikTok',sent:'Positivo',user:'itsgidani',t:'El servicio confort es top!! 👌'},
+{mes:6,pais:'PE',pl:'TikTok',sent:'Negativo',user:'@jorgeisaacureta',t:'no se puede hacer envío, dice que desactive los envíos de bicicleta cuando ya está desactivado. Porque tienen que arruinar algo que no estaba mal'},
+{mes:6,pais:'PE',pl:'TikTok',sent:'Negativo',user:'Raico Llico Jhosue',t:'Yo no puedo registrarme i nadie ayuda'},
+{mes:6,pais:'PE',pl:'TikTok',sent:'Negativo',user:'Sebastian Carreño',t:'Oye un motorizado no entregó mi pedído y no hacen hasta ahora nada'},
+{mes:6,pais:'PE',pl:'TikTok',sent:'Neutro',user:'LION HEART 😎',t:'para cuándo premio a los usuarios recurrentes por la fidelidad 😏'},
+{mes:6,pais:'PE',pl:'TikTok',sent:'Neutro',user:'Juan Pedro Rodriguez Yesan',t:'La verdad que no se de que se trata deberían de imformar más de esto'},
+{mes:6,pais:'PE',pl:'TikTok',sent:'Neutro',user:'DJ Richard - Chiclayo 🎧',t:'Puedo cambiar de número de teléfono ?'},
+{mes:6,pais:'PE',pl:'Facebook',sent:'Positivo',user:'Miguel De la Cruz',t:'Excelente!! 🏍🛻🌏✌️'},
+{mes:6,pais:'PE',pl:'Facebook',sent:'Positivo',user:'Nícida Anita Mau Fernández',t:'Excelente Mirella..¡(Muy bien!! Un abrazote'},
+{mes:6,pais:'PE',pl:'Facebook',sent:'Positivo',user:'Wilfredo Linares Alvarez',t:'Esa es mi tía 🤭🤭'},
+{mes:6,pais:'PE',pl:'Facebook',sent:'Negativo',user:'Richard Salazar',t:'Mi cuenta fue bloqueada sin justificación necesito una solución por favor'},
+{mes:6,pais:'PE',pl:'Facebook',sent:'Negativo',user:'Juan Carlos Roca Ayala',t:'Buenas he intentado por todos los medios de comunicarme y solucionar pero no tengo respuesta'},
+{mes:6,pais:'PE',pl:'Facebook',sent:'Negativo',user:'Alejandra Valdivieso Floriano',t:'Hice un envío y me robaron'},
+{mes:6,pais:'PE',pl:'Facebook',sent:'Neutro',user:'Jhohan Rios',t:'Quiero cambiar mi foto de perfilll en la cual parezco bagabundo'},
+{mes:6,pais:'PE',pl:'Facebook',sent:'Neutro',user:'Luis Nunja',t:'Sólo en lima sucede eso?'},
+{mes:6,pais:'PE',pl:'Facebook',sent:'Neutro',user:'Joel Vic Mart',t:'Pa cuando me activan la opción de motorizado 🤷🏽'},
 ];
 const PROY_DATA=[
 {pais:'PE',cre:'CRE_PE_CAMILA_HEREDIA',pl:'Instagram',fm:'Carrusel',vp:0,ip:306},
-{pais:'PE',cre:'CRE_PE_CAMILA_HEREDIA',pl:'Instagram',fm:'Reel',vp:11304,ip:128},
+{pais:'PE',cre:'CRE_PE_CAMILA_HEREDIA',pl:'Instagram',fm:'Reel',vp:12000,ip:128},
 {pais:'PE',cre:'CRE_PE_COPA_CALIENTE_LIGA',pl:'Instagram',fm:'Carrusel',vp:0,ip:2526},
 {pais:'PE',cre:'CRE_PE_COPA_CALIENTE_LIGA',pl:'Instagram',fm:'Foto',vp:0,ip:128},
-{pais:'PE',cre:'CRE_PE_COPA_CALIENTE_LIGA',pl:'Instagram',fm:'Reel',vp:10269,ip:340},
+{pais:'PE',cre:'CRE_PE_COPA_CALIENTE_LIGA',pl:'Instagram',fm:'Reel',vp:7000,ip:340},
 {pais:'PE',cre:'CRE_PE_EL_CHATO_RAUL',pl:'Instagram',fm:'Carrusel',vp:0,ip:281},
 {pais:'PE',cre:'CRE_PE_EL_CHATO_RAUL',pl:'Instagram',fm:'Foto',vp:0,ip:467},
-{pais:'PE',cre:'CRE_PE_EL_CHATO_RAUL',pl:'Instagram',fm:'Reel',vp:13293,ip:940},
+{pais:'PE',cre:'CRE_PE_EL_CHATO_RAUL',pl:'Instagram',fm:'Reel',vp:20000,ip:940},
 {pais:'PE',cre:'CRE_PE_INDRIVE',pl:'Facebook',fm:'Carrusel',vp:0,ip:18},
 {pais:'PE',cre:'CRE_PE_INDRIVE',pl:'Facebook',fm:'Facebook Video',vp:0,ip:44},
-{pais:'PE',cre:'CRE_PE_INDRIVE',pl:'Facebook',fm:'Reel',vp:2076,ip:26},
+{pais:'PE',cre:'CRE_PE_INDRIVE',pl:'Facebook',fm:'Reel',vp:0,ip:26},
 {pais:'PE',cre:'CRE_PE_INDRIVE',pl:'Instagram',fm:'Carrusel',vp:0,ip:35},
-{pais:'PE',cre:'CRE_PE_INDRIVE',pl:'Instagram',fm:'Reel',vp:3440,ip:57},
-{pais:'PE',cre:'CRE_PE_INDRIVE',pl:'TikTok',fm:'Carrusel',vp:764,ip:15},
-{pais:'PE',cre:'CRE_PE_INDRIVE',pl:'TikTok',fm:'TikTok Video',vp:1367,ip:33},
+{pais:'PE',cre:'CRE_PE_INDRIVE',pl:'Instagram',fm:'Reel',vp:0,ip:57},
+{pais:'PE',cre:'CRE_PE_INDRIVE',pl:'TikTok',fm:'Carrusel',vp:0,ip:15},
+{pais:'PE',cre:'CRE_PE_INDRIVE',pl:'TikTok',fm:'TikTok Video',vp:0,ip:33},
 {pais:'PE',cre:'CRE_PE_KAREN_SCHWARZ',pl:'Facebook',fm:'Carrusel',vp:0,ip:1094},
 {pais:'PE',cre:'CRE_PE_KAREN_SCHWARZ',pl:'Facebook',fm:'Facebook Video',vp:0,ip:2332},
-{pais:'PE',cre:'CRE_PE_KAREN_SCHWARZ',pl:'Facebook',fm:'Reel',vp:98101,ip:2376},
+{pais:'PE',cre:'CRE_PE_KAREN_SCHWARZ',pl:'Facebook',fm:'Reel',vp:100000,ip:1989},
 {pais:'PE',cre:'CRE_PE_KAREN_SCHWARZ',pl:'Instagram',fm:'Carrusel',vp:0,ip:82},
-{pais:'PE',cre:'CRE_PE_KAREN_SCHWARZ',pl:'Instagram',fm:'Reel',vp:127305,ip:32},
-{pais:'PE',cre:'CRE_PE_KAREN_SCHWARZ',pl:'TikTok',fm:'TikTok Video',vp:14309,ip:683},
-{pais:'PE',cre:'CRE_PE_LAS_GAVIOTAS_CEVICHERIA',pl:'Instagram',fm:'Reel',vp:323257,ip:15496},
-{pais:'PE',cre:'CRE_PE_LAS_GAVIOTAS_CEVICHERIA',pl:'TikTok',fm:'TikTok Video',vp:485700,ip:39331},
+{pais:'PE',cre:'CRE_PE_KAREN_SCHWARZ',pl:'Instagram',fm:'Reel',vp:80000,ip:32},
+{pais:'PE',cre:'CRE_PE_KAREN_SCHWARZ',pl:'TikTok',fm:'TikTok Video',vp:30000,ip:4500},
+{pais:'PE',cre:'CRE_PE_LAS_GAVIOTAS_CEVICHERIA',pl:'Instagram',fm:'Reel',vp:500000,ip:15496},
+{pais:'PE',cre:'CRE_PE_LAS_GAVIOTAS_CEVICHERIA',pl:'TikTok',fm:'TikTok Video',vp:700000,ip:189240},
 {pais:'PE',cre:'CRE_PE_LIGA1_TE_APUESTO',pl:'Instagram',fm:'Carrusel',vp:0,ip:429},
 {pais:'PE',cre:'CRE_PE_LIGA1_TE_APUESTO',pl:'Instagram',fm:'Foto',vp:0,ip:193},
-{pais:'PE',cre:'CRE_PE_LIGA1_TE_APUESTO',pl:'Instagram',fm:'Reel',vp:46758,ip:3680},
+{pais:'PE',cre:'CRE_PE_LIGA1_TE_APUESTO',pl:'Instagram',fm:'Reel',vp:50000,ip:3680},
 {pais:'PE',cre:'CRE_PE_LIZ_SANDOVA',pl:'Instagram',fm:'Carrusel',vp:0,ip:2154},
-{pais:'PE',cre:'CRE_PE_LIZ_SANDOVA',pl:'Instagram',fm:'Reel',vp:56542,ip:682},
+{pais:'PE',cre:'CRE_PE_LIZ_SANDOVA',pl:'Instagram',fm:'Reel',vp:50000,ip:682},
 {pais:'PE',cre:'CRE_PE_LOS_MIRLOS',pl:'Facebook',fm:'Carrusel',vp:0,ip:304},
 {pais:'PE',cre:'CRE_PE_LOS_MIRLOS',pl:'Facebook',fm:'Foto',vp:0,ip:208},
-{pais:'PE',cre:'CRE_PE_LOS_MIRLOS',pl:'Facebook',fm:'Reel',vp:2080,ip:154},
+{pais:'PE',cre:'CRE_PE_LOS_MIRLOS',pl:'Facebook',fm:'Reel',vp:0,ip:232},
 {pais:'PE',cre:'CRE_PE_LOS_MIRLOS',pl:'Instagram',fm:'Carrusel',vp:0,ip:245},
-{pais:'PE',cre:'CRE_PE_LOS_MIRLOS',pl:'Instagram',fm:'Foto',vp:0,ip:661},
-{pais:'PE',cre:'CRE_PE_LOS_MIRLOS',pl:'Instagram',fm:'Reel',vp:4769,ip:236},
-{pais:'PE',cre:'CRE_PE_LOS_MIRLOS',pl:'TikTok',fm:'TikTok Video',vp:940,ip:45},
+{pais:'PE',cre:'CRE_PE_NIETOS_ITINERANTES',pl:'Facebook',fm:'Reel',vp:0,ip:4},
+{pais:'PE',cre:'CRE_PE_LOS_MIRLOS',pl:'Instagram',fm:'Reel',vp:20000,ip:236},
+{pais:'PE',cre:'CRE_PE_LOS_MIRLOS',pl:'TikTok',fm:'TikTok Video',vp:0,ip:782},
 {pais:'PE',cre:'CRE_PE_LUIS_VASQUEZ',pl:'Instagram',fm:'Carrusel',vp:0,ip:652},
-{pais:'PE',cre:'CRE_PE_LUIS_VASQUEZ',pl:'Instagram',fm:'Reel',vp:67350,ip:5218},
-{pais:'PE',cre:'CRE_PE_RODRIGO_PEREA',pl:'Instagram',fm:'Reel',vp:3983,ip:156},
+{pais:'PE',cre:'CRE_PE_LUIS_VASQUEZ',pl:'Instagram',fm:'Reel',vp:30000,ip:5218},
+{pais:'PE',cre:'CRE_PE_RODRIGO_PEREA',pl:'Instagram',fm:'Reel',vp:10000,ip:156},
+{pais:'PE',cre:'CRE_PE_FARFAN',pl:'Instagram',fm:'Reel',vp:30000,ip:10038},
+{pais:'PE',cre:'CRE_PE_FARFAN',pl:'Facebook',fm:'Reel',vp:0,ip:3368},
+{pais:'PE',cre:'CRE_PE_FARFAN',pl:'TikTok',fm:'TikTok Video',vp:0,ip:6690},
+{pais:'PE',cre:'CRE_PE_NIETOS_ITINERANTES',pl:'Instagram',fm:'Reel',vp:0,ip:53},
+{pais:'CL',cre:'CRE_CL_LUCAS_PINOZA',pl:'Instagram',fm:'Reel',vp:50000,ip:4292},
+{pais:'PE',cre:'CRE_PE_TALIA_AZCARATE',pl:'Instagram',fm:'Reel',vp:7000,ip:441},
+{pais:'CL',cre:'CRE_CL_EL_JANO_JEY',pl:'Instagram',fm:'Reel',vp:50000,ip:4188},
+{pais:'CL',cre:'CRE_CL_ALTO_YOYO',pl:'Instagram',fm:'Reel',vp:60000,ip:14586},
+{pais:'PE',cre:'CRE_PE_ENFOCADOS_PODCAST',pl:'instagram',fm:'Reel',vp:60000,ip:1605},
+{pais:'PE',cre:'CRE_PE_MASHA_SEKUTOROVA',pl:'instagram',fm:'Reel',vp:0,ip:0},
+{pais:'PE',cre:'CRE_PE_WARIQUEANDO',pl:'instagram',fm:'Reel',vp:0,ip:0},
 ];
 const INV_DATA=[
-{mes:4,pais:'PE',cre:'CRE_PE_INDRIVE',pl:'Instagram',fm:'Reel',inv:null,alc:null,clics:null},
-{mes:4,pais:'PE',cre:'CRE_PE_INDRIVE',pl:'TikTok',fm:'TikTok Video',inv:null,alc:null,clics:null},
-{mes:4,pais:'PE',cre:'CRE_PE_INDRIVE',pl:'Facebook',fm:'Reel',inv:null,alc:null,clics:null},
-{mes:5,pais:'PE',cre:'CRE_PE_INDRIVE',pl:'Instagram',fm:'Reel',inv:null,alc:null,clics:null},
-{mes:5,pais:'PE',cre:'CRE_PE_INDRIVE',pl:'TikTok',fm:'TikTok Video',inv:null,alc:null,clics:null},
-{mes:5,pais:'PE',cre:'CRE_PE_INDRIVE',pl:'Facebook',fm:'Reel',inv:null,alc:null,clics:null},
-{mes:5,pais:'CL',cre:'CRE_CL_INDRIVE',pl:'Instagram',fm:'Reel',inv:null,alc:null,clics:null},
 ];
 
 function getPlatMens(cre,mes,pl){return PLATS_MENS.find(x=>x.cre===cre&&x.mes===mes&&x.pl===pl);}
@@ -1246,18 +1409,43 @@ function filterBar(creId){
     <span class="fb-label" style="margin-left:auto;font-size:10px;color:var(--lime-d);font-weight:800;">${getFiltered(creId).length} / ${CONTENIDOS.length} contenidos</span>
   </div>`;
 }
+function proyCard(label,pct,proyVal,realVal,maxV,cls,col){
+  return `<div class="proy-card"><div class="cc-title" style="display:flex;justify-content:space-between;align-items:center;"><span>${label}</span><span class="proy-cumpl ${cls(pct)}">${pct}%</span></div><div class="proy-bars"><div class="proy-bar-row"><span class="proy-bar-label">Proyectado</span><div class="proy-bar-bg"><div class="proy-bar-proy" style="width:100%;"></div></div><span class="proy-bar-val" style="color:var(--muted);">${fmtM(proyVal)}</span></div><div class="proy-bar-row"><span class="proy-bar-label">Real</span><div class="proy-bar-bg"><div class="proy-bar-real" style="width:${Math.min(100,maxV>0?realVal/maxV*100:0)}%;background:${col(pct)};"></div></div><span class="proy-bar-val" style="color:${col(pct)};">${fmtM(realVal)}</span></div></div><div class="proy-legend"><div class="proy-leg-item"><div class="proy-leg-box" style="background:rgba(196,196,188,.5);border:1px dashed var(--muted);"></div>Proy</div><div class="proy-leg-item"><div class="proy-leg-box" style="background:${col(pct)};"></div>Real</div></div></div>`;
+}
 function proySection(filtered,creId){
-  const proy=getProyeccion(creId);
-  if(!proy||(proy.views===0&&proy.inter===0))return '';
-  const wv=filtered.filter(x=>x.v>0);const rv=wv.reduce((a,b)=>a+b.v,0),ri=wv.reduce((a,b)=>a+b.it,0);
-  const cv=proy.views>0?Math.round(rv/proy.views*100):0,ci=proy.inter>0?Math.round(ri/proy.inter*100):0;
+  /* Agrupar por (plataforma + formato). El proyectado es POR PIEZA,
+     así que el real se compara como PROMEDIO por pieza (no suma). */
+  const groups={};
+  filtered.forEach(x=>{
+    const key=x.pl+'||'+x.fm;
+    if(!groups[key])groups[key]={pl:x.pl,fm:x.fm,pieces:[]};
+    groups[key].pieces.push(x);
+  });
+  const keys=Object.keys(groups).sort((a,b)=>groups[b].pieces.length-groups[a].pieces.length);
+  if(!keys.length)return '';
   const cls=v=>v>=80?'ok':v>=50?'mid':'low',col=v=>v>=80?'#18B89A':v>=50?'#E8A020':'#E85A44';
-  const mV=Math.max(proy.views,rv),mI=Math.max(proy.inter,ri);
-  return `<div class="sec-hdr sec-cumpl fu fu2" style="margin-top:14px;"><span class="sec-hdr-ic"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1l2.3 4.6 5.1.7-3.7 3.6.9 5.1L8 12.6l-4.6 2.4.9-5.1L.6 6.3l5.1-.7z"/></svg></span>Proyección vs Real${S.fFmt.length?' · '+S.fFmt.join(', '):''}</div>
-  <div class="proy-grid fu fu2">
-    <div class="proy-card"><div class="cc-title" style="display:flex;justify-content:space-between;align-items:center;"><span>Views</span><span class="proy-cumpl ${cls(cv)}">${cv}%</span></div><div class="proy-bars"><div class="proy-bar-row"><span class="proy-bar-label">Proyectado</span><div class="proy-bar-bg"><div class="proy-bar-proy" style="width:100%;"></div></div><span class="proy-bar-val" style="color:var(--muted);">${fmtM(proy.views)}</span></div><div class="proy-bar-row"><span class="proy-bar-label">Real</span><div class="proy-bar-bg"><div class="proy-bar-real" style="width:${Math.min(100,mV>0?rv/mV*100:0)}%;background:${col(cv)};"></div></div><span class="proy-bar-val" style="color:${col(cv)};">${fmtM(rv)}</span></div></div><div class="proy-legend"><div class="proy-leg-item"><div class="proy-leg-box" style="background:rgba(196,196,188,.5);border:1px dashed var(--muted);"></div>Proy</div><div class="proy-leg-item"><div class="proy-leg-box" style="background:${col(cv)};"></div>Real</div></div></div>
-    <div class="proy-card"><div class="cc-title" style="display:flex;justify-content:space-between;align-items:center;"><span>Interacciones</span><span class="proy-cumpl ${cls(ci)}">${ci}%</span></div><div class="proy-bars"><div class="proy-bar-row"><span class="proy-bar-label">Proyectado</span><div class="proy-bar-bg"><div class="proy-bar-proy" style="width:100%;"></div></div><span class="proy-bar-val" style="color:var(--muted);">${fmtM(proy.inter)}</span></div><div class="proy-bar-row"><span class="proy-bar-label">Real</span><div class="proy-bar-bg"><div class="proy-bar-real" style="width:${Math.min(100,mI>0?ri/mI*100:0)}%;background:${col(ci)};"></div></div><span class="proy-bar-val" style="color:${col(ci)};">${fmtM(ri)}</span></div></div><div class="proy-legend"><div class="proy-leg-item"><div class="proy-leg-box" style="background:rgba(196,196,188,.5);border:1px dashed var(--muted);"></div>Proy</div><div class="proy-leg-item"><div class="proy-leg-box" style="background:${col(ci)};"></div>Real</div></div></div>
-  </div>`;
+  const icon='<svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1l2.3 4.6 5.1.7-3.7 3.6.9 5.1L8 12.6l-4.6 2.4.9-5.1L.6 6.3l5.1-.7z"/></svg>';
+  let blocks='';
+  keys.forEach((key,idx)=>{
+    const g=groups[key];
+    const n=g.pieces.length;
+    /* Promedio por pieza: views sobre piezas con views>0; interacciones sobre todas */
+    const wv=g.pieces.filter(x=>x.v>0);
+    const avgV=wv.length?Math.round(wv.reduce((a,b)=>a+b.v,0)/wv.length):0;
+    const avgI=n?Math.round(g.pieces.reduce((a,b)=>a+b.it,0)/n):0;
+    /* Proyección por pieza para creador + plataforma + formato (una fila) */
+    const prow=PROY_DATA.find(p=>p.cre===creId&&p.pl===g.pl&&p.fm===g.fm&&(!p.pais||p.pais===S.pais));
+    const pv=prow?prow.vp:0, pi=prow?prow.ip:0;
+    let cards='';
+    if(pv>0){const cv=Math.round(avgV/pv*100);cards+=proyCard('Views · prom/pieza',cv,pv,avgV,Math.max(pv,avgV),cls,col);}
+    if(pi>0){const ci=Math.round(avgI/pi*100);cards+=proyCard('Interacciones · prom/pieza',ci,pi,avgI,Math.max(pi,avgI),cls,col);}
+    if(!pv&&!pi){
+      cards+=`<div class="proy-card"><div class="cc-title">Sin proyección para este formato</div><div style="margin-top:12px;font-size:12px;color:var(--muted);line-height:1.6;">Real prom/pieza: <b style="color:var(--ink);">${fmtM(avgV)}</b> views · <b style="color:var(--ink);">${fmtM(avgI)}</b> interacciones</div></div>`;
+    }
+    blocks+=`<div class="sec-hdr sec-cumpl fu fu2" style="margin-top:${idx===0?14:18}px;"><span class="sec-hdr-ic">${icon}</span>Proyección vs Real · ${g.fm} · ${g.pl} <span style="font-size:10px;color:var(--muted);font-weight:600;margin-left:6px;">${n} pieza${n>1?'s':''} · promedio</span></div>
+    <div class="proy-grid fu fu2">${cards}</div>`;
+  });
+  return blocks;
 }
 
 /* ═══ MARCA — ecosistema completo ═══ */
@@ -1270,7 +1458,7 @@ function renderMarca(){
   const targetMes=mes!=='all'?parseInt(mes):null;
   let comMes=targetMes;
   if(!comMes){const allM=pmRows().filter(x=>x.cre===getBrandId()&&x.fol!=null).map(x=>x.mes);comMes=allM.length?Math.max(...allM):0;}
-  const comTotal=pmRows().filter(x=>x.cre===getBrandId()&&x.mes===comMes&&x.fol!=null).reduce((s,p)=>s+p.fol,0)||null;
+  const comTotal=pmRows().filter(x=>x.cre===getBrandId()&&x.mes===comMes&&x.fol!=null&&(!S.fPlat.length||S.fPlat.includes(x.pl))).reduce((s,p)=>s+p.fol,0)||null;
   let netSentAvg=null;
   if(targetMes){const c1=cmRows().find(x=>x.cre===getBrandId()&&x.mes===targetMes);netSentAvg=c1&&c1.netSent!=null?c1.netSent:null;}
   else{const ic=cmRows().filter(x=>x.cre===getBrandId()&&x.netSent!=null);netSentAvg=ic.length?ic.reduce((s,cc)=>s+cc.netSent,0)/ic.length:null;}
@@ -1406,7 +1594,7 @@ function renderInfluencer(){
   const infTargetMes=mes!=='all'?parseInt(mes):null;
   let infComMes=infTargetMes;
   if(!infComMes){const allM=crePms.filter(x=>x.fol!=null).map(x=>x.mes);infComMes=allM.length?Math.max(...allM):0;}
-  const folTotal=crePms.filter(x=>x.mes===infComMes&&x.fol!=null).reduce((s,p)=>s+p.fol,0)||null;
+  const folTotal=crePms.filter(x=>x.mes===infComMes&&x.fol!=null&&(!S.fPlat.length||S.fPlat.includes(x.pl))).reduce((s,p)=>s+p.fol,0)||null;
   /* ERV: desde PLATS_MENS.erv_mensual (promedio de plataformas, filtrable) */
   let ervCalc;
   const ervPlats=S.fPlat.length?S.fPlat:['Instagram','TikTok','Facebook'];
@@ -1518,7 +1706,7 @@ function renderComentarios(){
   }
 
   /* Sentiment per platform — percentages + example comments */
-  const sentMes=mes||indSentRows().length?Math.max(...indSentRows().map(s=>s.mes)):0;
+  const sentMes=mes?mes:(indSentRows().length?Math.max(...indSentRows().map(s=>s.mes)):0);
   const sentPlats=indSentRows().filter(x=>x.mes===sentMes&&x.tot>0);
   sentPlats.forEach(sp=>{
     const plEx=sents.filter(s=>s.pl===sp.pl);
@@ -1549,7 +1737,6 @@ let invSelCreator='all';
 function renderInversion(){
   let h=filterBar(null);
   const mes=S.fMes!=='all'?parseInt(S.fMes):null;
-  /* Dropdown de creador */
   const creOpts=CREATORS.filter(cc=>!cc.pais||cc.pais===S.pais);
   h+=`<div class="filter-bar fu" style="margin-top:-6px;">
     <span class="fb-label">Creador</span>
@@ -1558,94 +1745,85 @@ function renderInversion(){
       ${creOpts.map(cc=>`<option value="${cc.id}"${invSelCreator===cc.id?' selected':''}>${cc.nombre} (${cc.handle})</option>`).join('')}
     </select></div>`;
 
-  /* Filtrar filas de inversión */
-  const rows=INV_DATA.filter(r=>{
-    if(r.pais&&r.pais!==S.pais)return false;
-    if(mes&&r.mes!==mes)return false;
-    if(invSelCreator!=='all'&&r.cre!==invSelCreator)return false;
-    if(S.fPlat.length&&!S.fPlat.includes(r.pl))return false;
-    if(S.fFmt.length&&!S.fFmt.includes(r.fm))return false;
-    return r.inv!=null||r.alc!=null||r.clics!=null;
+  /* Piezas PAGADAS = las que tienen costo_total (ct). Lee de CONTENIDOS. */
+  const paid=CONTENIDOS.filter(x=>{
+    if(x.pais&&x.pais!==S.pais)return false;
+    if(mes&&getMonthFromFd(x.fd)!==mes)return false;
+    if(invSelCreator!=='all'&&x.cre!==invSelCreator)return false;
+    if(S.fPlat.length&&!S.fPlat.includes(x.pl))return false;
+    if(S.fFmt.length&&!S.fFmt.includes(x.fm))return false;
+    if(S.fVt.length&&!S.fVt.includes(x.vt))return false;
+    return x.ct!=null&&x.ct>0;
   });
 
   const mesLbl=mesLabel(mes===null?'all':mes);
 
-  if(!rows.length){
+  if(!paid.length){
     h+=`<div class="sec-hdr sec-overview fu fu1"><span class="sec-hdr-ic"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6.5"/><path d="M8 4.5v7M6 6.2c0-.8 1-1.3 2-1.3s2 .5 2 1.3-1 1.3-2 1.3-2 .5-2 1.3 1 1.3 2 1.3 2-.5 2-1.3"/></svg></span>Inversión · ${mesLbl}</div>
-    <div style="display:flex;align-items:center;justify-content:center;min-height:40vh;"><div class="empty-card" style="max-width:420px;padding:40px;"><b style="font-size:18px;">Sin data de inversión</b><div style="margin-top:8px;color:var(--muted);">Llena la hoja INVERSION del Excel y regenera el dashboard.</div></div></div>`;
+    <div style="display:flex;align-items:center;justify-content:center;min-height:40vh;"><div class="empty-card" style="max-width:440px;padding:40px;"><b style="font-size:18px;">Sin acciones pagadas</b><div style="margin-top:8px;color:var(--muted);">No hay piezas con costo para este filtro. Las piezas pagadas se identifican por tener costo_total_acciones en CONTENIDOS.</div></div></div>`;
     document.getElementById('sa').innerHTML=h;killAll();return;
   }
 
-  /* Agregación: volúmenes SUMAN; CPC/CPM PONDERADOS (inv total / clics totales) */
-  const totInv=rows.reduce((a,b)=>a+(b.inv||0),0);
-  const totClics=rows.reduce((a,b)=>a+(b.clics||0),0);
-  const totAlc=rows.reduce((a,b)=>a+(b.alc||0),0);
-  const cpc=totClics>0?totInv/totClics:null;
-  const cpm=totAlc>0?totInv/totAlc*1000:null;
-  /* Costo por interacción: inversión total / interacciones del contenido equivalente */
-  const contFiltered=getFiltered(invSelCreator==='all'?null:invSelCreator);
-  const totInter=contFiltered.reduce((a,b)=>a+b.it,0);
-  const cpi=totInter>0?totInv/totInter:null;
+  /* Agregados: gasto = Σ costo_individual (no duplica paquetes). CPV/CPE ponderados. */
+  const totInd=paid.reduce((a,b)=>a+(b.ci||0),0);
+  const totFV=paid.reduce((a,b)=>a+(b.fv||0),0);
+  const totFE=paid.reduce((a,b)=>a+(b.fe||0),0);
+  const totInter=paid.reduce((a,b)=>a+(b.it||0),0);
+  const cpv=totFV>0?totInd/totFV:null;
+  const cpe=totFE>0?totInd/totFE:null;
+  const cpi=totInter>0?totInd/totInter:null;
 
-  h+=`<div class="sec-hdr sec-overview fu fu1"><span class="sec-hdr-ic"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6.5"/><path d="M8 4.5v7M6 6.2c0-.8 1-1.3 2-1.3s2 .5 2 1.3-1 1.3-2 1.3-2 .5-2 1.3 1 1.3 2 1.3 2-.5 2-1.3"/></svg></span>Inversión Publicitaria · ${mesLbl}</div>
+  h+=`<div class="sec-hdr sec-overview fu fu1"><span class="sec-hdr-ic"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6.5"/><path d="M8 4.5v7M6 6.2c0-.8 1-1.3 2-1.3s2 .5 2 1.3-1 1.3-2 1.3-2 .5-2 1.3 1 1.3 2 1.3 2-.5 2-1.3"/></svg></span>Inversión en Influencers · ${mesLbl}</div>
   <div class="g-grid fu fu1" style="grid-template-columns:repeat(6,1fr);">
-    <div class="g-kpi"><div class="g-kpi-lbl">INVERSIÓN</div><div class="g-kpi-val">${totInv>0?'$'+fmtM(totInv):NULL_TAG}</div></div>
-    <div class="g-kpi"><div class="g-kpi-lbl">CLICS</div><div class="g-kpi-val" style="color:var(--blue);">${totClics>0?fmtM(totClics):NULL_TAG}</div></div>
-    <div class="g-kpi"><div class="g-kpi-lbl">ALCANCE PAGADO</div><div class="g-kpi-val" style="color:var(--purple);">${totAlc>0?fmtM(totAlc):NULL_TAG}</div></div>
-    <div class="g-kpi"><div class="g-kpi-lbl">CPC</div><div class="g-kpi-val hl-lime">${cpc!=null?'$'+cpc.toFixed(3):NULL_TAG}</div></div>
-    <div class="g-kpi"><div class="g-kpi-lbl">CPM</div><div class="g-kpi-val">${cpm!=null?'$'+cpm.toFixed(2):NULL_TAG}</div></div>
-    <div class="g-kpi"><div class="g-kpi-lbl">COSTO × INTERACCIÓN</div><div class="g-kpi-val" style="color:var(--teal);">${cpi!=null?'$'+cpi.toFixed(3):NULL_TAG}</div></div>
+    <div class="g-kpi"><div class="g-kpi-lbl">GASTO TOTAL</div><div class="g-kpi-val">$${fmtM(Math.round(totInd))}</div></div>
+    <div class="g-kpi"><div class="g-kpi-lbl">PIEZAS PAGADAS</div><div class="g-kpi-val" style="color:var(--blue);">${paid.length}</div></div>
+    <div class="g-kpi"><div class="g-kpi-lbl">VIEWS (FACT)</div><div class="g-kpi-val" style="color:var(--purple);">${totFV>0?fmtM(totFV):NULL_TAG}</div></div>
+    <div class="g-kpi"><div class="g-kpi-lbl">CPV</div><div class="g-kpi-val hl-lime">${cpv!=null?'$'+cpv.toFixed(3):NULL_TAG}</div></div>
+    <div class="g-kpi"><div class="g-kpi-lbl">CPE</div><div class="g-kpi-val" style="color:var(--teal);">${cpe!=null?'$'+cpe.toFixed(2):NULL_TAG}</div></div>
+    <div class="g-kpi"><div class="g-kpi-lbl">COSTO × INTERACCIÓN</div><div class="g-kpi-val" style="color:var(--amber);">${cpi!=null?'$'+cpi.toFixed(2):NULL_TAG}</div></div>
   </div>`;
 
-  /* Tabla desglose por plataforma × formato */
-  const groups={};
-  rows.forEach(r=>{const k=r.pl+'|'+r.fm;if(!groups[k])groups[k]={pl:r.pl,fm:r.fm,inv:0,clics:0,alc:0};groups[k].inv+=r.inv||0;groups[k].clics+=r.clics||0;groups[k].alc+=r.alc||0;});
-  const glist=Object.values(groups).sort((a,b)=>b.inv-a.inv);
-  h+=`<div class="sec-hdr sec-detail fu fu2"><span class="sec-hdr-ic"><svg width="16" height="16" fill="currentColor"><rect x="1" y="2" width="14" height="12" rx="1" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M1 6h14" stroke="currentColor" stroke-width="1.3"/></svg></span>Desglose por Plataforma × Formato</div>
+  /* Desglose por campaña */
+  const byCamp={};
+  paid.forEach(p=>{const k=p.camp||'(sin campaña)';if(!byCamp[k])byCamp[k]={ind:0,fv:0,fe:0,n:0};byCamp[k].ind+=p.ci||0;byCamp[k].fv+=p.fv||0;byCamp[k].fe+=p.fe||0;byCamp[k].n++;});
+  const campList=Object.entries(byCamp).map(([k,v])=>({camp:k,...v})).sort((a,b)=>b.ind-a.ind);
+  h+=`<div class="sec-hdr sec-detail fu fu2"><span class="sec-hdr-ic"><svg width="16" height="16" fill="currentColor"><rect x="1" y="2" width="14" height="12" rx="1" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M1 6h14" stroke="currentColor" stroke-width="1.3"/></svg></span>Desglose por Campaña</div>
   <div class="tbl-wrap fu fu2"><table class="dt"><thead><tr>
-    <th style="text-align:left;background:#18B89A;color:#fff;">Plataforma</th>
-    <th style="text-align:left;background:#18B89A;color:#fff;">Formato</th>
-    <th style="background:#18B89A;color:#fff;">Inversión</th>
-    <th style="background:#18B89A;color:#fff;">Clics</th>
-    <th style="background:#18B89A;color:#fff;">Alcance pagado</th>
-    <th style="background:#18B89A;color:#fff;">CPC</th>
-    <th style="background:#18B89A;color:#fff;">CPM</th>
-  </tr></thead><tbody>${glist.map(g=>{
-    const gcpc=g.clics>0?g.inv/g.clics:null;
-    const gcpm=g.alc>0?g.inv/g.alc*1000:null;
-    return `<tr><td>${platBadge(g.pl)}</td><td style="font-size:10px;">${g.fm}</td>
-    <td style="font-weight:800;">$${fmt(Math.round(g.inv))}</td><td>${fmt(g.clics)}</td><td>${fmt(g.alc)}</td>
-    <td class="td-er">${gcpc!=null?'$'+gcpc.toFixed(3):'—'}</td><td>${gcpm!=null?'$'+gcpm.toFixed(2):'—'}</td></tr>`;
-  }).join('')}<tr style="font-weight:900;background:rgba(24,184,154,.08);"><td colspan="2" style="text-align:left;padding-left:10px;">TOTAL</td><td>$${fmt(Math.round(totInv))}</td><td>${fmt(totClics)}</td><td>${fmt(totAlc)}</td><td class="td-er">${cpc!=null?'$'+cpc.toFixed(3):'—'}</td><td>${cpm!=null?'$'+cpm.toFixed(2):'—'}</td></tr></tbody></table></div>`;
+    <th style="text-align:left;background:#18B89A;color:#fff;">Campaña</th>
+    <th style="background:#18B89A;color:#fff;">Piezas</th>
+    <th style="background:#18B89A;color:#fff;">Gasto</th>
+    <th style="background:#18B89A;color:#fff;">Views</th>
+    <th style="background:#18B89A;color:#fff;">CPV</th>
+    <th style="background:#18B89A;color:#fff;">CPE</th>
+  </tr></thead><tbody>${campList.map(g=>{
+    const gcpv=g.fv>0?g.ind/g.fv:null, gcpe=g.fe>0?g.ind/g.fe:null;
+    return `<tr><td style="font-weight:700;">${g.camp}</td><td>${g.n}</td><td style="font-weight:800;">$${fmt(Math.round(g.ind))}</td><td>${fmt(g.fv)}</td><td class="td-er">${gcpv!=null?'$'+gcpv.toFixed(3):'—'}</td><td>${gcpe!=null?'$'+gcpe.toFixed(2):'—'}</td></tr>`;
+  }).join('')}<tr style="font-weight:900;background:rgba(24,184,154,.08);"><td style="text-align:left;">TOTAL</td><td>${paid.length}</td><td>$${fmt(Math.round(totInd))}</td><td>${fmt(totFV)}</td><td class="td-er">${cpv!=null?'$'+cpv.toFixed(3):'—'}</td><td>${cpe!=null?'$'+cpe.toFixed(2):'—'}</td></tr></tbody></table></div>`;
 
-  /* Comparativo MoM (si hay 2+ meses y filtro Todos) */
-  if(!mes){
-    const mesesInv=[...new Set(INV_DATA.filter(r=>(!r.pais||r.pais===S.pais)&&(invSelCreator==='all'||r.cre===invSelCreator)).map(r=>r.mes))].sort((a,b)=>a-b);
-    if(mesesInv.length>=2){
-      const m1=mesesInv[mesesInv.length-2],m2=mesesInv[mesesInv.length-1];
-      const agg=mm=>{const rs=INV_DATA.filter(r=>(!r.pais||r.pais===S.pais)&&r.mes===mm&&(invSelCreator==='all'||r.cre===invSelCreator));const i=rs.reduce((a,b)=>a+(b.inv||0),0),cl=rs.reduce((a,b)=>a+(b.clics||0),0);return{inv:i,cpc:cl>0?i/cl:null};};
-      const a1=agg(m1),a2=agg(m2);
-      const dInv=a1.inv>0?((a2.inv-a1.inv)/a1.inv*100):null;
-      const dCpc=a1.cpc&&a2.cpc?((a2.cpc-a1.cpc)/a1.cpc*100):null;
-      h+=`<div class="sec-hdr sec-cumpl fu fu3"><span class="sec-hdr-ic"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 12l4-5 3 3 5-7"/></svg></span>Comparativo ${MES_NOMBRES[m1]} → ${MES_NOMBRES[m2]}</div>
-      <div class="cols2 fu fu3">
-        <div class="ccard"><div class="cc-title">Inversión MoM</div><div style="font-size:24px;font-weight:900;margin:6px 0;">$${fmtM(a2.inv)} <span style="font-size:13px;color:${dInv>=0?'#E85A44':'#18B89A'};">${dInv!=null?(dInv>=0?'▲':'▼')+Math.abs(dInv).toFixed(1)+'%':''}</span></div><div style="font-size:10px;color:var(--muted);">${MES_NOMBRES[m1]}: $${fmtM(a1.inv)}</div></div>
-        <div class="ccard"><div class="cc-title">CPC MoM</div><div style="font-size:24px;font-weight:900;margin:6px 0;">${a2.cpc!=null?'$'+a2.cpc.toFixed(3):'—'} <span style="font-size:13px;color:${dCpc<=0?'#18B89A':'#E85A44'};">${dCpc!=null?(dCpc>=0?'▲':'▼')+Math.abs(dCpc).toFixed(1)+'%':''}</span></div><div style="font-size:10px;color:var(--muted);">${MES_NOMBRES[m1]}: ${a1.cpc!=null?'$'+a1.cpc.toFixed(3):'—'} · CPC bajando = mejor eficiencia</div></div>
-      </div>`;
-    }
-  }
+  /* Tabla detalle por pieza (eficiencia individual con columnas de REPORT) */
+  h+=`<div class="sec-hdr sec-cumpl fu fu3"><span class="sec-hdr-ic"><svg width="16" height="16" fill="currentColor"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M8 5v3l2 2" fill="none" stroke="currentColor" stroke-width="1.3"/></svg></span>Detalle por Pieza Pagada</div>
+  <div class="tbl-wrap fu fu3"><table class="dt"><thead><tr>
+    <th style="text-align:left;background:#1A1A1A;color:var(--lime);">Creador</th>
+    <th style="background:#1A1A1A;color:var(--lime);">Plat</th>
+    <th style="background:#1A1A1A;color:var(--lime);">Campaña</th>
+    <th style="background:#1A1A1A;color:var(--lime);">Costo por acción</th>
+    <th style="background:#1A1A1A;color:var(--lime);">Views</th>
+    <th style="background:#1A1A1A;color:var(--lime);">CPV</th>
+    <th style="background:#1A1A1A;color:var(--lime);">CPE</th>
+  </tr></thead><tbody>${paid.sort((a,b)=>(b.ct||0)-(a.ct||0)).map(p=>{
+    const cre=CREATORS.find(cc=>cc.id===p.cre);
+    return `<tr><td style="text-align:left;font-weight:700;">${cre?cre.nombre:p.cre}</td><td>${platBadge(p.pl)}</td><td style="font-size:10px;">${p.camp||'—'}</td><td style="font-weight:800;">${p.ci!=null?'$'+fmt(Math.round(p.ci)):'—'}</td><td>${p.fv!=null?fmt(p.fv):'—'}</td><td class="td-er">${p.cpv!=null?'$'+p.cpv.toFixed(3):'—'}</td><td>${p.cpe!=null?'$'+p.cpe.toFixed(2):'—'}</td></tr>`;
+  }).join('')}</tbody></table></div>`;
 
-  /* Gráfico inversión por plataforma */
-  if(glist.length>1){
-    h+=`<div class="sec-hdr sec-detail fu fu4"><span class="sec-hdr-ic"><svg width="16" height="16" fill="currentColor"><rect x="1" y="6" width="3" height="8" rx="1"/><rect x="6" y="2" width="3" height="12" rx="1"/><rect x="11" y="9" width="3" height="5" rx="1"/></svg></span>Inversión por Plataforma</div>
-    <div class="ccard fu fu4" style="margin-bottom:14px;"><div class="ccanv" style="height:220px;"><canvas id="chInv"></canvas></div></div>`;
+  /* Gráfico gasto por campaña */
+  if(campList.length>1){
+    h+=`<div class="ccard fu fu4" style="margin-top:14px;"><div class="cc-title">Gasto por Campaña</div><div class="ccanv" style="height:220px;"><canvas id="chInv"></canvas></div></div>`;
   }
 
   document.getElementById('sa').innerHTML=h;killAll();
-  if(glist.length>1){
-    const byPlat={};glist.forEach(g=>{byPlat[g.pl]=(byPlat[g.pl]||0)+g.inv;});
+  if(campList.length>1){
     setTimeout(()=>{if(typeof Chart==='undefined')return;const el=document.getElementById('chInv');
-      if(el)CR.inv=new Chart(el,{type:'bar',data:{labels:Object.keys(byPlat),datasets:[{data:Object.values(byPlat),backgroundColor:['#DD2A7B','#1A1A1A','#1877F2','#C5F000'],borderRadius:6,maxBarThickness:60}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>'$'+c.raw.toLocaleString('es-PE')}}},scales:{x:{grid:{display:false}},y:{ticks:{callback:v=>'$'+(v>=1000?(v/1000)+'K':v)}}}}});
+      if(el)CR.inv=new Chart(el,{type:'bar',data:{labels:campList.map(g=>g.camp),datasets:[{data:campList.map(g=>Math.round(g.ind)),backgroundColor:['#C5F000','#18B89A','#3A86E8','#9176D4','#E8A020','#E85A44'],borderRadius:6,maxBarThickness:54}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>'$'+c.raw.toLocaleString('es-PE')}}},scales:{x:{grid:{display:false}},y:{ticks:{callback:v=>'$'+(v>=1000?(v/1000)+'K':v)}}}}});
     },180);
   }
 }
